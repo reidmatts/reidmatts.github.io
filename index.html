@@ -118,6 +118,9 @@
         .image-item {
             break-inside: avoid; 
             margin-bottom: 20px; 
+            /* NEW: Required to keep the zoomed image from spilling out of its box */
+            overflow: hidden; 
+            border-radius: 4px;
         }
 
         .image-item img {
@@ -125,18 +128,50 @@
             height: auto;
             object-fit: contain; 
             display: block;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            border-radius: 2px; 
+            /* UPDATED: Added transform to the transition for smooth zooming */
+            transition: transform 0.4s ease, filter 0.4s ease;
             cursor: pointer; 
         }
 
-        .image-item img:hover {
-            filter: brightness(0.7);
+        /* NEW: The Hover Animation */
+        .image-item:hover img {
+            /* Zooms in by 5% */
+            transform: scale(1.05); 
+            filter: brightness(0.8);
         }
 
-        /* Helper class to hide grids smoothly */
-        .hidden-grid {
-            display: none;
+        /* Helper class to hide sections smoothly */
+        .hidden-section {
+            display: none !important;
+        }
+
+        /* --- ABOUT ME SECTION --- */
+        .about-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #e0e0e0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .about-section h2 {
+            color: #ffffff;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e5a93d;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .about-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
 
         /* --- FULL SCREEN LIGHTBOX (MODAL) CSS --- */
@@ -218,6 +253,9 @@
                 max-width: 95%;
                 max-height: 95%;
             }
+            .about-section h2 {
+                font-size: 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -239,31 +277,52 @@
                 <ul>
                     <li><a href="#" id="nav-2026" class="active">Photography of 2026</a></li>
                     <li><a href="#" id="nav-all-time">Photography of All Time</a></li>
-                    <li><a href="#">About Me</a></li>
+                    <li><a href="#" id="nav-about">About Me</a></li>
                 </ul>
             </nav>
         </aside>
 
         <main class="main-content">
             
-            <div id="grid-2026" class="image-grid">
-                <div class="image-item"><img src="IMAGES/ORIG_33.jpg" alt="2026 Gallery"></div>
-                <div class="image-item"><img src="IMAGES/ORIG_27.jpg" alt="2026 Gallery"></div>
-                <div class="image-item"><img src="IMAGES/ORIG_28.jpg" alt="2026 Gallery"></div>
-                <div class="image-item"><img src="IMAGES/ORIG_29.jpg" alt="2026 Gallery"></div>
-                <div class="image-item"><img src="IMAGES/ORIG_30.jpg" alt="2026 Gallery"></div>
-                <div class="image-item"><img src="IMAGES/ORIG_31.jpg" alt="2026 Gallery"></div>
-                <div class="image-item"><img src="IMAGES/ORIG_34.jpg" alt="2026 Gallery"></div>
-                <div class="image-item"><img src="IMAGES/ORIG_26.jpg" alt="2026 Gallery"></div>
-                <div class="image-item"><img src="IMAGES/ORIG_37.jpg" alt="2026 Gallery"></div>
+            <div id="grid-2026" class="content-section">
+                <div class="image-grid">
+                    <div class="image-item"><img src="IMAGES/ORIG_33.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_27.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_28.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_29.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_30.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_31.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_34.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_26.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_37.jpg" alt="2026 Gallery"></div>
+                </div>
             </div>
 
-            <div id="grid-all-time" class="image-grid hidden-grid">
-                <div class="image-item"><img src="IMAGES/ORIG" alt="All Time Gallery"></div>
-                <div class="image-item"><img src="IMAGES/YOUR_NEW_IMAGE_2.jpg" alt="All Time Gallery"></div>
-                <div class="image-item"><img src="IMAGES/YOUR_NEW_IMAGE_3.jpg" alt="All Time Gallery"></div>
-                <div class="image-item"><img src="IMAGES/YOUR_NEW_IMAGE_4.jpg" alt="All Time Gallery"></div>
-                <div class="image-item"><img src="IMAGES/YOUR_NEW_IMAGE_5.jpg" alt="All Time Gallery"></div>
+            <div id="grid-all-time" class="content-section hidden-section">
+                <div class="image-grid">
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_3.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_4.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_8.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_15.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_10.jpeg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_5.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_17.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_11.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_13.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_14.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_37.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_6.jpeg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_16.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_24.jpg" alt="All Time Gallery"></div>
+                </div>
+            </div>
+
+            <div id="about-section" class="content-section hidden-section">
+                <div class="about-section">
+                    <h2>Reid Matthew</h2>
+                    <p>TEST TEST</p>
+                    <p>TEST TEST.</p>
+                </div>
             </div>
 
         </main>
@@ -313,33 +372,41 @@
         // 2. --- MENU NAVIGATION LOGIC ---
         const nav2026 = document.getElementById("nav-2026");
         const navAllTime = document.getElementById("nav-all-time");
+        const navAbout = document.getElementById("nav-about");
+        
         const grid2026 = document.getElementById("grid-2026");
         const gridAllTime = document.getElementById("grid-all-time");
+        const aboutSection = document.getElementById("about-section");
 
-        // When "Photography of 2026" is clicked
-        nav2026.onclick = function(event) {
-            event.preventDefault(); // Stops the page from jumping to the top
+        function hideAllSections() {
+            grid2026.classList.add("hidden-section");
+            gridAllTime.classList.add("hidden-section");
+            aboutSection.classList.add("hidden-section");
             
-            // Swap the yellow underline
-            nav2026.classList.add("active");
+            nav2026.classList.remove("active");
             navAllTime.classList.remove("active");
-            
-            // Show 2026, Hide All Time
-            grid2026.classList.remove("hidden-grid");
-            gridAllTime.classList.add("hidden-grid");
+            navAbout.classList.remove("active");
         }
 
-        // When "Photography of All Time" is clicked
+        nav2026.onclick = function(event) {
+            event.preventDefault(); 
+            hideAllSections();
+            nav2026.classList.add("active");
+            grid2026.classList.remove("hidden-section");
+        }
+
         navAllTime.onclick = function(event) {
             event.preventDefault(); 
-            
-            // Swap the yellow underline
+            hideAllSections();
             navAllTime.classList.add("active");
-            nav2026.classList.remove("active");
-            
-            // Show All Time, Hide 2026
-            gridAllTime.classList.remove("hidden-grid");
-            grid2026.classList.add("hidden-grid");
+            gridAllTime.classList.remove("hidden-section");
+        }
+
+        navAbout.onclick = function(event) {
+            event.preventDefault();
+            hideAllSections();
+            navAbout.classList.add("active");
+            aboutSection.classList.remove("hidden-section");
         }
     </script>
 
