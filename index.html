@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reid Matthew - Photography | Sharing Untold Stories</title>
+    <style>
+        /* CSS Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #121212; 
+            color: #ffffff;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* --- CENTRAL TOP HEADER --- */
+        .central-header {
+            width: 100%;
+            background-color: #121212;
+            padding: 25px 20px 15px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-bottom: 1px solid #222; 
+        }
+
+        .central-header img.logo {
+            max-width: 220px; 
+            width: 100%; 
+            height: auto;
+            display: block;
+            margin-bottom: 8px; 
+        }
+
+        .central-header p.quote {
+            font-size: 1rem;
+            font-weight: 300;
+            color: #b0b0b0;
+            letter-spacing: 1.5px;
+            font-style: italic; 
+        }
+
+        /* --- MAIN PAGE LAYOUT --- */
+        .page-container {
+            display: flex;
+            flex-direction: row-reverse; 
+            align-items: flex-start; 
+            width: 100%;
+            max-width: 1600px; 
+            margin: 0 auto;
+        }
+
+        /* --- RIGHT-SIDE STICKY SIDEBAR --- */
+        .right-sidebar {
+            width: 260px; 
+            flex-shrink: 0; 
+            padding: 40px;
+            
+            position: sticky; 
+            top: 20px; 
+            max-height: calc(100vh - 40px); 
+            overflow-y: auto; 
+            
+            display: flex;
+            flex-direction: column;
+        }
+
+        .right-sidebar nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-sidebar nav a {
+            text-decoration: none;
+            color: #9e9e9e;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .right-sidebar nav a:hover {
+            color: #ffffff;
+        }
+
+        .right-sidebar nav a.active {
+            color: #ffffff;
+            border-bottom: 2px solid #e5a93d; 
+            padding-bottom: 2px;
+        }
+
+        /* --- MAIN CONTENT & MASONRY GRID --- */
+        .main-content {
+            flex: 1; 
+            padding: 40px;
+        }
+
+        .image-grid {
+            column-count: 3; 
+            column-gap: 20px; 
+        }
+
+        .image-item {
+            break-inside: avoid; 
+            margin-bottom: 20px; 
+            /* NEW: Required to keep the zoomed image from spilling out of its box */
+            overflow: hidden; 
+            border-radius: 4px;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: auto;
+            object-fit: contain; 
+            display: block;
+            /* UPDATED: Added transform to the transition for smooth zooming */
+            transition: transform 0.4s ease, filter 0.4s ease;
+            cursor: pointer; 
+        }
+
+        /* NEW: The Hover Animation */
+        .image-item:hover img {
+            /* Zooms in by 5% */
+            transform: scale(1.05); 
+            filter: brightness(0.8);
+        }
+
+        /* Helper class to hide sections smoothly */
+        .hidden-section {
+            display: none !important;
+        }
+
+        /* --- ABOUT ME SECTION --- */
+        .about-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #e0e0e0;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .about-section h2 {
+            color: #ffffff;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e5a93d;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .about-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* --- FULL SCREEN LIGHTBOX (MODAL) CSS --- */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.9); 
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out; 
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain; 
+            border-radius: 4px;
+            cursor: default; 
+            
+            animation-name: zoom;
+            animation-duration: 0.3s;
+        }
+
+        @keyframes zoom {
+            from {transform:scale(0)}
+            to {transform:scale(1)}
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 1001;
+            line-height: 1;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 1100px) {
+            .image-grid { column-count: 2; }
+        }
+
+        @media (max-width: 768px) {
+            .central-header { padding: 20px 20px 15px; }
+            .central-header img.logo { max-width: 180px; }
+            .page-container { flex-direction: column; }
+            .right-sidebar {
+                width: 100%;
+                position: relative; 
+                top: 0; 
+                padding: 20px 20px 30px;
+                text-align: center;
+                border-bottom: 1px solid #222;
+                max-height: none; 
+                overflow-y: visible;
+            }
+            .right-sidebar nav ul {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+            }
+            .main-content {
+                width: 100%;
+                padding: 30px 20px;
+            }
+            .modal-content {
+                max-width: 95%;
+                max-height: 95%;
+            }
+            .about-section h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-grid { column-count: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="central-header">
+        <img class="logo" src="logo.png" alt="Reid Matthew Logo">
+        <p class="quote">"Sharing Untold Stories"</p>
+    </header>
+
+    <div class="page-container">
+        
+        <aside class="right-sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-2026" class="active">Photography of 2026</a></li>
+                    <li><a href="#" id="nav-all-time">Photography of All Time</a></li>
+                    <li><a href="#" id="nav-about">About Me</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            
+            <div id="grid-2026" class="content-section">
+                <div class="image-grid">
+                    <div class="image-item"><img src="IMAGES/ORIG_33.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_27.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_28.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_29.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_30.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_31.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_34.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_26.jpg" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="IMAGES/ORIG_37.jpg" alt="2026 Gallery"></div>
+                </div>
+            </div>
+
+            <div id="grid-all-time" class="content-section hidden-section">
+                <div class="image-grid">
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_3.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_4.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_8.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_15.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_10.jpeg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_5.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_17.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_11.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_13.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_14.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_37.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_6.jpeg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_16.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_24.jpg" alt="All Time Gallery"></div>
+                </div>
+            </div>
+
+            <div id="about-section" class="content-section hidden-section">
+                <div class="about-section">
+                    <h2>Reid Matthew</h2>
+                    <p>TEST TEST</p>
+                    <p>TEST TEST.</p>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="fullScreenImage">
+    </div>
+
+    <script>
+        // 1. --- FULL SCREEN MODAL LOGIC ---
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("fullScreenImage");
+        const body = document.body;
+        const images = document.querySelectorAll(".image-grid img");
+
+        images.forEach(img => {
+            img.onclick = function(){
+                modal.style.display = "flex";
+                modalImg.src = this.src;
+                body.classList.add('modal-open');
+            }
+        });
+
+        function closeModal() {
+            modal.style.display = "none";
+            body.classList.remove('modal-open');
+        }
+
+        const closeBtn = document.querySelector(".close-modal");
+        closeBtn.onclick = closeModal;
+
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+               closeModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // 2. --- MENU NAVIGATION LOGIC ---
+        const nav2026 = document.getElementById("nav-2026");
+        const navAllTime = document.getElementById("nav-all-time");
+        const navAbout = document.getElementById("nav-about");
+        
+        const grid2026 = document.getElementById("grid-2026");
+        const gridAllTime = document.getElementById("grid-all-time");
+        const aboutSection = document.getElementById("about-section");
+
+        function hideAllSections() {
+            grid2026.classList.add("hidden-section");
+            gridAllTime.classList.add("hidden-section");
+            aboutSection.classList.add("hidden-section");
+            
+            nav2026.classList.remove("active");
+            navAllTime.classList.remove("active");
+            navAbout.classList.remove("active");
+        }
+
+        nav2026.onclick = function(event) {
+            event.preventDefault(); 
+            hideAllSections();
+            nav2026.classList.add("active");
+            grid2026.classList.remove("hidden-section");
+        }
+
+        navAllTime.onclick = function(event) {
+            event.preventDefault(); 
+            hideAllSections();
+            navAllTime.classList.add("active");
+            gridAllTime.classList.remove("hidden-section");
+        }
+
+        navAbout.onclick = function(event) {
+            event.preventDefault();
+            hideAllSections();
+            navAbout.classList.add("active");
+            aboutSection.classList.remove("hidden-section");
+        }
+    </script>
+
+</body>
+</html>
