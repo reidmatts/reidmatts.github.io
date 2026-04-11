@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reid Matthew - Photography | Sharing Untold Stories</title>
+    <title>Reid Matthew - Photography</title>
     <style>
         /* CSS Reset & Base Styles */
         * {
@@ -118,7 +118,6 @@
         .image-item {
             break-inside: avoid; 
             margin-bottom: 20px; 
-            /* NEW: Required to keep the zoomed image from spilling out test of its box */
             overflow: hidden; 
             border-radius: 4px;
         }
@@ -128,14 +127,11 @@
             height: auto;
             object-fit: contain; 
             display: block;
-            /* UPDATED: Added transform to the transition for smooth zooming */
             transition: transform 0.4s ease, filter 0.4s ease;
             cursor: pointer; 
         }
 
-        /* NEW: The Hover Animation */
         .image-item:hover img {
-            /* Zooms in by 5% */
             transform: scale(1.05); 
             filter: brightness(0.8);
         }
@@ -267,7 +263,7 @@
 
     <header class="central-header">
         <img class="logo" src="logo.png" alt="Reid Matthew Logo">
-        <p class="quote">"Sharing Untold Stories"</p>
+        <p class="quote">"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"</p>
     </header>
 
     <div class="page-container">
@@ -277,6 +273,7 @@
                 <ul>
                     <li><a href="#" id="nav-2026" class="active">Photography of 2026</a></li>
                     <li><a href="#" id="nav-all-time">Photography of All Time</a></li>
+                    <li><a href="#" id="nav-archives">Photography Archives</a></li>
                     <li><a href="#" id="nav-about">About Me</a></li>
                 </ul>
             </nav>
@@ -304,24 +301,46 @@
                     <div class="image-item"><img src="PhotographyOfAllTime/CONFETTIGUY.png" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/SKYPLANE.jpeg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITMOG.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime/POTRAITGUYMOODY.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/SUNRAYS.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITCAT.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITGUYFRONT.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITGUYMOON.jpeg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITLANTERN.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/SUNSET.png" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/POTRAITGIRLBACK.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime/LANTERNSHANGING.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/XMAS.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/OCEANGIRL.jpg" alt="All Time Gallery"></div>
+                    
                     <div class="image-item"><img src="PhotographyOfAllTime/LANTERNWITHBIRDS.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/OLDBANNER.png" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/POTRAITGIRLLSUNSET.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime/SUNRAYS.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/POTRAITGUYMOODY.jpg" alt="All Time Gallery"></div>
+
                     <div class="image-item"><img src="PhotographyOfAllTime/IMG_20251106_151941.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime/XMAS.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/LANTERNSHANGING.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/MACROGUITAR.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/POTRAITDOG.png" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime/BLOODMOON.jpg" alt="All Time Gallery"></div>
+                </div>
+            </div>
+
+            <div id="grid-archives" class="content-section hidden-section">
+                <div class="image-grid">
+                    <div class="image-item"><img src="PhotographyArchives/BACKYARDSLLOG.png" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/CAR.png" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/CATDOUSU.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/DRAGON.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/FULLMOON.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/JEEPNEY.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/LANTERNBIRDS.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/LIFEGUARDSEAT.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/NOSTALGIATRICYCLE.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/PATHWAY.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/PIANO.png" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/PICNICTABLE.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/POTRAITGUY.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/SHOULDERMOODY.jpg" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="PhotographyArchives/SWIMMINGPOOLSUNSET.jpg" alt="Archives Gallery"></div>\
+                    <div class="image-item"><img src="PhotographyArchives/EBIKEMOODY.jpg" alt="Archives Gallery"></div>
                 </div>
             </div>
 
@@ -329,7 +348,7 @@
                 <div class="about-section">
                     <h2>Reid Matthew</h2>
                     <p>WIP!</p>
-                    <p>Made with pure html codes, check github repo for the source code! .</p>
+                    <p>Made with pure HTML codes. Refer to my repo for the full code!.</p>
                 </div>
             </div>
 
@@ -347,15 +366,23 @@
         const modal = document.getElementById("imageModal");
         const modalImg = document.getElementById("fullScreenImage");
         const body = document.body;
-        const images = document.querySelectorAll(".image-grid img");
-
-        images.forEach(img => {
-            img.onclick = function(){
-                modal.style.display = "flex";
-                modalImg.src = this.src;
-                body.classList.add('modal-open');
-            }
-        });
+        
+        // Function to bind click events to ALL images (even ones hidden initially)
+        function attachModalEvents() {
+            const images = document.querySelectorAll(".image-grid img");
+            images.forEach(img => {
+                // Remove existing to prevent duplicates, then add
+                img.onclick = null; 
+                img.onclick = function(){
+                    modal.style.display = "flex";
+                    modalImg.src = this.src;
+                    body.classList.add('modal-open');
+                }
+            });
+        }
+        
+        // Call it once on load
+        attachModalEvents();
 
         function closeModal() {
             modal.style.display = "none";
@@ -380,19 +407,23 @@
         // 2. --- MENU NAVIGATION LOGIC ---
         const nav2026 = document.getElementById("nav-2026");
         const navAllTime = document.getElementById("nav-all-time");
+        const navArchives = document.getElementById("nav-archives"); // New Nav Link
         const navAbout = document.getElementById("nav-about");
         
         const grid2026 = document.getElementById("grid-2026");
         const gridAllTime = document.getElementById("grid-all-time");
+        const gridArchives = document.getElementById("grid-archives"); // New Grid
         const aboutSection = document.getElementById("about-section");
 
         function hideAllSections() {
             grid2026.classList.add("hidden-section");
             gridAllTime.classList.add("hidden-section");
+            gridArchives.classList.add("hidden-section"); // Hide new grid
             aboutSection.classList.add("hidden-section");
             
             nav2026.classList.remove("active");
             navAllTime.classList.remove("active");
+            navArchives.classList.remove("active"); // Remove active from new link
             navAbout.classList.remove("active");
         }
 
@@ -408,6 +439,14 @@
             hideAllSections();
             navAllTime.classList.add("active");
             gridAllTime.classList.remove("hidden-section");
+        }
+
+        // NEW: Click event for Archives
+        navArchives.onclick = function(event) {
+            event.preventDefault(); 
+            hideAllSections();
+            navArchives.classList.add("active");
+            gridArchives.classList.remove("hidden-section");
         }
 
         navAbout.onclick = function(event) {
