@@ -193,6 +193,31 @@
             margin: 40px 0 20px 0;
         }
 
+        /* --- POPUP NOTIFICATION (TOAST) CSS --- */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(100px); 
+            background-color: #e5a93d; 
+            color: #121212; 
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-style: italic; /* Added italic font style */
+            font-size: 1rem;
+            z-index: 2000; 
+            opacity: 0; 
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease; 
+            pointer-events: none; 
+        }
+
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0); 
+            opacity: 1; 
+        }
+
         /* --- FULL SCREEN LIGHTBOX (MODAL) CSS --- */
         .modal {
             display: none; 
@@ -270,6 +295,10 @@
             .modal-content {
                 max-width: 95%;
                 max-height: 95%;
+            }
+            .toast-notification {
+                width: 90%;
+                text-align: center;
             }
         }
 
@@ -374,7 +403,7 @@
                     </div>
 
                     <div class="resolve-splash-container">
-                         <img src="AboutMe\editing softwares.png" alt="DaVinci Resolve Studio Splash Screen" class="resolve-splash-img">
+                         <img src="AboutMe\editing softwares.png" alt="DaVinci Resolve Studio Splash Screen" class="resolve-splash-img" style="width:100%; border-radius: 8px;">
                     </div>
 
                     <div class="about-block">
@@ -401,6 +430,7 @@
                         <p>I currently use the <strong>Studio Version</strong> of <span class="text-cyan" style="font-style: italic;">Davinci Resolve</span> Industy standard for Film Making in Hollywood and Netflix editing software.</p>
 
                         <div class="video-container">
+                            <a href="https://www.youtube.com/watch?v=YOUR_LINK_HERE" target="_blank">
                                 <img src="AboutMe\TROPHY.jpg" alt="Festival Cinematography" class="video-thumbnail">
                             </a>
                             <a href="https://www.youtube.com/watch?v=dRKKZPG2dPc" target="_blank">
@@ -413,8 +443,7 @@
                         <h2 class="text-magenta" style="font-size: 2.5rem;">Photography</h2>
                         <p><span class="text-cyan" style="font-weight: bold;">4 years</span> of <span class="text-yellow">Photography Experience</span>,</p>
                         <p>Specializing with Cinematic and Dramatic Photography Styled high-quality smartphone captures. All images are shot in Auto Mode with no post-processing / editing applied. Offering pure Leica-colored DSLR-level quality straight from the camera.</p>
-                       
-
+                        
                         <hr class="divider">
                         
                         <h3 style="color: white; font-size: 1.5rem; letter-spacing: 1px;">
@@ -429,13 +458,29 @@
 
     </div>
 
+    <div id="loadingToast" class="toast-notification">
+        Please wait while the images load!
+    </div>
+
     <div id="imageModal" class="modal">
         <span class="close-modal">&times;</span>
         <img class="modal-content" id="fullScreenImage">
     </div>
 
     <script>
-        // 1. --- FULL SCREEN MODAL LOGIC ---
+        // 1. --- LOADING NOTIFICATION LOGIC ---
+        const loadingToast = document.getElementById("loadingToast");
+
+        function showLoading() {
+            loadingToast.classList.add("show");
+            setTimeout(() => {
+                loadingToast.classList.remove("show");
+            }, 3000);
+        }
+
+        window.addEventListener('load', showLoading);
+
+        // 2. --- FULL SCREEN MODAL LOGIC ---
         const modal = document.getElementById("imageModal");
         const modalImg = document.getElementById("fullScreenImage");
         const body = document.body;
@@ -474,7 +519,7 @@
             }
         });
 
-        // 2. --- MENU NAVIGATION LOGIC ---
+        // 3. --- MENU NAVIGATION LOGIC ---
         const nav2026 = document.getElementById("nav-2026");
         const navAllTime = document.getElementById("nav-all-time");
         const navArchives = document.getElementById("nav-archives"); 
@@ -523,6 +568,7 @@
             hideAllSections();
             navAbout.classList.add("active");
             aboutSection.classList.remove("hidden-section");
+            showLoading(); // Shows notification on About Me click
         }
     </script>
 
