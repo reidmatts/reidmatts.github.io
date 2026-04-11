@@ -468,7 +468,7 @@
     </div>
 
     <script>
-        // 1. --- LOADING NOTIFICATION LOGIC ---
+       // 1. --- LOADING NOTIFICATION LOGIC ---
         const loadingToast = document.getElementById("loadingToast");
 
         function showLoading() {
@@ -477,6 +477,9 @@
                 loadingToast.classList.remove("show");
             }, 3000);
         }
+
+        // Trigger immediately (with a tiny 100ms delay so the CSS slide animation has time to work)
+        setTimeout(showLoading, 100);
 
         window.addEventListener('load', showLoading);
 
