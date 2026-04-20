@@ -61,7 +61,7 @@
             flex-direction: row-reverse; 
             align-items: flex-start; 
             width: 100%;
-            max-width: 100%; /* Allows infinite expansion when zoomed out */
+            max-width: 100%; 
             margin: 0 auto;
         }
 
@@ -307,9 +307,12 @@
                 padding: 20px 10px; 
             }
             .image-grid { 
-                column-count: 2; 
+                column-count: 1; /* Defaults to 1 column */
                 column-width: auto; 
                 column-gap: 12px; 
+            }
+            .image-grid.show-two-columns {
+                column-count: 2; /* Temporarily forces 2 columns */
             }
             .image-item {
                 margin-bottom: 12px; 
@@ -354,7 +357,7 @@
                 </div>
             </div>
 
-           <div id="grid-all-time" class="content-section hidden-section">
+          <div id="grid-all-time" class="content-section hidden-section">
                 <div class="image-grid">
                     <div class="image-item"><img src="PhotographyOfAllTime/CONFETTICROWD.png" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/CONFETTIGUY.png" alt="All Time Gallery"></div>
@@ -489,7 +492,7 @@
     </div>
 
     <script>
-       // 1. --- LOADING NOTIFICATION LOGIC ---
+        // 1. --- LOADING NOTIFICATION LOGIC ---
         const loadingToast = document.getElementById("loadingToast");
 
         function showLoading() {
@@ -499,7 +502,7 @@
             }, 3000);
         }
 
-        // Trigger immediately (with a tiny 100ms delay so the CSS slide animation has time to work)
+        // Trigger immediately 
         setTimeout(showLoading, 100);
 
         // 2. --- FULL SCREEN MODAL LOGIC ---
@@ -541,7 +544,44 @@
             }
         });
 
-        // 3. --- MENU NAVIGATION LOGIC ---
+        // 3. --- RANDOMIZE GALLERY ORDER ---
+        function shuffleGalleries() {
+            const grids = document.querySelectorAll('.image-grid');
+            grids.forEach(grid => {
+                let items = Array.from(grid.querySelectorAll('.image-item'));
+                for (let i = items.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [items[i], items[j]] = [items[j], items[i]];
+                }
+                items.forEach(item => grid.appendChild(item));
+            });
+        }
+        shuffleGalleries();
+
+        // 4. --- MOBILE GRID 2-TO-1 ANIMATION LOGIC ---
+        let mobileGridTimer;
+        
+        function triggerMobileGridSwitch() {
+            // Only apply on mobile screens
+            if (window.innerWidth <= 480) {
+                const grids = document.querySelectorAll('.image-grid');
+                
+                // Add class to force 2 columns
+                grids.forEach(grid => grid.classList.add('show-two-columns'));
+                
+                clearTimeout(mobileGridTimer);
+                
+                // Remove class after 4 seconds to snap back to 1 column
+                mobileGridTimer = setTimeout(() => {
+                    grids.forEach(grid => grid.classList.remove('show-two-columns'));
+                }, 4000);
+            }
+        }
+        
+        // Trigger grid shift on load
+        triggerMobileGridSwitch();
+
+        // 5. --- MENU NAVIGATION LOGIC ---
         const nav2026 = document.getElementById("nav-2026");
         const navAllTime = document.getElementById("nav-all-time");
         const navArchives = document.getElementById("nav-archives"); 
@@ -569,6 +609,7 @@
             hideAllSections();
             nav2026.classList.add("active");
             grid2026.classList.remove("hidden-section");
+            triggerMobileGridSwitch(); 
         }
 
         navAllTime.onclick = function(event) {
@@ -576,6 +617,7 @@
             hideAllSections();
             navAllTime.classList.add("active");
             gridAllTime.classList.remove("hidden-section");
+            triggerMobileGridSwitch();
         }
 
         navArchives.onclick = function(event) {
@@ -583,6 +625,7 @@
             hideAllSections();
             navArchives.classList.add("active");
             gridArchives.classList.remove("hidden-section");
+            triggerMobileGridSwitch();
         }
 
         navAbout.onclick = function(event) {
@@ -590,29 +633,8 @@
             hideAllSections();
             navAbout.classList.add("active");
             aboutSection.classList.remove("hidden-section");
-            showLoading(); // Shows notification on About Me click
+            showLoading(); 
         }
-        
-        // 4. --- RANDOMIZE GALLERY ORDER ---
-        function shuffleGalleries() {
-            const grids = document.querySelectorAll('.image-grid');
-            grids.forEach(grid => {
-                // Get all image items in this specific grid
-                let items = Array.from(grid.querySelectorAll('.image-item'));
-                
-                // Fisher-Yates shuffle algorithm
-                for (let i = items.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [items[i], items[j]] = [items[j], items[i]];
-                }
-                
-                // Append them back to the grid in the new random order
-                items.forEach(item => grid.appendChild(item));
-            });
-        }
-        
-        // Run the randomizer as soon as the script loads
-        shuffleGalleries();
     </script>
 
 </body>
