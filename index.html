@@ -61,8 +61,7 @@
             flex-direction: row-reverse; 
             align-items: flex-start; 
             width: 100%;
-            /* UPDATED: Changed from 1600px to 100% so it expands infinitely when zoomed out */
-            max-width: 100%; 
+            max-width: 100%; /* Allows infinite expansion when zoomed out */
             margin: 0 auto;
         }
 
@@ -308,12 +307,12 @@
                 padding: 20px 10px; 
             }
             .image-grid { 
-                column-count: 2; /* 2 Columns */
+                column-count: 2; 
                 column-width: auto; 
-                column-gap: 12px; /* Increased breathable gap */
+                column-gap: 12px; 
             }
             .image-item {
-                margin-bottom: 12px; /* Increased breathable gap */
+                margin-bottom: 12px; 
                 border-radius: 6px; 
             }
         }
@@ -355,16 +354,18 @@
                 </div>
             </div>
 
-            <div id="grid-all-time" class="content-section hidden-section">
+           <div id="grid-all-time" class="content-section hidden-section">
                 <div class="image-grid">
                     <div class="image-item"><img src="PhotographyOfAllTime/CONFETTICROWD.png" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/CONFETTIGUY.png" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/SKYPLANE.jpeg" alt="All Time Gallery"></div>
-                     <div class="image-item"><img src="PhotographyOfAllTime/CROWDCHEER.png" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/CROWDFLAG.png" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITMOG.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/SUNRAYS.jpg" alt="All Time Gallery"></div>
-                     <div class="image-item"><img src="PhotographyOfAllTime/POTRAITCONFETII.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime/CONTRAILPLANE.jpeg" alt="All Time Gallery"></div>
+                    
+                    <div class="image-item"><img src="PhotographyOfAllTime/BLOODMOON.jpg" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime\CONTRAILPLANE.jpg" alt="All Time Gallery"></div>
+
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITCAT.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITGUYFRONT.jpg" alt="All Time Gallery"></div>
                     <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITGUYMOON.jpeg" alt="All Time Gallery"></div>
@@ -591,6 +592,27 @@
             aboutSection.classList.remove("hidden-section");
             showLoading(); // Shows notification on About Me click
         }
+        
+        // 4. --- RANDOMIZE GALLERY ORDER ---
+        function shuffleGalleries() {
+            const grids = document.querySelectorAll('.image-grid');
+            grids.forEach(grid => {
+                // Get all image items in this specific grid
+                let items = Array.from(grid.querySelectorAll('.image-item'));
+                
+                // Fisher-Yates shuffle algorithm
+                for (let i = items.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [items[i], items[j]] = [items[j], items[i]];
+                }
+                
+                // Append them back to the grid in the new random order
+                items.forEach(item => grid.appendChild(item));
+            });
+        }
+        
+        // Run the randomizer as soon as the script loads
+        shuffleGalleries();
     </script>
 
 </body>
