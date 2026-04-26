@@ -41,7 +41,7 @@
 
         /* --- HAMBURGER MENU BUTTON --- */
         .hamburger-btn {
-            position: fixed;
+            position: absolute; /* CHANGED: Stays at the top, doesn't follow you! */
             top: 25px;
             right: 30px;
             width: 32px;
@@ -174,7 +174,7 @@
             color: #b0b0b0;
             letter-spacing: 1.5px;
             font-style: italic; 
-            transition: opacity 0.3s ease; /* Smooth fade when changing text */
+            transition: opacity 0.3s ease; 
         }
 
         /* --- MAIN PAGE LAYOUT --- */
@@ -632,33 +632,33 @@
             <div id="cinematics-section" class="content-section hidden-section">
                 <div class="about-wrapper" style="text-align: center; margin-bottom: 40px; margin-top: 10vh;">
                     <h2 class="text-magenta" style="font-size: 2.5rem;">Work In Progress</h2>
-                    <p style="color: #b0b0b0; font-size: 1.2rem;">This section is currently under construction. Check back later! <br> Go to Minecraft Photography Section!</p>
+                    <p style="color: #b0b0b0; font-size: 1.2rem;">This section is currently under construction. Check back later!</p>
                 </div>
                 <div class="image-grid">
-                     <div class="image-item"><img src="" alt="Archives Gallery"></div>
+                     <div class="image-item"><img src="PhotographyArchives/HOUSE_NOSTALGIC.jpg" alt="Archives Gallery"></div>
                 </div>
             </div>
 
             <div id="mc-photo-section" class="content-section hidden-section">
                 <div class="about-wrapper" style="text-align: center; margin-bottom: 40px; margin-top: 10vh;">
                     <h2 class="text-magenta" style="font-size: 2.5rem;">Work In Progress</h2>
-                    <p style="color: #b0b0b0; font-size: 1.2rem;">This section is currently being updated! </p>
+                    <p style="color: #b0b0b0; font-size: 1.2rem;">This section is currently under construction. Check back later!</p>
                 </div>
                 <div class="image-grid">
-                    <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_Banner.png" alt="Minecraft Gallery"></div>
-                    <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_RPMAP.png" alt="Minecraft Gallery"></div>
-                    <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_RPMAP2.png" alt="Minecraft Gallery"></div>
-                    <div class="image-item"><img src="" alt="Minecraft Gallery"></div>
+                    <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_Banner.png" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_RPMAP.png" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_RPMAP2.png" alt="Archives Gallery"></div>
+                    <div class="image-item"><img src="" alt="Archives Gallery"></div>
                 </div>
             </div>
 
             <div id="mc-cinema-section" class="content-section hidden-section">
                 <div class="about-wrapper" style="text-align: center; margin-bottom: 40px; margin-top: 10vh;">
                     <h2 class="text-magenta" style="font-size: 2.5rem;">Work In Progress</h2>
-                    <p style="color: #b0b0b0; font-size: 1.2rem;">This section is currently under construction. Check back later! <br> Go to Minecraft Photography Section!</p>
+                    <p style="color: #b0b0b0; font-size: 1.2rem;">This section is currently under construction. Check back later!</p>
                 </div>
                 <div class="image-grid">
-                     <div class="image-item"><img src="" alt="Minecraft Cinema"></div>
+                     <div class="image-item"><img src="PhotographyArchives/HOUSE_NOSTALGIC.jpg" alt="Archives Gallery"></div>
                 </div>
             </div>
 
@@ -771,11 +771,7 @@
         hamburgerBtn.addEventListener("click", toggleDrawer);
         drawerOverlay.addEventListener("click", toggleDrawer);
 
-        // 6. --- MENU NAVIGATION & DYNAMIC QUOTE LOGIC ---
-        const headerQuote = document.getElementById("headerQuote");
-        const defaultQuote = '"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"';
-        const minecraftQuote = '"The only limit is your imagination"';
-
+        // 6. --- MENU NAVIGATION LOGIC ---
         // Right sidebar links
         const nav2026 = document.getElementById("nav-2026");
         const navAllTime = document.getElementById("nav-all-time");
@@ -796,6 +792,10 @@
         const mcPhotoSection = document.getElementById("mc-photo-section");
         const mcCinemaSection = document.getElementById("mc-cinema-section");
 
+        const headerQuote = document.getElementById("headerQuote");
+        const defaultQuote = '"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"';
+        const minecraftQuote = '"The only limit is your imagination"';
+
         function hideAllSections() {
             // Hide all content sections
             grid2026.classList.add("hidden-section");
@@ -814,8 +814,7 @@
             navCinematics.classList.remove("active");
             navMcPhoto.classList.remove("active");
             navMcCinema.classList.remove("active");
-            
-            // Reset quote to default
+
             headerQuote.innerText = defaultQuote;
         }
 
@@ -869,10 +868,7 @@
             hideAllSections();
             navMcPhoto.classList.add("active");
             mcPhotoSection.classList.remove("hidden-section");
-            
-            // Override default quote
             headerQuote.innerText = minecraftQuote;
-            
             if (leftDrawer.classList.contains("open")) toggleDrawer();
         }
 
@@ -881,10 +877,7 @@
             hideAllSections();
             navMcCinema.classList.add("active");
             mcCinemaSection.classList.remove("hidden-section");
-            
-            // Override default quote
             headerQuote.innerText = minecraftQuote;
-            
             if (leftDrawer.classList.contains("open")) toggleDrawer();
         }
     </script>
