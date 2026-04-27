@@ -256,6 +256,15 @@
             filter: brightness(0.8);
         }
 
+        /* NEW: Styles specifically for embedded YouTube videos */
+        .image-item iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            border: none;
+            display: block;
+            background-color: #000;
+        }
+
         .hidden-section {
             display: none !important;
         }
@@ -645,6 +654,7 @@
                     <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_RPMAP.avif" alt="SSGI RP Map"></div>
                     <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_RPMAP2.avif" alt="SSGI RP Map 2"></div>
                     <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_5.avif" alt="SSGI 5"></div>
+                    <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_5 (1).avif" alt="SSGI 5 (1)"></div>
                     <div class="image-item"><img src="OthersMinecraftPhotography/COMPLEMENTARY_UB.avif" alt="Complementary UB"></div>
                     <div class="image-item"><img src="OthersMinecraftPhotography/SPACESTATION_2.avif" alt="Space Station 2"></div>
                     <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_CG3.avif" alt="SSGI CG3"></div>
@@ -664,12 +674,38 @@
             </div>
             
             <div id="mc-cinema-section" class="content-section hidden-section">
-                <div class="about-wrapper" style="text-align: center; margin-bottom: 40px; margin-top: 10vh;">
-                    <h2 class="text-magenta" style="font-size: 2.5rem;">Work In Progress</h2>
-                    <p style="color: #b0b0b0; font-size: 1.2rem;">This section is currently under construction. Check Minecraft Photography Section!!</p>
-                </div>
                 <div class="image-grid">
-                     <div class="image-item"><img src="PhotographyArchives/HOUSE_NOSTALGIC.jpg" alt="Archives Gallery"></div>
+                     <div class="image-item">
+                         <iframe src="https://www.youtube.com/embed/cJHG68M50mY?si=k3A7fMcsYWgWPblI" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                     
+                     <div class="image-item">
+                         <iframe src="https://www.youtube.com/embed/oB4ysmOkxAs?si=eKpIVQ6WGgOCHkae" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                     
+                     <div class="image-item">
+                         <iframe src="https://www.youtube.com/embed/Z0-D7COr_0U?si=oih9xFGaG_NGKZNX" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                     
+                     <div class="image-item">
+                         <iframe src="https://www.youtube.com/embed/-vbC_uBGKGE?si=U9bSPwk1QNyKTbL4" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+
+                       
+                     <div class="image-item">
+                         <iframe src="https://www.youtube.com/embed/jpZ110P6lr0?si=fxdFJuHOy9xJcPf8" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+
+                       
+                     <div class="image-item">
+                         <iframe src="https://www.youtube.com/embed/eegQ9PvR2SQ?si=6njgbNQs9Fj_ib6c" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                       
+                     <div class="image-item">
+                         <iframe src="https://www.youtube.com/embed/Z-eum2PuG6k?si=bPBw1LzjoLBJV6vrc" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                     
+                     
                 </div>
             </div>
 
@@ -755,8 +791,6 @@
         // 4. --- MOBILE GRID 2-TO-1 ANIMATION LOGIC ---
         let mobileGridTimer;
         
-        // MODIFIED: This function now accepts a custom time (duration). 
-        // By default it uses 4000ms (4 seconds).
         function triggerMobileGridSwitch(duration = 4000) {
             if (window.innerWidth <= 480) {
                 const grids = document.querySelectorAll('.image-grid');
@@ -807,7 +841,7 @@
 
         const headerQuote = document.getElementById("headerQuote");
         const defaultQuote = '"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"';
-        const minecraftQuote = '"In Minecraft, the only limit is your imagination."';
+        const minecraftQuote = '"The only limit is your imagination"';
 
         function hideAllSections() {
             // Hide all content sections
@@ -883,7 +917,6 @@
             mcPhotoSection.classList.remove("hidden-section");
             headerQuote.innerText = minecraftQuote;
             
-            // ADDED: Calls the mobile grid switch animation specifically for 5 seconds (5000ms)
             triggerMobileGridSwitch(5000); 
             
             if (leftDrawer.classList.contains("open")) toggleDrawer();
@@ -895,6 +928,7 @@
             navMcCinema.classList.add("active");
             mcCinemaSection.classList.remove("hidden-section");
             headerQuote.innerText = minecraftQuote;
+            
             if (leftDrawer.classList.contains("open")) toggleDrawer();
         }
     </script>
