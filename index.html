@@ -265,6 +265,22 @@
             background-color: #000;
         }
 
+        /* --- SMOOTH FADE-IN ANIMATION FOR SECTIONS --- */
+        .content-section {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px); /* Starts slightly lower */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0); /* Glides perfectly into place */
+            }
+        }
+
         .hidden-section {
             display: none !important;
         }
