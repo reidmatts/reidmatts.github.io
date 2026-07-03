@@ -3,27 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reid Matthew - Photography | Sharing Untold Stories</title>
+    <title>Reid Matthew - Photography</title>
+    <meta property="og:title" content="Photography">
+    <meta property="og:description" content="Self Renowed Best Photographer">
+    <meta property="og:image" content="https://reidmatt.online/logoWithBG2.png">
+    <meta property="og:url" content="https://reidmatt.online/">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#e5a93d">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Reid Matthew">
+    <meta name="twitter:description" content="Photography">
+    <meta name="twitter:image" content="https://reidmatt.online/logoWithBG.avif">
+    <link rel="icon" type="image/png" href="logo.png">
+    
     <style>
+        /* Why is bro looking at my codes/
+        /* Its cool fr fr*/
+
+
         /* CSS Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* Kills the blue mobile tap highlight */
         }
-
-        body {
+        html, body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #121212; 
             color: #ffffff;
-            line-height: 1.5;
+            line-height: 1.5; 
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-        }
+            
+            /*completely disable horizontal swiping */
+            max-width: 100%;
+            overflow-x: hidden; 
 
+            /* --- STOPS TEXT HIGHLIGHTING EVERYWHERE --- */
+            -webkit-user-select: none; /* Safari/Chrome */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Edge/IE */
+            user-select: none; /* Standard */
+
+            /* --- STOPS THE LONG-PRESS POPUP MENU ON MOBILE --- */
+            -webkit-touch-callout: none;
+        }
+        
+        /* --- STOPS LINK & IMAGE DRAGGING --- */
+        img, a {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+        }
         body.modal-open {
             overflow: hidden;
+        }
+
+        /* --- HAMBURGER MENU BUTTON --- */
+        .hamburger-btn {
+            position: absolute; 
+            top: 25px;
+            right: 30px;
+            width: 32px;
+            height: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            z-index: 1501; 
+        }
+
+        .hamburger-btn span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #ffffff;
+            border-radius: 3px;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        body.modal-open .hamburger-btn {
+            display: none;
+        }
+
+        /* Hamburger to 'X' Animation */
+        .hamburger-btn.open span:nth-child(1) {
+            transform: translateY(10.5px) rotate(45deg);
+            background-color: #e5a93d;
+        }
+        .hamburger-btn.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger-btn.open span:nth-child(3) {
+            transform: translateY(-10.5px) rotate(-45deg);
+            background-color: #e5a93d;
+        }
+
+        /* --- LEFT SLIDING DRAWER --- */
+        .left-drawer {
+            position: fixed;
+            top: 0;
+            left: -300px; 
+            width: 280px;
+            height: 100vh;
+            background-color: #0a0a0a;
+            border-right: 1px solid #222;
+            z-index: 1500;
+            transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 80px 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-drawer.open {
+            left: 0; 
+        }
+
+        .left-drawer nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 25px; 
+        }
+
+        .left-drawer nav a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1rem; 
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .left-drawer nav a:hover {
+            color: #e5a93d;
+        }
+
+        .left-drawer nav a.active {
+            color: #ffffff;
+            border-bottom: 2px solid #e5a93d; 
+        }
+        
+        .drawer-divider {
+            border: 0;
+            border-top: 1px solid #333; 
+            width: 100%;
+            margin: 5px 0;
+        }
+
+        /* --- DRAWER OVERLAY BACKGROUND --- */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1499;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .drawer-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         /* --- CENTRAL TOP HEADER --- */
@@ -48,11 +197,12 @@
         }
 
         .central-header p.quote {
-            font-size: 1rem;
+            font-size: 1rem; 
             font-weight: 300;
             color: #b0b0b0;
             letter-spacing: 1.5px;
             font-style: italic; 
+            transition: opacity 0.3s ease; 
         }
 
         /* --- MAIN PAGE LAYOUT --- */
@@ -61,66 +211,119 @@
             flex-direction: row-reverse; 
             align-items: flex-start; 
             width: 100%;
-            max-width: 1600px; 
+            max-width: 100%; 
             margin: 0 auto;
         }
 
-        /* --- RIGHT-SIDE STICKY SIDEBAR --- */
-        .right-sidebar {
-            width: 260px; 
-            flex-shrink: 0; 
-            padding: 40px;
-            
-            position: sticky; 
-            top: 20px; 
-            max-height: calc(100vh - 40px); 
-            overflow-y: auto; 
-            
-            display: flex;
-            flex-direction: column;
-        }
+       /* --- RIGHT-SIDE STICKY SIDEBAR --- */
+    .right-sidebar {
+        width: 280px; 
+        position: sticky;
+        top: 0;
+        padding: 40px 30px;
+    }
+       
+    .mobile-break {
+        display: none; 
+    }
 
-        .right-sidebar nav ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+    .right-sidebar nav ul {
+        list-style: none; 
+        padding: 0;     
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;       
+    }
 
-        .right-sidebar nav a {
-            text-decoration: none;
-            color: #9e9e9e;
-            font-size: 0.95rem;
-            transition: color 0.2s ease;
-        }
+    /* 1. Base styles for the text link itself */
+    .right-sidebar nav a {
+        text-decoration: none;
+        color: #9e9e9e;
+        font-size: 0.95rem; 
+        transition: color 0.3s ease;
+        
+        /* Required to align the line below the text */
+        position: relative; 
+        padding-bottom: 6px; 
+        display: inline-block; 
+    }
 
-        .right-sidebar nav a:hover {
-            color: #ffffff;
-        }
+    /* Color change on hover and when active */
+    .right-sidebar nav a:hover,
+    .right-sidebar nav a.active {
+        color: #ffffff;
+    }
 
-        .right-sidebar nav a.active {
-            color: #ffffff;
-            border-bottom: 2px solid #e5a93d; 
-            padding-bottom: 2px;
-        }
+    /* 2. The animated line (pseudo-element) beneath the text */
+    .right-sidebar nav a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #e5a93d;
+        
+        /* The subtle gold glow */
+        box-shadow: 0 0 10px rgba(229, 169, 61, 0.8);
+        
+        /* Start collapsed in the center */
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    }
 
+    /* 3. Expand outward on hover and when active */
+    .right-sidebar nav a:hover::after,
+    .right-sidebar nav a.active::after {
+        transform: scaleX(1);
+    }
+        
         /* --- MAIN CONTENT & MASONRY GRID --- */
         .main-content {
             flex: 1; 
-            padding: 40px;
+            padding: 40px 10px;
         }
 
         .image-grid {
-            column-count: 3; 
-            column-gap: 20px; 
+            /* Swap column-count for a flexible width */
+            column-width: 300px; 
+            column-gap: 15px; 
         }
 
         .image-item {
+            position: relative;
+            z-index: 1;
+            display: block; 
+            width: 100%;
+            
+            /* Safely prevents images from breaking across columns */
             break-inside: avoid; 
+            -webkit-column-break-inside: avoid;
+            
             margin-bottom: 20px; 
-            /* NEW: Required to keep the zoomed image from spilling out test of its box */
             overflow: hidden; 
-            border-radius: 4px;
+            border-radius: 6px;
+            
+            /* 🚨 THE CHROME/SAFARI HIT-BOX FIX 🚨 */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        img {
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
+            
+            /* Also prevents users from highlighting/selecting the image text/box */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         .image-item img {
@@ -128,65 +331,212 @@
             height: auto;
             object-fit: contain; 
             display: block;
-            /* UPDATED: Added transform to the transition for smooth zooming */
             transition: transform 0.4s ease, filter 0.4s ease;
             cursor: pointer; 
         }
 
-        /* NEW: The Hover Animation */
-        .image-item:hover img {
-            /* Zooms in by 5% */
-            transform: scale(1.05); 
-            filter: brightness(0.8);
+        /* Hover scale effect (now contained properly for FLIP animations) */
+        @media (hover: hover) {
+            .image-item:hover img {
+                transform: scale(1.05); 
+                filter: brightness(0.8);
+            }
         }
 
-        /* Helper class to hide sections smoothly */
+        /* Styles specifically for embedded YouTube videos */
+        .image-item iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9; 
+            border: none;
+            display: block;
+            background-color: #000;
+        }
+
+        /* --- SMOOTH FADE-IN ANIMATION FOR SECTIONS --- */
+        .content-section {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px); 
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0); 
+            }
+        }
+
         .hidden-section {
             display: none !important;
         }
 
-        /* --- ABOUT ME SECTION --- */
-        .about-section {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+        /* --- ABOUT ME SECTION STYLES --- */
+        .about-wrapper {
             max-width: 800px;
             margin: 0 auto;
-            color: #e0e0e0;
+            color: #ffffff; 
             line-height: 1.8;
-            font-size: 1.1rem;
+            font-size: 1.15rem; 
+            display: flex;
+            flex-direction: column;
+            gap: 50px; 
         }
 
-        .about-section h2 {
-            color: #ffffff;
-            font-size: 2rem;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #e5a93d;
-            padding-bottom: 10px;
-            display: inline-block;
+        .about-block h2 {
+            margin-bottom: 5px;
+            line-height: 1.2;
         }
 
-        .about-image {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 8px;
+        .about-block p {
             margin-bottom: 20px;
         }
+
+        .text-magenta { color: #ff01e6; }
+        .text-cyan { color: #00ffff; }
+        .text-yellow { color: #ffff00; font-weight: bold; }
+        
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 8px;
+            transition: filter 0.3s ease, transform 0.3s ease;
+            display: block;
+            border: 1px solid #333;
+        }
+
+        .video-thumbnail:hover {
+            filter: brightness(0.7);
+            transform: scale(1.02);
+        }
+
+        hr.divider {
+            border: 0;
+            border-top: 1px solid #333;
+            margin: 40px 0 20px 0;
+        }
+
+    
+       /* --- POPUP NOTIFICATION (TOAST) CSS --- */
+        .toast-notification {
+            position: fixed;
+            bottom: 30px; 
+            
+            /* Starts hidden at the bottom center */
+            left: 50%; 
+            transform: translateX(-50%) translateY(100px); 
+            
+            background: linear-gradient(#121212, #121212) padding-box,
+                        linear-gradient(135deg, #ffffff 0%, #e5a93d 100%) border-box;
+            border: 2px solid transparent;
+            border-radius: 999px; 
+            color: #ffffff; 
+            
+            /* Fixed dimensions to allow smooth morphing */
+            height: 52px;
+            width: 320px; 
+            padding: 0 32px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            white-space: nowrap;
+            
+            font-weight: 600;
+            font-style: normal;
+            letter-spacing: 0.5px;
+            font-size: 1rem;
+            z-index: 2000; 
+            opacity: 0; 
+            
+            box-shadow: 0 4px 15px rgba(229, 169, 61, 0.15);
+            
+            /* Bouncy transition for all properties (movement, size, color) */
+            transition: all 0.6s ease;
+            pointer-events: none; 
+            cursor: pointer;
+        }
+
+        /* State 1: Visible in the center */
+        .toast-notification.show {
+            transform: translateX(-50%) translateY(0); 
+            opacity: 1; 
+            pointer-events: auto; 
+        }
+
+        /* State 2: Minimized to a circle on the right side */
+        .toast-notification.minimized {
+            /* Moves to the right side of the screen */
+            left: calc(100% - 82px); 
+            transform: translateX(0) translateY(0); 
+            
+            /* Shrinks to a perfect circle */
+            width: 52px;
+            padding: 0;
+        }
+
+        /* Text wrapper styles */
+        .toast-text {
+            transition: opacity 0.3s ease, max-width 0.4s ease;
+            opacity: 1;
+            max-width: 300px; 
+        }
+
+        /* Hide text when minimized */
+        .toast-notification.minimized .toast-text {
+            opacity: 0;
+            max-width: 0;
+        }
+
+        /* Icon wrapper styles */
+        .redirect-icon {
+            margin-left: 10px;
+            display: inline-block;
+            transition: transform 0.3s ease, margin 0.4s ease, font-size 0.4s ease;
+            color: #e5a93d; 
+        }
+
+        /* Center icon and remove margin when minimized */
+        .toast-notification.minimized .redirect-icon {
+            margin-left: 0;
+            font-size: 1.3rem;
+        }
+
+        .toast-notification:hover {
+            box-shadow: 0 6px 25px rgba(229, 169, 61, 0.45); 
+        }
+
+        .toast-notification:hover .redirect-icon {
+            transform: translateX(4px);
+        }
+            
 
         /* --- FULL SCREEN LIGHTBOX (MODAL) CSS --- */
         .modal {
             display: none; 
             position: fixed; 
-            z-index: 1000; 
+            z-index: 2000; 
             left: 0;
             top: 0;
             width: 100%; 
             height: 100%; 
-            background-color: rgba(0,0,0,0.9); 
+            background-color: rgba(0, 0, 0, 0); 
             align-items: center;
             justify-content: center;
             cursor: zoom-out; 
+            
+            /* Uses ease-out for a softer entrance */
+            animation: modalBgIn 0.4s ease-out forwards;
         }
 
         .modal-content {
@@ -197,202 +547,1046 @@
             object-fit: contain; 
             border-radius: 4px;
             cursor: default; 
-            
-            animation-name: zoom;
-            animation-duration: 0.3s;
+            opacity: 0;
+            animation: imagePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
         }
-
-        @keyframes zoom {
-            from {transform:scale(0)}
-            to {transform:scale(1)}
-        }
-
-        .close-modal {
+       /* --- AMBILIGHT GLOW EFFECT --- */
+        .modal-glow {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70vw;
+            height: 70vw;
+            max-width: 800px;
+            max-height: 800px;
+            border-radius: 50%;
+            filter: blur(120px); 
+            z-index: 0; /* Pushed all the way to the back */
+            opacity: 0;
+            transition: background-color 0.2s ease, opacity 0.8s ease;
+            pointer-events: none; 
+        }
+
+        .modal.open-glow .modal-glow {
+            opacity: 0.15; 
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain; 
+            border-radius: 4px;
+            cursor: default; 
+            opacity: 0;
+            
+            /* --- THE BLEED FIX --- */
+            position: relative;
+            z-index: 100; /* Forced to the absolute front */
+            isolation: isolate; /* Locks the image pixels from mixing with the blur */
+            /* A deep shadow acts as a dark barrier, stopping the glow from washing out the photo */
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.7); 
+            
+            animation: imagePopIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+        }
+        .close-modal {
+            position: fixed; /* Changed from absolute to fixed. This locks it to the screen! */
             top: 20px;
             right: 35px;
             color: #f1f1f1;
             font-size: 50px;
             font-weight: bold;
-            transition: 0.3s;
+            transition: color 0.3s, transform 0.3s;
             cursor: pointer;
-            z-index: 1001;
+            z-index: 2001;
             line-height: 1;
+            opacity: 0;
+            animation: fadeIn 0.4s ease 0.3s forwards;
+            margin: 0; /* Prevents flexbox from accidentally pushing it */
         }
+        .close-modal:hover { color: #e5a93d; transform: scale(1.1); }
+
+        /* EXIT ANIMATIONS */
+        .modal.closing { 
+            /* Triggers the smooth fade-out for both color AND blur */
+            animation: modalBgOut 0.4s ease-out forwards; 
+        }
+        .modal.closing .modal-content { animation: imagePopOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .modal.closing .close-modal { opacity: 0; }
+
+        /* --- THE NEW SMOOTH BLUR KEYFRAMES --- */
+        @keyframes modalBgIn {
+            from { 
+                background-color: rgba(0, 0, 0, 0); 
+                -webkit-backdrop-filter: blur(0px);
+                backdrop-filter: blur(0px);
+            }
+            to { 
+                /* Softer 75% dark background and a very subtle 3px blur */
+                background-color: rgba(0, 0, 0, 0.75); 
+                -webkit-backdrop-filter: blur(3px);
+                backdrop-filter: blur(3px);
+            }
+        }
+
+        @keyframes modalBgOut {
+            from { 
+                background-color: rgba(0, 0, 0, 0.75); 
+                -webkit-backdrop-filter: blur(3px);
+                backdrop-filter: blur(3px);
+            }
+            to { 
+                /* Smoothly animates the blur back down to absolute zero */
+                background-color: rgba(0, 0, 0, 0); 
+                -webkit-backdrop-filter: blur(0px);
+                backdrop-filter: blur(0px);
+            }
+        }
+        
+       @keyframes imagePopIn {
+            from { transform: scale(0.95) translateY(10px) translateZ(10px); opacity: 0; }
+            to { transform: scale(1) translateY(0) translateZ(10px); opacity: 1; }
+        }
+        
+       @keyframes imagePopOut {
+            from { transform: scale(1) translateY(0) translateZ(10px); opacity: 1; }
+            to { transform: scale(0.98) translateY(-10px) translateZ(10px); opacity: 0; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
 
         /* --- RESPONSIVE DESIGN --- */
-        @media (max-width: 1100px) {
-            .image-grid { column-count: 2; }
-        }
-
-        @media (max-width: 768px) {
+      @media (max-width: 768px) {
             .central-header { padding: 20px 20px 15px; }
             .central-header img.logo { max-width: 180px; }
             .page-container { flex-direction: column; }
-            .right-sidebar {
+            .mobile-break {
+                display: inline; 
+            }
+            .right-sidebar nav a {
+                text-align: center;
+                line-height: 1.3;
+                font-size: 0.8rem; /* Slightly smaller to prevent overlapping */
+            }
+            
+            /* Cleaned up padding for the mobile menu container */
+           .right-sidebar {
                 width: 100%;
                 position: relative; 
                 top: 0; 
-                padding: 20px 20px 30px;
+                padding: 20px 10px; 
                 text-align: center;
                 border-bottom: 1px solid #222;
                 max-height: none; 
                 overflow-y: visible;
             }
+            
+            /* 1. Turns the list into a 2-column grid layout */
             .right-sidebar nav ul {
-                flex-direction: row;
-                flex-wrap: wrap;
+                display: flex;
+                flex-direction: row; 
                 justify-content: center;
-                gap: 20px;
+                align-items: flex-start; /* Aligns them to the top so the underlines match up */
+                gap: 10px; /* Tightened gap so they all fit */
+                padding: 0;
+                margin: 0;
+                width: 100%;
             }
+
+            /* Ensures list items align correctly */
+            .right-sidebar nav ul li {
+                flex: 1;
+                display: flex;
+                justify-content: center;
+            }
+
+            /* 2. Forces the 3rd menu item to span across both columns on the bottom row */
+            .right-sidebar nav ul li:nth-child(3) {
+                grid-column: span 2;
+            }
+            .mobile-break {
+                display: inline; 
+            }
+            
             .main-content {
                 width: 100%;
-                padding: 30px 20px;
+                padding: 30px 20px; 
             }
+            
             .modal-content {
                 max-width: 95%;
                 max-height: 95%;
             }
-            .about-section h2 {
-                font-size: 1.5rem;
+            
+            .toast-notification {
+                width: 90%;
+                text-align: center;
             }
         }
 
+        /* --- MOBILE LAYOUT --- */
         @media (max-width: 480px) {
-            .image-grid { column-count: 1; }
+            .main-content {
+                padding: 20px 10px; 
+            }
+            .image-grid { 
+                column-count: 1; 
+                column-width: auto; 
+                column-gap: 12px; 
+            }
+            .image-grid.show-two-columns {
+                column-count: 2; 
+            }
+            .image-item {
+                margin-bottom: 12px; 
+                border-radius: 6px; 
+                will-change: transform;
+            }
+            .hamburger-btn {
+                top: 20px;
+                right: 20px;
+            }
+        }
+        /* --- FAVORITE & AWARD BADGE STYLES --- */
+        .favorite-badge, .award-badge {
+            position: absolute;
+            top: 10px; 
+            left: 10px;
+            display: flex;
+            align-items: center;
+            z-index: 10;
+            padding: 4px 8px 4px 4px; 
+            pointer-events: none; 
+        }
+
+        .fav-bg-rect {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 100%);
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: -1;
+            opacity: 0;
+            animation: 
+                bgFadeIn 0.4s ease calc(0.3s + var(--stagger-delay, 0s)) forwards,
+                bgFadeOut 0.5s ease calc(5.2s + var(--stagger-delay, 0s)) forwards;
+        }
+
+        .fav-icon-shadow {
+            transform: translateY(-150%);
+            opacity: 0;
+            animation: 
+                popDown 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) calc(0.5s + var(--stagger-delay, 0s)) forwards,
+                popUp 0.6s ease-out calc(5.1s + var(--stagger-delay, 0s)) forwards; 
+        }
+
+        /* DEFAULT FAVORITE (GOLD) */
+        .favorite-badge .fav-icon-shadow { filter: drop-shadow(0 2px 4px rgba(204, 150, 53, 0.4)); }
+        .favorite-badge .fav-icon-ribbon { background: linear-gradient(135deg, #f0f0f0 0%, #c68f2e 100%); }
+        
+        /* NEW AWARD WINNING (RED) */
+        .award-badge .fav-icon-shadow { filter: drop-shadow(0 2px 4px rgba(204, 0, 0, 0.5)); }
+        .award-badge .fav-icon-ribbon { background: linear-gradient(135deg, #ffcccc 0%, #cc0000 100%); }
+
+        .fav-icon-ribbon {
+            width: 20px; 
+            height: 28px; 
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 75%, 0% 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 4px; 
+        }
+
+        .fav-icon-ribbon svg {
+            fill: #ffffff;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4));
+        }
+
+        /* Specific SVG sizing: Wreath needs to be slightly wider than the standalone star */
+        .favorite-badge svg { width: 10px; height: 10px; }
+        .award-badge svg { width: 13px; height: 13px; margin-top: 1px; }
+
+        .fav-text {
+            font-family: 'Vagabond', sans-serif; 
+            font-weight: bold; 
+            font-size: 0.6rem; 
+            letter-spacing: 1.5px;
+            margin-left: 6px; 
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            overflow: hidden;
+            white-space: nowrap;
+            max-width: 0;
+            opacity: 0;
+            animation: 
+                slideTextIn 0.5s ease calc(1.1s + var(--stagger-delay, 0s)) forwards,
+                slideTextOut 0.5s ease calc(4.6s + var(--stagger-delay, 0s)) forwards; 
+        }
+
+        @keyframes popDown {
+            from { transform: translateY(-150%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes slideTextIn {
+            from { max-width: 0; opacity: 0; }
+            /* Expanded from 80px to 140px to safely fit the longer AWARD-WINNING text */
+            to { max-width: 140px; opacity: 1; } 
+        }
+        @keyframes bgFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        @keyframes slideTextOut {
+            from { max-width: 140px; opacity: 1; }
+            to { max-width: 0; opacity: 0; }
+        }
+        @keyframes popUp {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-150%); opacity: 0; visibility: hidden; }
+        }
+        @keyframes bgFadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+
+       /* --- CUSTOM CINEMATIC SCROLLBAR (DESKTOP) --- */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #1d1d1d 0%, #e5a93d 100%);
+            border-radius: 999px;
+            border: 2px solid #121212; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e5a93d; 
+            box-shadow: 0 0 10px rgba(229, 169, 61, 0.5);
+        }
+
+        /* --- SUBTLE SCROLLBAR (MOBILE) --- */
+        @media (max-width: 768px) {
+            /* This completely hides the clunky side scrollbar on phones */
+            ::-webkit-scrollbar {
+                display: none; 
+            }
+            html, body {
+                scrollbar-width: none; /* Firefox override */
+                -ms-overflow-style: none; /* Edge override */
+            }
+            .close-modal {
+                top: 15px;
+                right: 20px;
+                font-size: 40px; /* Slightly smaller so it looks clean on mobile */
+            }
+        }
+        /* --- MOBILE SCROLL PROGRESS LINE --- */
+        .mobile-scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px; /* Razor thin */
+            background: linear-gradient(to right, #c68f2e, #e5a93d);
+            width: 0%; /* Starts at 0 */
+            z-index: 9999; /* Sits above everything */
+            box-shadow: 0 0 10px rgba(229, 169, 61, 0.8);
+            display: none; /* Hidden on desktop */
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-scroll-progress {
+                display: block; /* Only shows on mobile */
+            }
         }
     </style>
 </head>
 <body>
+    <body oncontextmenu="return false;"></body>
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <div class="mobile-scroll-progress" id="scrollProgress"></div>
+    
+    <div class="hamburger-btn" id="hamburgerBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <div class="left-drawer" id="leftDrawer">
+        <nav>
+            <ul>
+                <li><a href="#" id="nav-about">About Me</a></li>
+                <li><a href="#" id="nav-cinematics">Cinematics</a></li>
+                
+                <hr class="drawer-divider">
+                
+                <li><a href="#" id="nav-mc-photo">Minecraft Photography</a></li>
+                <li><a href="#" id="nav-mc-cinema">Minecraft Cinematics</a></li>
+            </ul>
+        </nav>
+    </div>
 
     <header class="central-header">
         <img class="logo" src="logo.png" alt="Reid Matthew Logo">
-        <p class="quote">"Sharing Untold Stories"</p>
+        <p class="quote" id="headerQuote">"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"</p>
     </header>
-
-    <div class="page-container">
         
-        <aside class="right-sidebar">
+            <div class="page-container">
+        
+       <aside class="right-sidebar">
             <nav>
                 <ul>
-                    <li><a href="#" id="nav-2026" class="active">Photography of 2026</a></li>
-                    <li><a href="#" id="nav-all-time">Photography of All Time</a></li>
-                    <li><a href="#" id="nav-about">About Me</a></li>
+                    <li><a href="#" id="nav-2026" class="active">Photography of<br class="mobile-break"> 2026</a></li>
+                    <li><a href="#" id="nav-all-time">Photography of<br class="mobile-break"> All Time</a></li>
+                    <li><a href="#" id="nav-archives">Photography<br class="mobile-break"> Archives</a></li>
                 </ul>
             </nav>
-        </aside>
-
-        <main class="main-content">
+        </aside> <main class="main-content">
             
-            <div id="grid-2026" class="content-section">
+        <div id="grid-2026" class="content-section">
                 <div class="image-grid">
-                    <div class="image-item"><img src="IMAGES/ORIG_33.jpg" alt="2026 Gallery"></div>
-                    <div class="image-item"><img src="IMAGES/ORIG_27.jpg" alt="2026 Gallery"></div>
-                    <div class="image-item"><img src="IMAGES/ORIG_28.jpg" alt="2026 Gallery"></div>
-                    <div class="image-item"><img src="IMAGES/ORIG_29.jpg" alt="2026 Gallery"></div>
-                    <div class="image-item"><img src="IMAGES/ORIG_30.jpg" alt="2026 Gallery"></div>
-                    <div class="image-item"><img src="IMAGES/ORIG_31.jpg" alt="2026 Gallery"></div>
-                    <div class="image-item"><img src="IMAGES/ORIG_34.jpg" alt="2026 Gallery"></div>
-                    <div class="image-item"><img src="IMAGES/ORIG_26.jpg" alt="2026 Gallery"></div>
-                    <div class="image-item"><img src="IMAGES/ORIG_37.jpg" alt="2026 Gallery"></div>
+                    
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/ORIG_34.avif" alt="1st"></div>
+                    <div class="image-item fixed-order award-winning"><img src="Photography2026/ORIG_30.avif" alt="2nd"></div>
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/neonsignsblur.avif" alt="3rd"></div>
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/neonsigns.avif" alt="4th"></div>
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/lightbirds.avif" alt="5th"></div>
+                    <div class="image-item fixed-order"><img src="Photography2026/moastatue.avif" alt="6th"></div>
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/wideceiling.avif" alt="7th"></div>
+                    <div class="image-item fixed-order"><img src="Photography2026/clownspotrait.avif" alt="8th "></div>
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/guyportrait.avif" alt="9th"></div>
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/awardwinning.avif" alt="9th"></div>
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/GIRLONLEDGE.avif" alt="10th"></div>
+                    <div class="image-item fixed-order award-winning"><img src="Photography2026/ORIG_33.avif" alt="1th"></div>
+                    <div class="image-item fixed-order favorite"><img src="Photography2026/BW_PORTRAIT_1ST.avif" alt="12th"></div>
+                    <div class="image-item fixed-order"><img src="Photography2026/ORIG_73.avif" alt="13th"></div>
+
+                    <div class="image-item"><img src="Photography2026/ORIG_27.avif" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="Photography2026/ORIG_28.avif" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="Photography2026/ORIG_26.avif" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="Photography2026/ORIG_37.avif" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="Photography2026/POTRAIT_SUNSET.avif" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="Photography2026/POTRAITBYTHEOCEANHOUSE.avif" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="Photography2026/STATUEINDOOR.avif" alt="2026 Gallery"></div>
+                    <div class="image-item"><img src="Photography2026/POTRAITDOOR.avif" alt="2026 Gallery"></div>
+                   
+                    <div class="image-item"><img src="Photography2026/ORIG_74.avif" alt="2026 Gallery"></div>
+                </div>
+        </div>
+               
+         <div id="grid-all-time" class="content-section hidden-section">
+                <div class="image-grid">
+                     <div class="image-item fixed-order award-winning"><img src="PhotographyOfAllTime/CONFETTICROWD.avif" alt="first"></div>
+                     <div class="image-item fixed-order award-winning"><img src="PhotographyOfAllTime/CROWDCHEER.avif" alt="second"></div>
+                     <div class="image-item fixed-order award-winning"><img src="PhotographyOfAllTime/POTRAITGIRLLSUNSET.avif" alt="Third"></div>
+                     <div class="image-item fixed-order award-winning"><img src="PhotographyOfAllTime/SUNRAYS.avif" alt="Fourth"></div>
+                     <div class="image-item fixed-order award-winning"><img src="PhotographyOfAllTime/SUNSET.avif" alt="FIfth"></div>
+                     <div class="image-item fixed-order award-winning"><img src="PhotographyOfAllTime/LANTERNWITHBIRDS.avif" alt="SIXTH"></div>
+
+                    <div class="image-item favorite"><img src="PhotographyOfAllTime/CONFETTIGUY.avif" alt="All Time Gallery"></div>
+                    <div class="image-item favorite"><img src="PhotographyOfAllTime/SKYPLANE.avif" alt="All Time Gallery"></div>
+                    <div class="image-item favorite"><img src="PhotographyOfAllTime/PORTRAITMOG.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/BLOODMOON.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/CONTRAILPLANE.avif" alt="All Time Gallery"></div>
+                    <div class="image-item favorite"><img src="PhotographyOfAllTime/PORTRAITCAT.avif" alt="All Time Gallery"></div>
+                    <div class="image-item favorite"><img src="PhotographyOfAllTime/PORTRAITGUYFRONT.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/PORTRAITGUYMOON.avif" alt="All Time Gallery"></div>
+                    <div class="image-item favorite"><img src="PhotographyOfAllTime/PORTRAITLANTERN.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/POTRAITGIRLBACK.avif" alt="All Time Gallery"></div>
+                    <div class="image-item favorite"><img src="PhotographyOfAllTime/XMAS.avif" alt="All Time Gallery"></div>
+                    <div class="image-item favorite"><img src="PhotographyOfAllTime/OCEANGIRL.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/OLDBANNER.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/POTRAITGUYMOODY.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/IMG_20251106_151941.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/LANTERNSHANGING.avif" alt="All Time Gallery"></div>
+                    <div class="image-item"><img src="PhotographyOfAllTime/MACROGUITAR.avif" alt="All Time Gallery"></div>
+                    <div class="image-item award-winning"><img src="PhotographyOfAllTime/POTRAITDOG.avif" alt="All Time Gallery"></div>
                 </div>
             </div>
 
-            <div id="grid-all-time" class="content-section hidden-section">
-                <div class="image-grid">
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_3.png" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_4.png" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_8.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_15.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_10.jpeg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_5.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_17.png" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_11.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_13.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_14.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_37.png" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_6.jpeg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_16.jpg" alt="All Time Gallery"></div>
-                    <div class="image-item"><img src="PhotographyOfAllTime\ORIG_24.jpg" alt="All Time Gallery"></div>
-                </div>
-            </div>
+           <div id="grid-archives" class="content-section hidden-section">
+    <div class="image-grid">
+         <div class="image-item fixed-order favorite"><img src="PhotographyArchives/capitol.avif" alt="first"></div>
+        <div class="image-item fixed-order"><img src="PhotographyArchives/HOUSE_NOSTALGIC.avif" alt=" 2nd"></div>
+          <div class="image-item fixed-order favorite"><img src="PhotographyArchives/robinsons2.avif" alt="3rd"></div>
+        <div class="image-item fixed-order"><img src="PhotographyArchives/POTRAIT_LLEDGE.avif" alt=" 4th"></div>
+           <div class="image-item fixed-order"><img src="PhotographyArchives/gasstation.avif" alt="5th "></div>
+        <div class="image-item fixed-order"><img src="PhotographyArchives/POTRAITGUY.avif" alt="6th "></div>
+            <div class="image-item fixed-order"><img src="PhotographyArchives/windmill.avif" alt="7th"></div>
+         <div class="image-item fixed-order"><img src="PhotographyArchives/SWIMMINGPOOLSUNSET.avif" alt=" 8th"></div>
+             <div class="image-item fixed-order favorite"><img src="PhotographyArchives/robinsons.avif" alt="9th "></div>
+
+
+        <div class="image-item"><img src="PhotographyArchives/BACKYARDSLLOG.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/CAR.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/CATDOUSU.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/DRAGON.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/FULLMOON.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/JEEPNEY.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/LANTERNBIRDS.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/LIFEGUARDSEAT.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/NOSTALGIATRICYCLE.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/PATHWAY.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/PIANO.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/PICNICTABLE.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/SHOULDERMOODY.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/EBIKEMOODY.avif" alt="Archives Gallery"></div>
+        <div class="image-item"><img src="PhotographyArchives/FIREWORKS_BUILDING_1X1.avif" alt="Archives Gallery"></div>
+      
+        
+        <div class="image-item"><img src="PhotographyArchives/BW_POTRAIT_BACK.avif" alt="Archives Gallery"></div>
+        
+        <div class="image-item"><img src="PhotographyArchives/GIRLLEDGE.avif" alt="Archives Gallery"></div>
+        
+    </div>
+</div>
 
             <div id="about-section" class="content-section hidden-section">
-                <div class="about-section">
-                    <h2>Reid Matthew</h2>
-                    <p>TEST TEST</p>
-                    <p>TEST TEST.</p>
+                <div class="about-wrapper">
+                    <div class="about-block">
+                        <h2 style="font-size: 2.2rem; color: #ffffff;">Creative <span class="text-magenta">Media</span></h2>
+                        <h3 class="text-cyan" style="font-size: 1.6rem; margin-top: -10px;">Programs</h3>
+                        <p style="margin-top: 15px;">Editing has been a <span class="text-yellow">Personal Hobby</span> of mine, <br> 
+                             pursuing my primary focus on <span class="text-yellow">Creative Work</span> in real life.</p>
+                    </div>
+
+                    <div class="resolve-splash-container">
+                         <img src="AboutMe/editing softwares.png" alt="DaVinci Resolve Studio Splash Screen" class="resolve-splash-img" style="width:100%; border-radius: 8px;">
+                    </div>
+
+                    <div class="about-block">
+                        <h2 style="font-size: 2.2rem; color: #ffffff;">FEATURED</h2>
+                        <h2 class="text-magenta" style="font-size: 2.5rem; margin-top: -15px;">Motion Graphics</h2>
+                        
+                        <p style="margin-top: 10px;">I do <span class="text-yellow">Award-Winning Motion Graphics</span>, I specialize in Mixed-Media, Scrapbook Styled Animation similarly to VOX Animation.</p>
+                        <p>Using the full extent of Canva & Capcut to greatly increase the efficiency. It only takes an hour to create a 30s Infographics Animation.</p>
+                        
+                        <div class="video-container">
+                            <a href="https://www.youtube.com/watch?v=GPWcXqtpOBQ1" target="_blank">
+                                <img src="AboutMe/SS_3.png" alt="Hacker Motion Graphic" class="video-thumbnail">
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=GPWcXqtpOBQ" target="_blank">
+                                <img src="AboutMe/SS_2.png" alt="DepEd Budget Graphic" class="video-thumbnail">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="about-block">
+                        <h2 class="text-magenta" style="font-size: 2.5rem;">Cinematography</h2>
+                        
+                        <p>I do <span class="text-yellow">Award-Winning Cinematography Competition</span>, I specialize in high-fidelity cinematography with a focus on color science and precise composition taken with a Smartphone.</p>
+                        <p>I currently use the <strong>Studio Version</strong> of <span class="text-cyan" style="font-style: italic;">Davinci Resolve</span> Industy standard for Film Making in Hollywood and Netflix editing software.</p>
+
+                        <div class="video-container">
+                            <a href="https://www.youtube.com/watch?v=YOUR_LINK_HERE" target="_blank">
+                                <img src="AboutMe/TROPHY.jpg" alt="Festival Cinematography" class="video-thumbnail">
+                            </a>
+                            <a href="https://www.youtube.com/watch?v=dRKKZPG2dPc" target="_blank">
+                                <img src="AboutMe/SS_1.png" alt="Trophy Cinematography" class="video-thumbnail">
+                                <img src="AboutMe/SS_CINEMA.jpg" alt="Trophy Cinematography" class="video-thumbnail">
+                                <img src="AboutMe/SSS_CINEMA2.jpg" alt="Trophy Cinematography" class="video-thumbnail">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="about-block">
+                        <h2 style="font-size: 2.2rem; color: #ffffff;">Photography</h2>
+                        <p><span class="text-cyan" style="font-weight: bold;">4 years</span> of photography experience,</p>
+                        <p>Specializing with Cinematic and Dramatic Photography Styled high-quality smartphone captures. All images are shot in Auto Mode with no post-processing / editing applied. Offering pure Leica-colored DSLR-level quality straight from the camera.</p>
+                             <img src="AboutMe/SS_PHOTO.png" alt="Trophy Cinematography" class="video-thumbnail">
+                        
+                        <hr class="divider">
+                        
+                        <h3 style="color: white; font-size: 1.5rem; letter-spacing: 1px;">
+                            #<span class="text-cyan">P</span><span style="color:#ff0000">h</span><span style="color:#ff8800">o</span><span style="color:#ffff00">t</span><span style="color:#00ff00">o</span><span class="text-cyan">g</span><span style="color:#0000ff">r</span><span class="text-magenta">a</span><span style="color:#ff0000">p</span><span style="color:#ff8800">h</span><span style="color:#ffff00">y</span> 
+                        </h3>
+                    </div>
+
                 </div>
             </div>
 
+            <div id="cinematics-section" class="content-section hidden-section">
+                <div class="about-wrapper" style="text-align: center; margin-bottom: 40px; margin-top: 10vh;">
+                    <h2 class="text-magenta" style="font-size: 2.5rem;">Work In Progress</h2>
+                    <p style="color: #b0b0b0; font-size: 1.2rem;">This section is currently under construction. Check Minecraft Photography Section!</p>
+                </div>
+                <div class="image-grid">
+                     <div class="image-item"><img src="PhotographyArchives/HOUSE_NOSTALGIC.jpg" alt="Archives Gallery"></div>
+                </div>
+            </div>
+
+           <div id="mc-photo-section" class="content-section hidden-section">
+    <div class="image-grid">
+        <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_Banner.avif" alt="Aluminak Banner"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_RPMAP.avif" alt="SSGI RP Map"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_RPMAP2.avif" alt="SSGI RP Map 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_5.avif" alt="SSGI 5"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/COMPLEMENTARY_UB.avif" alt="Complementary UB"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SPACESTATION_2.avif" alt="Space Station 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_CG3.avif" alt="SSGI CG3"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_2.avif" alt="SSGI 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/PTGI.avif" alt="PTGI"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/PHOTOREALISM_1.avif" alt="Photorealism 1"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/CUBECRAFT.avif" alt="Cubecraft"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/ARDACRAFT_1.avif" alt="Ardacraft 1"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SPACESTATION_1.avif" alt="Space Station 1"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/CAR_RT.avif" alt="Car RT"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/ARDACRAFT_2.avif" alt="Ardacraft 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/PTGI_2.avif" alt="PTGI 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_CG2.avif" alt="SSGI CG2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_CG.avif" alt="SSGI CG"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_4.avif" alt="SSGI 4"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_7.avif" alt="Aluminak 7"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/AP_SSGI.avif" alt="AP SSGI"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/AP_SSGI2.avif" alt="AP SSGI 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/AP_SSGI3.avif" alt="AP SSGI 3"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/AP_SSGI4.avif" alt="AP SSGI 4"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/AP_SSGI5.avif" alt="AP SSGI 5"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/AP_SSGI6.avif" alt="AP SSGI 6"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_2.avif" alt="Aluminak 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_3.avif" alt="Aluminak 3"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_4.avif" alt="Aluminak 4"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_5.avif" alt="Aluminak 5"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/Aluminak_6.avif" alt="Aluminak 6"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/SSGI_TEXT.avif" alt="SSGI Text"></div>
+        
+        <div class="image-item"><img src="OthersMinecraftPhotography/UMSOEA_PENUMBRA.avif" alt="UMSOEA Penumbra"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/UMSOEA_PENUMBRA2.avif" alt="UMSOEA Penumbra 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/UMSOEA_POLE.avif" alt="UMSOEA Pole"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/UMSOEA_GEOMETRY.avif" alt="UMSOEA Geometry"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/UMSOEA_GEOMETRY2.avif" alt="UMSOEA Geometry 2"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/UMSOEA_GEOMETRY3.avif" alt="UMSOEA Geometry 3"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/GRASS_HOUSE.avif" alt="UMSOEA Geometry 3"></div>
+        <div class="image-item"><img src="OthersMinecraftPhotography/GRASSPIC.avif" alt="UMSOEA Geometry 3"></div>
+       
+    </div>
+</div>
+       <div id="mc-cinema-section" class="content-section hidden-section">
+                <div class="image-grid">
+                     <div class="image-item">
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/cJHG68M50mY?autoplay=1><img src=https://img.youtube.com/vi/cJHG68M50mY/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                     
+                     <div class="image-item">
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/oB4ysmOkxAs?autoplay=1><img src=https://img.youtube.com/vi/oB4ysmOkxAs/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                     
+                     <div class="image-item">
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/Z0-D7COr_0U?autoplay=1><img src=https://img.youtube.com/vi/Z0-D7COr_0U/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                     
+                     <div class="image-item">
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/-vbC_uBGKGE?autoplay=1><img src=https://img.youtube.com/vi/-vbC_uBGKGE/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+
+                     <div class="image-item">
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/jpZ110P6lr0?autoplay=1><img src=https://img.youtube.com/vi/jpZ110P6lr0/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+
+                     <div class="image-item">
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/eegQ9PvR2SQ?autoplay=1><img src=https://img.youtube.com/vi/eegQ9PvR2SQ/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                       
+                     <div class="image-item">
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/Z-eum2PuG6k?autoplay=1><img src=https://img.youtube.com/vi/Z-eum2PuG6k/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                     </div>
+                </div>
+            </div>
         </main>
 
     </div>
 
+    <div id="loadingToast" class="toast-notification">
+        <span class="toast-text">Visit Minecraft Photography</span>
+        <span class="redirect-icon">&#8594;</span>
+    </div>
+
     <div id="imageModal" class="modal">
-        <span class="close-modal">&times;</span>
+        <div id="modalGlow" class="modal-glow"></div> <span class="close-modal">&times;</span>
         <img class="modal-content" id="fullScreenImage">
     </div>
 
     <script>
-        // 1. --- FULL SCREEN MODAL LOGIC ---
+
+//-------------1-----------------//
+
+      // 1. --- NOTIFICATION REDIRECT LOGIC ---
+        const loadingToast = document.getElementById("loadingToast");
+        let toastTimer;
+
+        function showLoading() {
+            // Step 1: Pop up in the center
+            loadingToast.classList.add("show");
+            
+            // Step 2: After 4 seconds, morph into the floating circle
+            toastTimer = setTimeout(() => {
+                loadingToast.classList.add("minimized");
+            }, 4000); 
+        }
+
+        loadingToast.addEventListener('click', () => {
+            navMcPhoto.click(); 
+            
+            // Hide the button completely after they click it
+            loadingToast.classList.remove("show", "minimized"); 
+            clearTimeout(toastTimer); 
+        });
+
+        setTimeout(showLoading, 100);
+
+//-------------2-----------------//
+
+
+                // 3. --- RANDOMIZE GALLERY ORDER (TRUE JS MASONRY FOR DESKTOP) ---
+        function shuffleGalleries() {
+            const grids = document.querySelectorAll('.image-grid');
+            const isDesktop = window.innerWidth > 768; 
+            
+            grids.forEach(grid => {
+                // Grab all items (this safely keeps your click-to-zoom modal events intact!)
+                let allItems = Array.from(grid.querySelectorAll('.image-item'));
+                let fixedItems = allItems.filter(item => item.classList.contains('fixed-order'));
+                let normalItems = allItems.filter(item => !item.classList.contains('fixed-order'));
+
+                const shuffleArray = (array) => {
+                    for (let i = array.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [array[i], array[j]] = [array[j], array[i]];
+                    }
+                };
+
+                // Safety check: if a section is entirely empty, skip it
+                if (allItems.length === 0) return;
+
+                if (isDesktop) {
+                    // DESKTOP MODE: Build physical columns to guarantee strict top placement
+                    shuffleArray(fixedItems);
+                    shuffleArray(normalItems);
+
+                    // 1. Override CSS column-width with a Flexbox row
+                    grid.style.columnCount = 'auto'; 
+                    grid.style.columnWidth = 'auto';
+                    grid.style.display = 'flex';
+                    grid.style.alignItems = 'flex-start';
+                    grid.style.gap = '15px';
+
+                    // 2. Calculate how many columns we need
+                    let estimatedGridWidth = window.innerWidth - 320;
+                    let numCols = Math.max(1, Math.floor(estimatedGridWidth / 315)); 
+                    
+                    // 3. Generate physical column wrappers
+                    let columns = [];
+                    for (let i = 0; i < numCols; i++) {
+                        let col = document.createElement('div');
+                        col.style.display = 'flex';
+                        col.style.flexDirection = 'column';
+                        col.style.gap = '20px'; // Replaces the CSS margin-bottom
+                        col.style.flex = '1';
+                        col.style.minWidth = '0'; // Prevents columns from stretching out of bounds
+                        grid.appendChild(col);
+                        columns.push(col);
+                    }
+                    
+                    // 4. Deal FIXED items first (Locks them to the absolute top of the physical divs)
+                    fixedItems.forEach((item, index) => {
+                        item.style.marginBottom = '0'; // Clean up old CSS margin
+                        columns[index % numCols].appendChild(item);
+                    });
+                    
+                    // 5. Deal NORMAL items underneath
+                    normalItems.forEach((item, index) => {
+                        item.style.marginBottom = '0'; 
+                        columns[index % numCols].appendChild(item);
+                    });
+                    
+                } else {
+                    // MOBILE MODE: Respect 'fixed-order' strictly at the top of the single column
+                    shuffleArray(normalItems);
+                    
+                    fixedItems.forEach(item => grid.appendChild(item));
+                    normalItems.forEach(item => grid.appendChild(item));
+                }
+            });
+        }
+        shuffleGalleries();
+
+        // --- MAKE GRID RESPONSIVE TO ZOOM & RESIZE ---
+        let resizeTimer;
+        let currentWindowWidth = window.innerWidth; 
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth === currentWindowWidth) {
+                return; 
+            }
+            currentWindowWidth = window.innerWidth;
+            clearTimeout(resizeTimer);
+            
+            resizeTimer = setTimeout(() => {
+                
+                // 🚨 2. KILL GLITCHY BADGES: Wipe out mid-animation badges before the rebuild
+                document.querySelectorAll('.favorite-badge, .award-badge').forEach(badge => badge.remove());
+                document.querySelectorAll('.badge-completed').forEach(item => item.classList.remove('badge-completed'));
+
+                const grids = document.querySelectorAll('.image-grid');
+                
+                grids.forEach(grid => {
+                    const items = Array.from(grid.querySelectorAll('.image-item'));
+                    grid.innerHTML = '';
+                    items.forEach(item => grid.appendChild(item));
+                });
+                
+                shuffleGalleries();
+                
+                // 🚨 3. RESTART ENGINE: Trigger the badges to cleanly play on the new layout
+                if (window.refreshBadges) window.refreshBadges();
+                
+            }, 250); 
+        });
+
+//-------------3-----------------//
+
+       // 3. --- FULL SCREEN MODAL LOGIC WITH AMBILIGHT ENGINE ---
         const modal = document.getElementById("imageModal");
         const modalImg = document.getElementById("fullScreenImage");
+        const modalGlow = document.getElementById("modalGlow");
         const body = document.body;
-        const images = document.querySelectorAll(".image-grid img");
 
-        images.forEach(img => {
-            img.onclick = function(){
-                modal.style.display = "flex";
-                modalImg.src = this.src;
-                body.classList.add('modal-open');
+        // The Ambilight Engine: Extracts dominant color instantly
+        function getAverageColor(imgElement) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1;
+            canvas.height = 1;
+            const ctx = canvas.getContext('2d');
+            try {
+                // Shrinks the image to 1 pixel to calculate the true average color
+                ctx.drawImage(imgElement, 0, 0, 1, 1);
+                const rgb = ctx.getImageData(0, 0, 1, 1).data;
+                return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+            } catch (e) {
+                return 'rgba(0,0,0,0)'; // Failsafe
             }
-        });
+        }
+        
+        function attachModalEvents() {
+            const images = document.querySelectorAll(".image-grid .image-item > img");
+            images.forEach(img => {
+                img.onclick = function() {
+                    modal.classList.remove('closing');
+                    modal.style.display = "flex";
+                    modalImg.src = this.src;
+                    body.classList.add('modal-open');
+
+                    // Extract color from the exact thumbnail you clicked
+                    const dominantColor = getAverageColor(this);
+                    modalGlow.style.backgroundColor = dominantColor;
+                    
+                    // Tiny delay ensures the smooth CSS transition triggers properly
+                    setTimeout(() => modal.classList.add('open-glow'), 50);
+                }
+            });
+        }
+        
+        attachModalEvents();
 
         function closeModal() {
-            modal.style.display = "none";
-            body.classList.remove('modal-open');
+            modal.classList.add('closing');
+            modal.classList.remove('open-glow'); // Fade out the aura
+            
+            setTimeout(() => {
+                modal.style.display = "none";
+                modal.classList.remove('closing');
+                body.classList.remove('modal-open');
+                modalImg.src = ""; 
+                modalGlow.style.backgroundColor = "transparent"; // Wipe memory
+            }, 400); 
         }
 
-        const closeBtn = document.querySelector(".close-modal");
-        closeBtn.onclick = closeModal;
-
-        modal.onclick = function(event) {
-            if (event.target === modal) {
-               closeModal();
-            }
-        }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
+        document.querySelector(".close-modal").onclick = closeModal;
+        
+        // Ensure clicking the invisible glow layer also closes the modal!
+        modal.onclick = (event) => { 
+            if (event.target === modal || event.target === modalGlow) closeModal(); 
+        };
+        
+        document.addEventListener('keydown', (event) => { 
+            if (event.key === 'Escape' && modal.style.display === "flex") closeModal(); 
         });
 
-        // 2. --- MENU NAVIGATION LOGIC ---
-        const nav2026 = document.getElementById("nav-2026");
-        const navAllTime = document.getElementById("nav-all-time");
-        const navAbout = document.getElementById("nav-about");
-        
-        const grid2026 = document.getElementById("grid-2026");
-        const gridAllTime = document.getElementById("grid-all-time");
-        const aboutSection = document.getElementById("about-section");
+//-------------4-----------------//
 
-        function hideAllSections() {
-            grid2026.classList.add("hidden-section");
-            gridAllTime.classList.add("hidden-section");
-            aboutSection.classList.add("hidden-section");
+
+        // 4. --- MOBILE GRID 2-TO-1 ANIMATION LOGIC (FLIP TECHNIQUE) ---
+        let mobileGridTimer;
+        let isAnimating = false; // Prevents animation overlap glitches
+        
+        function performSmoothLayoutChange(gridElement, addTwoColumns) {
+            if (!gridElement || isAnimating) return;
+            isAnimating = true;
             
-            nav2026.classList.remove("active");
-            navAllTime.classList.remove("active");
-            navAbout.classList.remove("active");
+            const items = Array.from(gridElement.querySelectorAll('.image-item'));
+            if (items.length === 0) {
+                isAnimating = false;
+                return;
+            }
+
+            // 1. FIRST: Record starting rects
+            const firstRects = items.map(item => item.getBoundingClientRect());
+
+            // 2. LAST: Apply new CSS layout instantly
+            if (addTwoColumns) {
+                gridElement.classList.add('show-two-columns');
+            } else {
+                gridElement.classList.remove('show-two-columns');
+            }
+
+            const lastRects = items.map(item => item.getBoundingClientRect());
+
+            // 3. INVERT: Transform each item back to where it was
+            items.forEach((item, i) => {
+                const f = firstRects[i];
+                const l = lastRects[i];
+                
+                if (l.width === 0 || l.height === 0) return;
+
+                const dx = f.left - l.left;
+                const dy = f.top - l.top;
+                const sx = f.width / Math.max(l.width, 1);
+                const sy = f.height / Math.max(l.height, 1);
+                
+                // Hardware acceleration and forced placement
+                item.style.willChange = 'transform';
+                item.style.transition = 'none';
+                item.style.transformOrigin = 'top left';
+                item.style.transform = `translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
+                item.style.zIndex = '10'; // Elevate so it glides over other items
+            });
+
+            // Reflow to commit the inverted state before animating
+            void gridElement.offsetWidth;
+
+            // 4. PLAY: Animate transforms back to natural (zero) using the smoother prototype easing
+            requestAnimationFrame(() => {
+                items.forEach(item => {
+                    item.style.transition = 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)';
+                    item.style.transform = '';
+                });
+                
+                // Cleanup after the animation completes
+                setTimeout(() => {
+                    items.forEach(item => {
+                        item.style.transition = '';
+                        item.style.transformOrigin = '';
+                        item.style.transform = '';
+                        item.style.zIndex = '';
+                        item.style.willChange = '';
+                    });
+                    isAnimating = false;
+                }, 760); // Timed to finish right after the 0.7s transition
+            });
         }
 
+//-------------5-----------------//
+
+            // 5. --- DRAWER & HAMBURGER MENU LOGIC ---
+            const hamburgerBtn = document.getElementById("hamburgerBtn");
+            const leftDrawer = document.getElementById("leftDrawer");
+            const drawerOverlay = document.getElementById("drawerOverlay");
+
+            // The function your navigation links are looking for!
+            function toggleDrawer() {
+                hamburgerBtn.classList.toggle("open"); // Animates the icon to an 'X'
+                leftDrawer.classList.toggle("open");   // Slides the drawer in
+                drawerOverlay.classList.toggle("show"); // Fades in the dark background
+                
+                // Prevents the background page from scrolling when the menu is open
+                if (leftDrawer.classList.contains("open")) {
+                    document.body.style.overflow = "hidden";
+                } else {
+                    document.body.style.overflow = "";
+                }
+            }
+
+            // Listen for clicks on the hamburger button and the dark overlay
+            hamburgerBtn.addEventListener("click", toggleDrawer);
+            drawerOverlay.addEventListener("click", toggleDrawer);
+
+        function triggerMobileGridSwitch(duration = 4000) {
+            if (window.innerWidth <= 480) {
+                const activeGrid = document.querySelector('.content-section:not(.hidden-section) .image-grid');
+                
+                performSmoothLayoutChange(activeGrid, true);
+                clearTimeout(mobileGridTimer);
+                
+                mobileGridTimer = setTimeout(() => {
+                    const currentActiveGrid = document.querySelector('.content-section:not(.hidden-section) .image-grid');
+                    performSmoothLayoutChange(currentActiveGrid, false);
+                }, duration);
+            }
+        }
+        
+        triggerMobileGridSwitch();
+
+//-------------6-----------------//
+
+
+        // 6. --- MENU NAVIGATION LOGIC ---
+        // Right sidebar links
+        const nav2026 = document.getElementById("nav-2026");
+        const navAllTime = document.getElementById("nav-all-time");
+        const navArchives = document.getElementById("nav-archives"); 
+        
+        // Left drawer links
+        const navAbout = document.getElementById("nav-about");
+        const navCinematics = document.getElementById("nav-cinematics");
+        const navMcPhoto = document.getElementById("nav-mc-photo");
+        const navMcCinema = document.getElementById("nav-mc-cinema");
+        
+        // Sections
+        const grid2026 = document.getElementById("grid-2026");
+        const gridAllTime = document.getElementById("grid-all-time");
+        const gridArchives = document.getElementById("grid-archives"); 
+        const aboutSection = document.getElementById("about-section");
+        const cinematicsSection = document.getElementById("cinematics-section");
+        const mcPhotoSection = document.getElementById("mc-photo-section");
+        const mcCinemaSection = document.getElementById("mc-cinema-section");
+
+        const headerQuote = document.getElementById("headerQuote");
+        
+        const defaultQuote = '"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"';
+        const minecraftQuote = '"In Minecraft, the only limit is your imagination"';
+
+        function hideAllSections() {
+            // Hide all content sections
+            grid2026.classList.add("hidden-section");
+            gridAllTime.classList.add("hidden-section");
+            gridArchives.classList.add("hidden-section"); 
+            aboutSection.classList.add("hidden-section");
+            cinematicsSection.classList.add("hidden-section");
+            mcPhotoSection.classList.add("hidden-section");
+            mcCinemaSection.classList.add("hidden-section");
+            
+            // Remove active state from all links
+            nav2026.classList.remove("active");
+            navAllTime.classList.remove("active");
+            navArchives.classList.remove("active"); 
+            navAbout.classList.remove("active");
+            navCinematics.classList.remove("active");
+            navMcPhoto.classList.remove("active");
+            navMcCinema.classList.remove("active");
+
+            headerQuote.innerText = defaultQuote;
+        }
+
+        // --- Right Sidebar Click Handlers ---
         nav2026.onclick = function(event) {
             event.preventDefault(); 
             hideAllSections();
             nav2026.classList.add("active");
             grid2026.classList.remove("hidden-section");
+            triggerMobileGridSwitch(); 
         }
 
         navAllTime.onclick = function(event) {
@@ -400,15 +1594,234 @@
             hideAllSections();
             navAllTime.classList.add("active");
             gridAllTime.classList.remove("hidden-section");
+            triggerMobileGridSwitch();
         }
 
+        navArchives.onclick = function(event) {
+            event.preventDefault(); 
+            hideAllSections();
+            navArchives.classList.add("active");
+            gridArchives.classList.remove("hidden-section");
+            triggerMobileGridSwitch();
+        }
+
+        // --- Left Drawer Click Handlers ---
         navAbout.onclick = function(event) {
             event.preventDefault();
             hideAllSections();
             navAbout.classList.add("active");
             aboutSection.classList.remove("hidden-section");
+            showLoading(); 
+            
+            if (leftDrawer.classList.contains("open")) toggleDrawer();
         }
-    </script>
 
+        navCinematics.onclick = function(event) {
+            event.preventDefault();
+            hideAllSections();
+            navCinematics.classList.add("active");
+            cinematicsSection.classList.remove("hidden-section");
+            
+            if (leftDrawer.classList.contains("open")) toggleDrawer();
+        }
+
+        navMcPhoto.onclick = function(event) {
+            event.preventDefault();
+            hideAllSections();
+            navMcPhoto.classList.add("active");
+            mcPhotoSection.classList.remove("hidden-section");
+            headerQuote.innerText = minecraftQuote;
+            
+            triggerMobileGridSwitch(5000); 
+            
+            if (leftDrawer.classList.contains("open")) toggleDrawer();
+        }
+
+            navMcCinema.onclick = function(event) {
+            event.preventDefault();
+            hideAllSections();
+            navMcCinema.classList.add("active");
+            mcCinemaSection.classList.remove("hidden-section");
+            headerQuote.innerText = minecraftQuote;
+            
+            if (leftDrawer.classList.contains("open")) toggleDrawer();
+        }
+
+//---------7--------//
+
+     // 7. --- AUTOMATIC BADGES (LOAD-AWARE & PLAY ONCE) ---
+        function setupFavoriteBadges() {
+            let favObserver = null;
+            let badgeTimer = null; 
+            window.refreshBadges = applyFavoritesToActiveSection;
+
+            function applyFavoritesToActiveSection() {
+               // Clean up background timers if the user switches tabs quickly
+                if (badgeTimer) clearTimeout(badgeTimer);
+                
+                const isMobile = window.innerWidth <= 480;
+                const activeSection = document.querySelector('.content-section:not(.hidden-section)');
+                if (!activeSection) return;
+                
+                const badgeItems = activeSection.querySelectorAll('.image-item.favorite, .image-item.award-winning');
+                if (badgeItems.length === 0) return;
+
+                // 3. THE SCRUBBER: Delete frozen badges AND reset them so they can properly replay!
+                badgeItems.forEach(item => {
+                    const oldBadge = item.querySelector('.favorite-badge, .award-badge');
+                    if (oldBadge) {
+                        oldBadge.remove(); 
+                        item.classList.remove('badge-completed'); // <-- THE MAGIC FIX
+                    }
+                });
+
+                const createBadge = (item, delaySeconds) => {
+                    // 1. THE PERMANENT TAG: If it has already played on this page load, ignore it!
+                    if (item.classList.contains('badge-completed')) return;
+                    
+                    // Mark this photo as "Watched" so it never plays again until a refresh
+                    item.classList.add('badge-completed');
+
+                    const isAward = item.classList.contains('award-winning');
+                    
+                    const badge = document.createElement('div');
+                    badge.className = isAward ? 'award-badge' : 'favorite-badge';
+                    badge.style.setProperty('--stagger-delay', `${delaySeconds}s`);
+                    
+                    const textToDisplay = isAward ? 'AWARD-WINNING' : 'HIGHLIGHTS';
+                    
+                const svgIcon = isAward ? 
+                        `<svg viewBox="0 0 24 24">
+                            <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"></path>
+                        </svg>` : 
+                        `<svg viewBox="0 0 24 24">
+                            <path d="M12 2L22 12 12 22 2 12 12 2z"></path>
+                        </svg>`;
+                    
+                    badge.innerHTML = `
+                        <div class="fav-bg-rect"></div>
+                        <div class="fav-icon-shadow">
+                            <div class="fav-icon-ribbon">
+                                ${svgIcon}
+                            </div>
+                        </div>
+                        <span class="fav-text">${textToDisplay}</span>
+                    `;
+                    
+                    item.appendChild(badge);
+                    
+                    // Self-destruct HTML after the animation finishes
+                    setTimeout(() => {
+                        if (badge.parentNode) badge.parentNode.removeChild(badge);
+                    }, 6000 + (delaySeconds * 1000));
+                };
+
+                // 2. THE IMAGE LOADER CHECK
+                const triggerWhenReady = (item, delaySeconds) => {
+                    const img = item.querySelector('img');
+                    
+                    if (img && img.complete && img.naturalHeight !== 0) {
+                        createBadge(item, delaySeconds);
+                    } else if (img) {
+                        img.addEventListener('load', () => {
+                            createBadge(item, 0); 
+                        }, { once: true });
+                    }
+                };
+
+                const delay = isMobile ? 5200 : 100;
+                
+                badgeTimer = setTimeout(() => {
+                    let desktopStaggerCount = 0;
+                    let resetTimer;
+
+                    favObserver = new IntersectionObserver((entries, observerInstance) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                let stagger = 0;
+                                
+                                if (!isMobile) {
+                                    stagger = desktopStaggerCount * 0.5;
+                                    desktopStaggerCount++;
+                                    clearTimeout(resetTimer);
+                                    resetTimer = setTimeout(() => { desktopStaggerCount = 0; }, 100);
+                                }
+
+                                triggerWhenReady(entry.target, stagger);
+                                observerInstance.unobserve(entry.target);
+                            }
+                        });
+                    }, { rootMargin: '0px', threshold: 0.3 });
+
+                    // 3. Only track photos that haven't been successfully watched yet
+                    badgeItems.forEach(item => {
+                        if (!item.classList.contains('badge-completed')) {
+                            favObserver.observe(item);
+                        }
+                    });
+                }, delay);
+            }
+
+            applyFavoritesToActiveSection();
+
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    setTimeout(applyFavoritesToActiveSection, 50); 
+                });
+            });
+        }
+        
+        setupFavoriteBadges();
+
+
+            //----------8----------//
+            
+        // Anti-Inspect: Blocks common developer tool shortcuts
+                document.addEventListener('keydown', function(e) {
+                    // Block F12
+                    if (e.key === 'F12') {
+                        e.preventDefault();
+                        return false;
+                    }
+                    // Block Ctrl+Shift+I or Cmd+Option+I (Inspect)
+                    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'I') {
+                        e.preventDefault();
+                        return false;
+                    }
+                    // Block Ctrl+Shift+J or Cmd+Option+J (Console)
+                    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'J') {
+                        e.preventDefault();
+                        return false;
+                    }
+                    // Block Ctrl+U or Cmd+Option+U (View Source)
+                    if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+
+               
+                // 9 --- MOBILE SCROLL PROGRESS BAR ---
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth <= 768) {
+                const scrollProgress = document.getElementById('scrollProgress');
+                if (!scrollProgress) return;
+                
+                // Calculates how far down the page the user has scrolled
+                const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (scrollTop / scrollHeight) * 100;
+                
+                // Updates the width of the gold line
+                scrollProgress.style.width = scrolled + '%';
+            }
+        });
+
+                document.getElementById("copyrightYear").innerText = new Date().getFullYear();
+    </script>
+    <footer style="text-align: center; padding: 30px; color: #555; font-size: 0.8rem; border-top: 1px solid #1a1a1a;">
+        <p>&copy; <span id="copyrightYear"></span> Reid Matthew. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
