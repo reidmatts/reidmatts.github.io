@@ -1647,7 +1647,7 @@
             if (leftDrawer.classList.contains("open")) toggleDrawer();
         }
 
-//---------7--------//
+//---------------7----------------//
 
      // 7. --- AUTOMATIC BADGES (LOAD-AWARE & PLAY ONCE) ---
         function setupFavoriteBadges() {
@@ -1775,7 +1775,7 @@
         setupFavoriteBadges();
 
 
-            //----------8----------//
+//-----------------8------------------//
             
         // Anti-Inspect: Blocks common developer tool shortcuts
                 document.addEventListener('keydown', function(e) {
@@ -1802,7 +1802,9 @@
                 });
 
                
-                // 9 --- MOBILE SCROLL PROGRESS BAR ---
+//------------9 --------------//
+
+         //  MOBILE SCROLL PROGRESS BAR ---
         window.addEventListener('scroll', () => {
             if (window.innerWidth <= 768) {
                 const scrollProgress = document.getElementById('scrollProgress');
