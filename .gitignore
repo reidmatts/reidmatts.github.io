@@ -1,0 +1,8 @@
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# VS Code configurations
+.vscode/
+*.log
