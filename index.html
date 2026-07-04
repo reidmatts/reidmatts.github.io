@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reid Matthew - Photography</title>
     <meta property="og:title" content="Photography">
-    <meta property="og:description" content="Self Renowed Best Photographer">
+    <meta property="og:description" content="Self Renowned Best Photographer">
     <meta property="og:image" content="https://reidmatt.online/logoWithBG2.png">
     <meta property="og:url" content="https://reidmatt.online/">
     <meta property="og:type" content="website">
@@ -19,8 +19,6 @@
     <style>
         /* Why is bro looking at my codes/
         /* Its cool fr fr*/
-
-
         /* CSS Reset & Base Styles */
         * {
             margin: 0;
@@ -850,6 +848,37 @@
         }
         @keyframes bgFadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
 
+        /* --- "NEW" TEXT BADGE --- */
+        .new-text-label {
+            position: absolute;
+            bottom: 25px; 
+            right: 25px;
+            font-family: 'Vagabond', sans-serif; 
+            font-size: 0.85rem; 
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            color: #ffcc00; 
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            text-transform: uppercase; 
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0;
+            animation: 
+                newTextSlideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) calc(0.5s + var(--stagger-delay, 0s)) forwards,
+                newTextSlideOut 0.6s ease calc(8.2s + var(--stagger-delay, 0s)) forwards;
+        }
+
+        @keyframes newTextSlideIn {
+            from { opacity: 0; transform: translateX(-15px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes newTextSlideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(15px); visibility: hidden; }
+        }
+
+    
        /* --- CUSTOM CINEMATIC SCROLLBAR (DESKTOP) --- */
         ::-webkit-scrollbar {
             width: 10px;
@@ -902,10 +931,65 @@
                 display: block; /* Only shows on mobile */
             }
         }
+
+        /* --- USER SETTINGS & TOGGLES --- */
+        .setting-item {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 1rem; color: #ffffff;
+            font-weight: normal; letter-spacing: 1px; width: 100%;
+        }
+        .mobile-only { display: none; }
+        @media (max-width: 768px) { .mobile-only { display: flex; } }
+
+        /* iPhone-style Toggle Switch */
+        .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .3s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 4px; bottom: 4px; background-color: white; transition: .3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border-radius: 50%; }
+        input:checked + .slider { background-color: #e5a93d; }
+        input:checked + .slider:before { transform: translateX(18px); }
+
+        /* --- USER PREFERENCE OVERRIDES --- */
+        @media (max-width: 480px) {
+            body.force-two-cols .image-grid { column-count: 2 !important; }
+        }
+
+        /* Global Light Mode Engine */
+        body, .central-header, .drawer-divider {
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+        }
+        
+        /* 🚨 THE BUG FIX: Restores the drawer slide animation while keeping color transitions */
+        .left-drawer {
+            transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.4s ease, border-color 0.4s ease !important;
+        }
+
+        body.light-theme { background-color: #f4f4f4; color: #121212; }
+        body.light-theme .central-header { background-color: #ffffff; border-color: #ddd; }
+        body.light-theme .left-drawer { background-color: #f9f9f9; border-color: #ddd; }
+        body.light-theme .left-drawer nav a, body.light-theme .setting-item { color: #121212; }
+        body.light-theme .right-sidebar nav a { color: #888; }
+        body.light-theme .right-sidebar nav a:hover, body.light-theme .right-sidebar nav a.active { color: #121212; }
+        body.light-theme .drawer-divider, body.light-theme hr.divider { border-color: #ddd; }
+        body.light-theme .hamburger-btn span { background-color: #121212; }
+        body.light-theme .hamburger-btn.open span { background-color: #e5a93d; }
+        
+        /* Updates SVG stroke colors in light mode */
+        body.light-theme #openSettingsBtn, body.light-theme #backToNavBtn { stroke: #121212; }
+        #backToNavBtn:hover { stroke: #e5a93d !important; }
+
+        /* Restores drawer animation safely */
+        .left-drawer { transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.4s ease, border-color 0.4s ease !important; }
+
+        /* Forces inline white text in "About Me" to flip to dark */
+        body.light-theme .about-block h2[style*="color: #ffffff"] { color: #121212 !important; }
+        /* A pro-trick to magically invert your white logo into black when light mode is on! */
+        body.light-theme .central-header img.logo { filter: invert(1); }
+
     </style>
 </head>
-<body>
-    <body oncontextmenu="return false;"></body>
+<body oncontextmenu="return false;">
+
     <div class="drawer-overlay" id="drawerOverlay"></div>
     <div class="mobile-scroll-progress" id="scrollProgress"></div>
     
@@ -915,20 +999,52 @@
         <span></span>
     </div>
 
-    <div class="left-drawer" id="leftDrawer">
-        <nav>
-            <ul>
-                <li><a href="#" id="nav-about">About Me</a></li>
-                <li><a href="#" id="nav-cinematics">Cinematics</a></li>
-                
-                <hr class="drawer-divider">
-                
-                <li><a href="#" id="nav-mc-photo">Minecraft Photography</a></li>
-                <li><a href="#" id="nav-mc-cinema">Minecraft Cinematics</a></li>
-            </ul>
-        </nav>
-    </div>
+   <div class="left-drawer" id="leftDrawer">
+        <!-- 🚨 VIEW 1: MAIN NAVIGATION -->
+        <div id="primaryNav" style="display: block; width: 100%; animation: fadeIn 0.3s ease;">
+            <div style="margin-bottom: 25px; margin-left: 5px;">
+                <svg id="openSettingsBtn" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer; transition: transform 0.4s ease, stroke 0.3s ease;">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-about">About Me</a></li>
+                    <li><a href="#" id="nav-cinematics">Cinematics</a></li>
+                    <hr class="drawer-divider">
+                    <li><a href="#" id="nav-mc-photo">Minecraft Photography</a></li>
+                    <li><a href="#" id="nav-mc-cinema">Minecraft Cinematics</a></li>
+                </ul>
+            </nav>
+        </div>
 
+        <!-- 🚨 VIEW 2: SETTINGS OVERLAY -->
+        <div id="settingsNav" style="display: none; width: 100%; animation: fadeIn 0.3s ease;">
+            <div style="margin-bottom: 35px; display: flex; align-items: center; gap: 15px;">
+                <svg id="backToNavBtn" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor: pointer; transition: stroke 0.3s ease; transform: translateX(-5px);">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                <h3 style="color: #e5a93d; font-family: 'Vagabond', sans-serif; letter-spacing: 1.5px; font-size: 1.2rem; margin: 0; padding-top: 2px;">SETTINGS</h3>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 30px;">
+                <div class="setting-item mobile-only">
+                    <span>2-Grid Mobile Layout</span>
+                    <label class="switch"><input type="checkbox" id="toggleTwoGrid"><span class="slider"></span></label>
+                </div>
+                <div class="setting-item mobile-only">
+                    <span>Disable Grid Animation</span>
+                    <label class="switch"><input type="checkbox" id="toggleGridAnim"><span class="slider"></span></label>
+                </div>
+                <div class="setting-item">
+                    <span>Enable Light Mode</span>
+                    <label class="switch"><input type="checkbox" id="toggleLightMode"><span class="slider"></span></label>
+                </div>
+            </div>
+        </div>
+    </div>
     <header class="central-header">
         <img class="logo" src="logo.png" alt="Reid Matthew Logo">
         <p class="quote" id="headerQuote">"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"</p>
@@ -1199,16 +1315,17 @@
 
     </div>
 
-    <div id="loadingToast" class="toast-notification">
+   <div id="loadingToast" class="toast-notification">
         <span class="toast-text">Visit Minecraft Photography</span>
         <span class="redirect-icon">&#8594;</span>
     </div>
 
+    <!-- 🚨 THE FULL SCREEN IMAGE MODAL -->
     <div id="imageModal" class="modal">
-        <div id="modalGlow" class="modal-glow"></div> <span class="close-modal">&times;</span>
+        <div id="modalGlow" class="modal-glow"></div> 
+        <span class="close-modal">&times;</span>
         <img class="modal-content" id="fullScreenImage">
     </div>
-
     <script>
 
 //-------------1-----------------//
@@ -1304,6 +1421,14 @@
                     
                 } else {
                     // MOBILE MODE: Respect 'fixed-order' strictly at the top of the single column
+                    
+                    // 🚨 STRIP DESKTOP INLINE STYLES: Allows the 2-Grid CSS toggle to work!
+                    grid.style.columnCount = ''; 
+                    grid.style.columnWidth = '';
+                    grid.style.display = '';
+                    grid.style.alignItems = '';
+                    grid.style.gap = '';
+
                     shuffleArray(normalItems);
                     
                     fixedItems.forEach(item => grid.appendChild(item));
@@ -1495,17 +1620,26 @@
             const leftDrawer = document.getElementById("leftDrawer");
             const drawerOverlay = document.getElementById("drawerOverlay");
 
-            // The function your navigation links are looking for!
+          // The function your navigation links are looking for!
             function toggleDrawer() {
-                hamburgerBtn.classList.toggle("open"); // Animates the icon to an 'X'
-                leftDrawer.classList.toggle("open");   // Slides the drawer in
-                drawerOverlay.classList.toggle("show"); // Fades in the dark background
+                hamburgerBtn.classList.toggle("open"); 
+                leftDrawer.classList.toggle("open");   
+                drawerOverlay.classList.toggle("show"); 
                 
-                // Prevents the background page from scrolling when the menu is open
                 if (leftDrawer.classList.contains("open")) {
                     document.body.style.overflow = "hidden";
                 } else {
                     document.body.style.overflow = "";
+                    
+                    // Safely resets the drawer back to the main links while it slides out of view
+                    setTimeout(() => {
+                        const primary = document.getElementById('primaryNav');
+                        const settings = document.getElementById('settingsNav');
+                        if (primary && settings) {
+                            primary.style.display = "block";
+                            settings.style.display = "none";
+                        }
+                    }, 400);
                 }
             }
 
@@ -1513,8 +1647,12 @@
             hamburgerBtn.addEventListener("click", toggleDrawer);
             drawerOverlay.addEventListener("click", toggleDrawer);
 
-        function triggerMobileGridSwitch(duration = 4000) {
+       function triggerMobileGridSwitch(duration = 4000) {
             if (window.innerWidth <= 480) {
+                // Instantly exit if the user manually disabled the animation or enabled the 2-grid layout in settings
+                if (localStorage.getItem('gridAnimDisabled') === 'true') return;
+                if (localStorage.getItem('twoGridEnabled') === 'true') return;
+
                 const activeGrid = document.querySelector('.content-section:not(.hidden-section) .image-grid');
                 
                 performSmoothLayoutChange(activeGrid, true);
@@ -1656,66 +1794,72 @@
             window.refreshBadges = applyFavoritesToActiveSection;
 
             function applyFavoritesToActiveSection() {
-               // Clean up background timers if the user switches tabs quickly
                 if (badgeTimer) clearTimeout(badgeTimer);
                 
                 const isMobile = window.innerWidth <= 480;
                 const activeSection = document.querySelector('.content-section:not(.hidden-section)');
                 if (!activeSection) return;
                 
-                const badgeItems = activeSection.querySelectorAll('.image-item.favorite, .image-item.award-winning');
+                // 🚨 UPDATE: Now looks for the 'new' class too!
+                const badgeItems = activeSection.querySelectorAll('.image-item.favorite, .image-item.award-winning, .image-item.new');
                 if (badgeItems.length === 0) return;
 
-                // 3. THE SCRUBBER: Delete frozen badges AND reset them so they can properly replay!
+                // 🚨 UPDATE: Scrubber now clears out old "New" text labels as well
                 badgeItems.forEach(item => {
-                    const oldBadge = item.querySelector('.favorite-badge, .award-badge');
-                    if (oldBadge) {
-                        oldBadge.remove(); 
-                        item.classList.remove('badge-completed'); // <-- THE MAGIC FIX
-                    }
+                    const oldBadges = item.querySelectorAll('.favorite-badge, .award-badge, .new-text-label');
+                    oldBadges.forEach(b => b.remove()); 
+                    item.classList.remove('badge-completed'); 
                 });
 
-                const createBadge = (item, delaySeconds) => {
-                    // 1. THE PERMANENT TAG: If it has already played on this page load, ignore it!
+               const createBadge = (item, delaySeconds) => {
                     if (item.classList.contains('badge-completed')) return;
-                    
-                    // Mark this photo as "Watched" so it never plays again until a refresh
                     item.classList.add('badge-completed');
 
                     const isAward = item.classList.contains('award-winning');
-                    
-                    const badge = document.createElement('div');
-                    badge.className = isAward ? 'award-badge' : 'favorite-badge';
-                    badge.style.setProperty('--stagger-delay', `${delaySeconds}s`);
-                    
-                    const textToDisplay = isAward ? 'AWARD-WINNING' : 'HIGHLIGHTS';
-                    
-                const svgIcon = isAward ? 
-                        `<svg viewBox="0 0 24 24">
-                            <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"></path>
-                        </svg>` : 
-                        `<svg viewBox="0 0 24 24">
-                            <path d="M12 2L22 12 12 22 2 12 12 2z"></path>
-                        </svg>`;
-                    
-                    badge.innerHTML = `
-                        <div class="fav-bg-rect"></div>
-                        <div class="fav-icon-shadow">
-                            <div class="fav-icon-ribbon">
-                                ${svgIcon}
-                            </div>
-                        </div>
-                        <span class="fav-text">${textToDisplay}</span>
-                    `;
-                    
-                    item.appendChild(badge);
-                    
-                    // Self-destruct HTML after the animation finishes
-                    setTimeout(() => {
-                        if (badge.parentNode) badge.parentNode.removeChild(badge);
-                    }, 6000 + (delaySeconds * 1000));
-                };
+                    const isFavorite = item.classList.contains('favorite');
+                    const isNew = item.classList.contains('new');
 
+                    // 1. Generate the Top-Left Ribbon (If it has one)
+                    if (isAward || isFavorite) {
+                        const badge = document.createElement('div');
+                        badge.className = isAward ? 'award-badge' : 'favorite-badge';
+                        badge.style.setProperty('--stagger-delay', `${delaySeconds}s`);
+                        
+                        const textToDisplay = isAward ? 'AWARD-WINNING' : 'HIGHLIGHTS';
+                        
+                        const svgIcon = isAward ? 
+                            `<svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94.63 1.5 1.98 2.63 3.61 2.96V19H7v2h10v-2h-4v-3.1c1.63-.33 2.98-1.46 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"></path></svg>` : 
+                            `<svg viewBox="0 0 24 24"><path d="M12 2L22 12 12 22 2 12 12 2z"></path></svg>`;
+                        
+                        badge.innerHTML = `
+                            <div class="fav-bg-rect"></div>
+                            <div class="fav-icon-shadow">
+                                <div class="fav-icon-ribbon">${svgIcon}</div>
+                            </div>
+                            <span class="fav-text">${textToDisplay}</span>
+                        `;
+                        
+                        item.appendChild(badge);
+                        
+                        setTimeout(() => {
+                            if (badge.parentNode) badge.parentNode.removeChild(badge);
+                        }, 6000 + (delaySeconds * 1000));
+                    }
+
+                    // 2. Generate the Bottom-Right "New!" Text (If it has one)
+                    if (isNew) {
+                        const newText = document.createElement('div');
+                        newText.className = 'new-text-label';
+                        newText.style.setProperty('--stagger-delay', `${delaySeconds}s`);
+                        newText.innerText = 'New!';
+
+                        item.appendChild(newText);
+
+                        setTimeout(() => {
+                            if (newText.parentNode) newText.parentNode.removeChild(newText);
+                        }, 9000 + (delaySeconds * 1000));
+                    }
+                };
                 // 2. THE IMAGE LOADER CHECK
                 const triggerWhenReady = (item, delaySeconds) => {
                     const img = item.querySelector('img');
@@ -1818,6 +1962,59 @@
                 // Updates the width of the gold line
                 scrollProgress.style.width = scrolled + '%';
             }
+        });
+
+//----------10---------//
+
+        // 10. --- SETTINGS & LOCAL STORAGE MEMORY ENGINE ---
+        const primaryNav = document.getElementById('primaryNav');
+        const settingsNav = document.getElementById('settingsNav');
+        const openSettingsBtn = document.getElementById('openSettingsBtn');
+        const backToNavBtn = document.getElementById('backToNavBtn');
+        
+        const toggleTwoGrid = document.getElementById('toggleTwoGrid');
+        const toggleGridAnim = document.getElementById('toggleGridAnim');
+        const toggleLightMode = document.getElementById('toggleLightMode');
+
+        // 1. NESTED MENU SWAP LOGIC
+        openSettingsBtn.onclick = () => {
+            primaryNav.style.display = "none";
+            settingsNav.style.display = "block";
+        };
+
+        backToNavBtn.onclick = () => {
+            settingsNav.style.display = "none";
+            primaryNav.style.display = "block";
+        };
+
+        // 2. LOAD SAVED MEMORY ON PAGE REFRESH
+        if(localStorage.getItem('twoGridEnabled') === 'true') {
+            toggleTwoGrid.checked = true;
+            document.body.classList.add('force-two-cols');
+        }
+        if(localStorage.getItem('gridAnimDisabled') === 'true') {
+            toggleGridAnim.checked = true;
+        }
+        if(localStorage.getItem('lightModeEnabled') === 'true') {
+            toggleLightMode.checked = true;
+            document.body.classList.add('light-theme');
+        }
+
+        // 3. LISTEN FOR TOGGLE CLICKS & SAVE THEM PERMANENTLY
+        toggleTwoGrid.addEventListener('change', (e) => {
+            localStorage.setItem('twoGridEnabled', e.target.checked);
+            if(e.target.checked) document.body.classList.add('force-two-cols');
+            else document.body.classList.remove('force-two-cols');
+        });
+
+        toggleGridAnim.addEventListener('change', (e) => {
+            localStorage.setItem('gridAnimDisabled', e.target.checked);
+        });
+
+        toggleLightMode.addEventListener('change', (e) => {
+            localStorage.setItem('lightModeEnabled', e.target.checked);
+            if(e.target.checked) document.body.classList.add('light-theme');
+            else document.body.classList.remove('light-theme');
         });
 
                 document.getElementById("copyrightYear").innerText = new Date().getFullYear();
