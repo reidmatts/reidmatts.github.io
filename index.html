@@ -2085,24 +2085,29 @@
         });
 
         // --- THE EASTER EGG ---
-      toggleExperimental.addEventListener('change', (e) => {
+     toggleExperimental.addEventListener('change', (e) => {
             if (e.target.checked) {
                 e.target.checked = false;
                 const trap = document.getElementById('trapOverlay');
                 const video = document.getElementById('trapVideo');
+                const audio = document.getElementById('trapAudio');
                 
                 trap.style.display = "flex";
                 
-                // 1. Play the local video
-                video.play().catch(err => console.log("Autoplay blocked:", err));
+                // 1. Play Video (Muted to satisfy autoplay policy)
+                video.muted = true;
+                video.play().catch(err => console.log("Video play error:", err));
 
-                // 2. Request full-screen
+                // 2. Play Audio (This is the trick to get sound!)
+                audio.play().catch(err => console.log("Audio play error:", err));
+
+                // 3. Request full-screen
                 const elem = document.documentElement;
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen().catch(() => {});
                 }
                 
-                // 3. Force Landscape on Mobile
+                // 4. Force Landscape
                 if (screen.orientation && screen.orientation.lock) {
                     screen.orientation.lock('landscape').catch(() => {});
                 }
@@ -2115,12 +2120,15 @@
     <footer style="text-align: center; padding: 30px; color: #555; font-size: 0.8rem; border-top: 1px solid #1a1a1a;">
         <p>&copy; <span id="copyrightYear"></span> Reid Matthew. All Rights Reserved.</p>
 
-    <!-- 🚨 THE REDIRECT TRAP (LOCAL VIDEO) -->
+   <!-- 🚨 THE REDIRECT TRAP (LOCAL VIDEO + AUDIO) -->
     <div id="trapOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:9999; align-items:center; justify-content:center;">
         <video id="trapVideo" width="100%" height="100%" playsinline muted>
             <source src="aVideo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
+        <!-- Add your audio file here -->
+        <audio id="trapAudio" loop>
+            <source src="aMusic.mp3" type="audio/mpeg">
+        </audio>
     </div>
     </footer>
 </body>
