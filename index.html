@@ -115,6 +115,7 @@
             padding: 80px 40px;
             display: flex;
             flex-direction: column;
+            will-change: transform;
         }
 
         .left-drawer.open {
@@ -290,7 +291,7 @@
             column-gap: 15px; 
         }
 
-        .image-item {
+       .image-item {
             position: relative;
             z-index: 1;
             display: block; 
@@ -1487,7 +1488,10 @@
                 }
             });
         }
-        shuffleGalleries();
+        requestAnimationFrame(() => {
+            shuffleGalleries();
+        });
+
 
         // --- MAKE GRID RESPONSIVE TO ZOOM & RESIZE ---
         let resizeTimer;
