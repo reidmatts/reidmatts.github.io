@@ -1091,7 +1091,7 @@
                     <label class="switch"><input type="checkbox" id="toggleLowDetail"><span class="slider"></span></label>
                 </div>
                 <div class="setting-item">
-                    <span> Experimental 
+                    <span> DO NOT CLICK! 
                     <label class="switch"><input type="checkbox" id="toggleExperimental"><span class="slider"></span></label>
                     </span>
                 </div>
@@ -2027,10 +2027,11 @@
         const openSettingsBtn = document.getElementById('openSettingsBtn');
         const backToNavBtn = document.getElementById('backToNavBtn');
         
-        const toggleTwoGrid = document.getElementById('toggleTwoGrid');
+         const toggleTwoGrid = document.getElementById('toggleTwoGrid');
         const toggleGridAnim = document.getElementById('toggleGridAnim');
         const toggleLightMode = document.getElementById('toggleLightMode');
         const toggleLowDetail = document.getElementById('toggleLowDetail');
+        const toggleExperimental = document.getElementById('toggleExperimental');
 
         // 1. NESTED MENU SWAP LOGIC
         openSettingsBtn.onclick = () => {
@@ -2077,18 +2078,50 @@
             else document.body.classList.remove('light-theme');
         });
 
-        toggleLowDetail.addEventListener('change', (e) => {
+       toggleLowDetail.addEventListener('change', (e) => {
             localStorage.setItem('lowDetailEnabled', e.target.checked);
             if(e.target.checked) document.body.classList.add('low-detail');
             else document.body.classList.remove('low-detail');
         });
 
+        // --- THE EASTER EGG ---
+      toggleExperimental.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                e.target.checked = false;
+                const trap = document.getElementById('trapOverlay');
+                const video = document.getElementById('trapVideo');
+                
+                trap.style.display = "flex";
+                
+                // 1. Play the local video
+                video.play().catch(err => console.log("Autoplay blocked:", err));
+
+                // 2. Request full-screen
+                const elem = document.documentElement;
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen().catch(() => {});
+                }
+                
+                // 3. Force Landscape on Mobile
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(() => {});
+                }
+            }
+        });
         document.getElementById("copyrightYear").innerText = new Date().getFullYear();
     </script>
 
     
     <footer style="text-align: center; padding: 30px; color: #555; font-size: 0.8rem; border-top: 1px solid #1a1a1a;">
         <p>&copy; <span id="copyrightYear"></span> Reid Matthew. All Rights Reserved.</p>
+
+    <!-- 🚨 THE REDIRECT TRAP (LOCAL VIDEO) -->
+    <div id="trapOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:9999; align-items:center; justify-content:center;">
+        <video id="trapVideo" width="100%" height="100%" playsinline muted>
+            <source src="aVideo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
     </footer>
 </body>
 </html>
