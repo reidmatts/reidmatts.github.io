@@ -216,10 +216,12 @@
 
        /* --- RIGHT-SIDE STICKY SIDEBAR --- */
     .right-sidebar {
-        width: 280px; 
+        width: 230px; /* 🚨 Slimmed down from 280px to pull the section to the right */
         position: sticky;
         top: 0;
-        padding: 40px 30px;
+        /* 🚨 Top: 40px | Right: 15px | Bottom: 40px | Left: 25px */
+        /* This pushes the text slightly right while minimizing the empty right-side gap */
+        padding: 40px 15px 40px 25px; 
     }
        
     .mobile-break {
@@ -689,28 +691,45 @@
                 overflow-y: visible;
             }
             
-            /* 1. Turns the list into a 2-column grid layout */
-            .right-sidebar nav ul {
-                display: flex;
-                flex-direction: row; 
+           /* --- MOBILE NAV LAYOUT RESTORATION --- */
+            
+            /* 1. Makes the Main Photography links display horizontally side-by-side */
+            .right-sidebar nav #sidebar-irl-links {
+                display: flex !important;
+                flex-direction: row !important; 
                 justify-content: center;
-                align-items: flex-start; /* Aligns them to the top so the underlines match up */
-                gap: 10px; /* Tightened gap so they all fit */
+                align-items: flex-start;
+                gap: 5px; 
                 padding: 0;
                 margin: 0;
                 width: 100%;
+                
+                /* Kills the JS collapse so it always stays visible */
+                max-height: 500px !important; 
+                opacity: 1 !important;
+                pointer-events: auto !important;
             }
 
-            /* Ensures list items align correctly */
-            .right-sidebar nav ul li {
+            .right-sidebar nav #sidebar-irl-links li {
                 flex: 1;
                 display: flex;
                 justify-content: center;
+                text-align: center;
             }
 
-            /* 2. Forces the 3rd menu item to span across both columns on the bottom row */
-            .right-sidebar nav ul li:nth-child(3) {
-                grid-column: span 2;
+            /* 2. Completely hides the "Main Gallery" dropdown toggle on mobile */
+            #irl-toggle-btn {
+                display: none !important;
+            }
+
+            /* 🚨 Hides the desktop separator line on mobile */
+            .right-sidebar nav #sidebar-irl-links::after {
+                display: none !important;
+            }
+
+            /* 3. Completely hides the Minecraft links in this top menu on mobile */
+            #sidebar-mc-links {
+                display: none !important;
             }
             .mobile-break {
                 display: inline; 
@@ -978,6 +997,7 @@
         body.light-theme .drawer-divider, body.light-theme hr.divider { border-color: #ddd; }
         body.light-theme .hamburger-btn span { background-color: #121212; }
         body.light-theme .hamburger-btn.open span { background-color: #e5a93d; }
+        body.light-theme #sidebar-irl-links::after { background-color: #ddd; }
         
         /* Updates SVG stroke colors in light mode */
         body.light-theme #openSettingsBtn, body.light-theme #backToNavBtn { stroke: #121212; }
@@ -1110,9 +1130,20 @@
         #sidebar-irl-links {
             /* 🚨 Upgraded to a premium, buttery-smooth ease-out curve */
             transition: max-height 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease-in-out;
-            max-height: 150px; 
+            max-height: 200px; /* 🚨 CHANGED FROM 150px TO 200px SO THE LINE FITS */
             opacity: 1;
             overflow: hidden;
+        }
+
+        /* 🚨 DESKTOP SEPARATOR LINE BELOW ARCHIVES */
+        #sidebar-irl-links::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: #333;
+            margin-top: 5px; /* Creates spacing directly below the last link */
+            transition: background-color 0.4s ease;
         }
 
         #sidebar-irl-links.collapsed {
