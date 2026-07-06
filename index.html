@@ -236,16 +236,19 @@
     }
 
     /* 1. Base styles for the text link itself */
+   /* 1. Base styles for the text link itself */
     .right-sidebar nav a {
         text-decoration: none;
         color: #9e9e9e;
         font-size: 0.95rem; 
         transition: color 0.3s ease;
         
-        /* Required to align the line below the text */
         position: relative; 
         padding-bottom: 6px; 
         display: inline-block; 
+        
+        /* 🚨 THE FIX: Forces the text to stay on a single horizontal line */
+        white-space: nowrap; 
     }
 
     /* Color change on hover and when active */
@@ -1101,6 +1104,77 @@
             stroke: url(#goldGrad); 
             filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.6));
         }
+
+      /* --- SIDEBAR TOGGLE & ACCORDION ANIMATIONS --- */
+        #sidebar-irl-links {
+            /* 🚨 Upgraded to a premium, buttery-smooth ease-out curve */
+            transition: max-height 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease-in-out;
+            max-height: 150px; 
+            opacity: 1;
+            overflow: hidden;
+        }
+
+        #sidebar-irl-links.collapsed {
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none; 
+        }
+
+        /* 🚨 NEW: Utility class to instantly snap the menu closed without animating */
+        .no-transition {
+            transition: none !important;
+        }
+
+        .sidebar-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Pushes the arrow to the far right */
+            cursor: pointer;
+            color: #9e9e9e; 
+            font-size: 0.95rem; 
+            padding-bottom: 6px; 
+            margin-top: 25px; /* Creates separation from the Minecraft links above */
+            margin-bottom: 20px; 
+            transition: color 0.3s ease;
+            width: 100%;
+            
+            /* 🚨 Leftward Slide Animation on load */
+            opacity: 0;
+            transform: translateX(15px);
+            animation: slideLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+        }
+
+        @keyframes slideLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .sidebar-toggle:hover {
+            color: #ffffff;
+        }
+
+        .sidebar-toggle svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Snappy arrow spin */
+        }
+
+        .sidebar-toggle.expanded svg {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-toggle {
+                justify-content: center;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -1176,18 +1250,32 @@
     </header>
         
             <div class="page-container">
-        
+     <!-- --- RIGHT-SIDE STICKY SIDEBAR --- -->
        <aside class="right-sidebar">
             <nav>
-                <ul>
-                    <li><a href="#" id="nav-2026" class="active">Photography of<br class="mobile-break"> 2026</a></li>
-                    <li><a href="#" id="nav-all-time">Photography of<br class="mobile-break"> All Time</a></li>
-                    <li><a href="#" id="nav-archives">Photography<br class="mobile-break"> Archives</a></li>
+                <!-- 1. Minecraft Links (Hidden by default on IRL pages) -->
+                <ul id="sidebar-mc-links" style="display: none;">
+                    <li><a href="#" id="side-nav-mc-photo">Minecraft Photography</a></li>
+                    <li><a href="#" id="side-nav-mc-cinema">Minecraft Cinematics</a></li>
                 </ul>
-            </nav>
-        </aside> <main class="main-content">
-            
-        <div id="grid-2026" class="content-section">
+
+                <!-- 2. THE "Main" TOGGLE (Hidden by default on IRL pages) -->
+                <div id="irl-toggle-btn" class="sidebar-toggle" style="display: none;">
+                    <span>Main Gallery</span>
+                    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+
+                <!-- 3. Original Main Links (Visible and expanded by default) -->
+                <ul id="sidebar-irl-links">
+                    <li><a href="#" id="nav-2026" class="active">Photography of 2026</a></li>
+                    <li><a href="#" id="nav-all-time">Photography of All Time</a></li>
+                    <li><a href="#" id="nav-archives">Photography Archives</a></li>
+                    </ul>
+                </nav>
+            </aside>
+        
+            <main class="main-content">
+            <div id="grid-2026" class="content-section">
                 <div class="image-grid">
                     
                     <div class="image-item fixed-order favorite"><img src="Photography2026/ORIG_34.avif" alt="1st"></div>
@@ -1825,12 +1913,20 @@
 //-------------6-----------------//
 
 
-        // 6. --- MENU NAVIGATION LOGIC ---
-        // Right sidebar links
+      // 6. --- MENU NAVIGATION LOGIC ---
+      
+        // Right sidebar links (IRL)
         const nav2026 = document.getElementById("nav-2026");
         const navAllTime = document.getElementById("nav-all-time");
         const navArchives = document.getElementById("nav-archives"); 
         
+        // Right sidebar links (Minecraft) + Toggle
+        const sideNavMcPhoto = document.getElementById("side-nav-mc-photo");
+        const sideNavMcCinema = document.getElementById("side-nav-mc-cinema");
+        const sidebarMcLinks = document.getElementById("sidebar-mc-links");
+        const sidebarIrlLinks = document.getElementById("sidebar-irl-links");
+        const irlToggleBtn = document.getElementById("irl-toggle-btn");
+
         // Left drawer links
         const navAbout = document.getElementById("nav-about");
         const navCinematics = document.getElementById("nav-cinematics");
@@ -1851,8 +1947,82 @@
         const defaultQuote = '"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"';
         const minecraftQuote = '"In Minecraft, the only limit is your imagination"';
 
+        // --- MAIN GALLERY ACCORDION TOGGLE ---
+        irlToggleBtn.onclick = function() {
+            // 1. Clear the auto-retract timer so it doesn't close automatically while you are clicking
+            clearTimeout(retractTimer);
+            
+            // 2. Toggle the accordion open and closed
+            sidebarIrlLinks.classList.toggle('collapsed');
+            
+            // 3. Spin the arrow up/down
+            irlToggleBtn.classList.toggle('expanded');
+        };
+
+       // 🚨 --- THE AUTO-RETRACT ENGINE (Polished Sequence) ---
+        let currentSidebarMode = 'irl';
+        let expandTimer;
+        let retractTimer;
+
+        function setSidebarMode(mode) {
+            // Clears any active animations if the user clicks rapidly
+            clearTimeout(expandTimer);
+            clearTimeout(retractTimer);
+            
+            if (mode === 'mc') {
+                if (currentSidebarMode !== 'mc') {
+                    currentSidebarMode = 'mc';
+                    
+                    // ACT 1: Instantly snap the accordion closed WITHOUT animating
+                    // This stops it from collapsing while the Main button slides in
+                    sidebarIrlLinks.classList.add('no-transition');
+                    sidebarIrlLinks.classList.add('collapsed');
+                    irlToggleBtn.classList.remove('expanded');
+                    
+                    // Force the browser to register the instant snap immediately
+                    void sidebarIrlLinks.offsetWidth;
+                    
+                    // Turn the buttery animations back on for the next steps
+                    sidebarIrlLinks.classList.remove('no-transition');
+
+                    // Show the Minecraft links and "Main" toggle (triggers the leftward slide)
+                    sidebarMcLinks.style.display = 'flex'; 
+                    irlToggleBtn.style.display = 'flex';
+                    
+                    // ACT 2: Wait 1 second, then expand downwards smoothly
+                    expandTimer = setTimeout(() => {
+                        if (currentSidebarMode === 'mc') {
+                            sidebarIrlLinks.classList.remove('collapsed');
+                            irlToggleBtn.classList.add('expanded');
+                            
+                            // ACT 3 & 4: Keep visible for 2 seconds, then smoothly retract
+                            retractTimer = setTimeout(() => {
+                                if (currentSidebarMode === 'mc') {
+                                    sidebarIrlLinks.classList.add('collapsed');
+                                    irlToggleBtn.classList.remove('expanded');
+                                }
+                            }, 2000); // 2000ms = 2 seconds
+                        }
+                    }, 1000); // 1000ms = 1 second
+                }
+            } else if (mode === 'irl') {
+                currentSidebarMode = 'irl';
+                
+                // Hide Minecraft elements
+                sidebarMcLinks.style.display = 'none';
+                irlToggleBtn.style.display = 'none';
+                
+                // Instantly restore Main links to normal without animating
+                sidebarIrlLinks.classList.add('no-transition');
+                sidebarIrlLinks.classList.remove('collapsed');
+                irlToggleBtn.classList.remove('expanded');
+                
+                void sidebarIrlLinks.offsetWidth;
+                sidebarIrlLinks.classList.remove('no-transition');
+            }
+        }
+
         function hideAllSections() {
-            // Hide all content sections
             grid2026.classList.add("hidden-section");
             gridAllTime.classList.add("hidden-section");
             gridArchives.classList.add("hidden-section"); 
@@ -1861,7 +2031,6 @@
             mcPhotoSection.classList.add("hidden-section");
             mcCinemaSection.classList.add("hidden-section");
             
-            // Remove active state from all links
             nav2026.classList.remove("active");
             navAllTime.classList.remove("active");
             navArchives.classList.remove("active"); 
@@ -1869,17 +2038,21 @@
             navCinematics.classList.remove("active");
             navMcPhoto.classList.remove("active");
             navMcCinema.classList.remove("active");
+            
+            if(sideNavMcPhoto) sideNavMcPhoto.classList.remove("active");
+            if(sideNavMcCinema) sideNavMcCinema.classList.remove("active");
 
             headerQuote.innerText = defaultQuote;
         }
 
-        // --- Right Sidebar Click Handlers ---
+        // --- IRL Click Handlers (Restores standard layout) ---
         nav2026.onclick = function(event) {
             event.preventDefault(); 
             hideAllSections();
             nav2026.classList.add("active");
             grid2026.classList.remove("hidden-section");
             triggerMobileGridSwitch(); 
+            setSidebarMode('irl');
         }
 
         navAllTime.onclick = function(event) {
@@ -1888,6 +2061,7 @@
             navAllTime.classList.add("active");
             gridAllTime.classList.remove("hidden-section");
             triggerMobileGridSwitch();
+            setSidebarMode('irl');
         }
 
         navArchives.onclick = function(event) {
@@ -1896,17 +2070,17 @@
             navArchives.classList.add("active");
             gridArchives.classList.remove("hidden-section");
             triggerMobileGridSwitch();
+            setSidebarMode('irl');
         }
 
-        // --- Left Drawer Click Handlers ---
         navAbout.onclick = function(event) {
             event.preventDefault();
             hideAllSections();
             navAbout.classList.add("active");
             aboutSection.classList.remove("hidden-section");
             showLoading(); 
-            
             if (leftDrawer.classList.contains("open")) toggleDrawer();
+            setSidebarMode('irl');
         }
 
         navCinematics.onclick = function(event) {
@@ -1914,31 +2088,41 @@
             hideAllSections();
             navCinematics.classList.add("active");
             cinematicsSection.classList.remove("hidden-section");
-            
             if (leftDrawer.classList.contains("open")) toggleDrawer();
+            setSidebarMode('irl');
         }
 
-        navMcPhoto.onclick = function(event) {
-            event.preventDefault();
+        // --- Minecraft Click Handlers (Triggers the slide & auto-retract) ---
+        function activateMcPhoto(event) {
+            if(event) event.preventDefault();
             hideAllSections();
             navMcPhoto.classList.add("active");
+            if(sideNavMcPhoto) sideNavMcPhoto.classList.add("active");
+            
             mcPhotoSection.classList.remove("hidden-section");
             headerQuote.innerText = minecraftQuote;
             
             triggerMobileGridSwitch(5000); 
-            
             if (leftDrawer.classList.contains("open")) toggleDrawer();
+            setSidebarMode('mc');
         }
+        navMcPhoto.onclick = activateMcPhoto;
+        if(sideNavMcPhoto) sideNavMcPhoto.onclick = activateMcPhoto;
 
-            navMcCinema.onclick = function(event) {
-            event.preventDefault();
+        function activateMcCinema(event) {
+            if(event) event.preventDefault();
             hideAllSections();
             navMcCinema.classList.add("active");
+            if(sideNavMcCinema) sideNavMcCinema.classList.add("active");
+            
             mcCinemaSection.classList.remove("hidden-section");
             headerQuote.innerText = minecraftQuote;
             
             if (leftDrawer.classList.contains("open")) toggleDrawer();
+            setSidebarMode('mc');
         }
+        navMcCinema.onclick = activateMcCinema;
+        if(sideNavMcCinema) sideNavMcCinema.onclick = activateMcCinema;
 
 //---------------7----------------//
 
