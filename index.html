@@ -674,6 +674,7 @@
                 text-align: center;
                 line-height: 1.3;
                 font-size: 0.8rem; /* Slightly smaller to prevent overlapping */
+                white-space: normal; 
             }
             
             /* Cleaned up padding for the mobile menu container */
@@ -1132,7 +1133,12 @@
             cursor: pointer;
             color: #9e9e9e; 
             font-size: 0.95rem; 
-            padding-bottom: 6px; 
+            padding-bottom: 6px;
+            /* 🚨 THE NEW DIVIDER STYLES */
+            margin-top: 15px; 
+            padding-top: 15px;
+            border-top: 1px solid #333;
+             
             margin-top: 25px; /* Creates separation from the Minecraft links above */
             margin-bottom: 20px; 
             transition: color 0.3s ease;
@@ -1267,10 +1273,10 @@
 
                 <!-- 3. Original Main Links (Visible and expanded by default) -->
                 <ul id="sidebar-irl-links">
-                    <li><a href="#" id="nav-2026" class="active">Photography of 2026</a></li>
-                    <li><a href="#" id="nav-all-time">Photography of All Time</a></li>
-                    <li><a href="#" id="nav-archives">Photography Archives</a></li>
-                    </ul>
+                    <li><a href="#" id="nav-2026" class="active">Photography of <br class="mobile-break"> 2026</a></li>
+                    <li><a href="#" id="nav-all-time">Photography of <br class="mobile-break"> All Time</a></li>
+                    <li><a href="#" id="nav-archives">Photography <br class="mobile-break"> Archives</a></li>
+                </ul>
                 </nav>
             </aside>
         
