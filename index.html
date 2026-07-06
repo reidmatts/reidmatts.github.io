@@ -1031,6 +1031,76 @@
                 lowDetailFadeOut 0.6s ease calc(8.2s + var(--stagger-delay, 0s)) forwards !important;
         }
 
+        /* --- MINIMALIST SCROLL TO TOP ARROW --- */
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 80px; 
+            left: 50%; 
+            
+            background: transparent;
+            border: none;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1400; 
+            opacity: 0;
+            pointer-events: none;
+            
+            /* Includes scale(1) so we can animate it later */
+            transform: translate(-50%, 20px) scale(1);
+            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .scroll-top-btn.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, 0) scale(1);
+        }
+
+        /* 🚨 THE SUBTLE ZOOM ON HOVER 🚨 */
+        .scroll-top-btn.show:hover {
+            transform: translate(-50%, 0) scale(1.2); /* Smoothly enlarges by 20% */
+        }
+
+        .scroll-top-btn svg {
+            width: 28px; 
+            height: 38px;
+            stroke: #ffffff; 
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.8));
+            transition: stroke 0.3s ease, filter 0.4s ease;
+            
+            animation: bounceArrow 1.5s infinite ease-in-out;
+        }
+
+        /* 🚨 THE GRADIENT AND YELLOW GLOW 🚨 */
+        .scroll-top-btn:hover svg {
+            stroke: url(#goldGrad); 
+            /* Pops a bright, signature yellow/gold shadow behind the arrow */
+            filter: drop-shadow(0 0 12px rgba(229, 169, 61, 0.9));
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% { transform: translateY(4px); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* Light Mode Adjustments */
+        body.light-theme .scroll-top-btn svg { 
+            stroke: #121212; 
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+        body.light-theme .scroll-top-btn:hover svg { 
+            stroke: url(#goldGrad); 
+            filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.6));
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -1378,8 +1448,37 @@
         <span class="close-modal">&times;</span>
         <img class="modal-content" id="fullScreenImage">
     </div>
-    <script>
 
+    <footer style="text-align: center; padding: 30px; color: #555; font-size: 0.8rem; border-top: 1px solid #1a1a1a;">
+        <p>&copy; <span id="copyrightYear"></span> Reid Matthew. All Rights Reserved.</p>
+     </footer>
+
+   <!-- 🚨 THE REDIRECT TRAP (LOCAL VIDEO + AUDIO) -->
+    <div id="trapOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:9999; align-items:center; justify-content:center;">
+        <video id="trapVideo" width="100%" height="100%" playsinline muted>
+            <source src="EasterEgg/Video.mp4" type="video/mp4">
+        </video>
+        <!-- Add your audio file here -->
+        <audio id="trapAudio" loop>
+            <source src="EasterEgg/Music.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- 🚨 SCROLL TO TOP BUTTON (Minimalist Centered) -->
+    <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
+        <svg viewBox="0 0 24 24">
+            <defs>
+                <!-- 'userSpaceOnUse' prevents the vertical line from vanishing! -->
+                <linearGradient id="goldGrad" x1="0%" y1="100%" x2="0%" y2="0%" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#c68f2e" />
+                    <stop offset="100%" stop-color="#e5a93d" />
+                </linearGradient>
+            </defs>
+            <line x1="12" y1="22" x2="12" y2="2"></line>
+            <polyline points="5 9 12 2 19 9"></polyline>
+        </svg>
+    </button>
+    <script>
 //-------------1-----------------//
 
       // 1. --- NOTIFICATION REDIRECT LOGIC ---
@@ -2114,23 +2213,32 @@
                 }
             }
         });
+
+    //--------------11------------//
+    // --- SCROLL TO TOP LOGIC (Bottom Trigger) ---
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+        window.addEventListener('scroll', () => {
+            // Calculate where the bottom of the user's screen is relative to the whole page
+            const scrollPosition = window.scrollY + window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            
+            // If the user is within 350px of the absolute bottom of the page, show the arrow
+            if (documentHeight - scrollPosition < 350) {
+                scrollTopBtn.classList.add('show');
+            } else {
+                scrollTopBtn.classList.remove('show');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
         document.getElementById("copyrightYear").innerText = new Date().getFullYear();
     </script>
 
-    
-    <footer style="text-align: center; padding: 30px; color: #555; font-size: 0.8rem; border-top: 1px solid #1a1a1a;">
-        <p>&copy; <span id="copyrightYear"></span> Reid Matthew. All Rights Reserved.</p>
-
-   <!-- 🚨 THE REDIRECT TRAP (LOCAL VIDEO + AUDIO) -->
-    <div id="trapOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:9999; align-items:center; justify-content:center;">
-        <video id="trapVideo" width="100%" height="100%" playsinline muted>
-            <source src="EasterEgg/Video.mp4" type="video/mp4">
-        </video>
-        <!-- Add your audio file here -->
-        <audio id="trapAudio" loop>
-            <source src="EasterEgg/Music.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-    </footer>
 </body>
 </html>
