@@ -1089,14 +1089,22 @@
             }
         }
 
-        /* --- USER SETTINGS & TOGGLES --- */
+       /* --- USER SETTINGS & TOGGLES --- */
         .setting-item {
             display: flex; justify-content: space-between; align-items: center;
             font-size: 1rem; color: #ffffff;
             font-weight: normal; letter-spacing: 1px; width: 100%;
         }
+        
+        /* Default visibility states */
         .mobile-only { display: none; }
-        @media (max-width: 768px) { .mobile-only { display: flex; } }
+        .desktop-only { display: flex; }
+        
+        /* Mobile overrides */
+        @media (max-width: 768px) { 
+            .mobile-only { display: flex; } 
+            .desktop-only { display: none !important; } /* 🚨 Hides desktop items on phones */
+        }
 
         /* iPhone-style Toggle Switch */
         .switch { position: relative; display: inline-block; width: 40px; height: 22px; }
@@ -1403,7 +1411,7 @@
                     <span>Always Grid Animation</span>
                     <label class="switch"><input type="checkbox" id="toggleGridAnim"><span class="slider"></span></label>
                 </div>
-                <div class="setting-item">
+                <div class="setting-item desktop-only">
                     <span>Always Enable Intro</span>
                     <label class="switch"><input type="checkbox" id="toggleAlwaysIntro"><span class="slider"></span></label>
                 </div>
