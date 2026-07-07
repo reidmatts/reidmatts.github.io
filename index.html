@@ -1365,7 +1365,7 @@
                     <label class="switch"><input type="checkbox" id="toggleTwoGrid"><span class="slider"></span></label>
                 </div>
                 <div class="setting-item mobile-only">
-                    <span>Disable Grid Animation</span>
+                    <span>Always Grid Animation</span>
                     <label class="switch"><input type="checkbox" id="toggleGridAnim"><span class="slider"></span></label>
                 </div>
                 <div class="setting-item">
@@ -2084,10 +2084,9 @@
             hamburgerBtn.addEventListener("click", toggleDrawer);
             drawerOverlay.addEventListener("click", toggleDrawer);
 
-     function triggerMobileGridSwitch(duration = 4000) {
+    function triggerMobileGridSwitch(duration = 4000) {
             if (window.innerWidth <= 480) {
-                // Instantly exit if the user manually disabled the animation, enabled 2-grid, OR turned on Low Detail
-                if (localStorage.getItem('gridAnimDisabled') === 'true') return;
+                // Instantly exit if the user enabled 2-grid, OR turned on Low Detail
                 if (localStorage.getItem('twoGridEnabled') === 'true') return;
                 if (localStorage.getItem('lowDetailEnabled') === 'true') return;
 
@@ -2096,21 +2095,24 @@
                 if (!activeSection) return;
                 const sectionId = activeSection.id; 
 
-                // 🚨 NEW: 7-Day Cooldown Logic (Tracks each directory separately)
+                // 🚨 NEW: Check if the user toggled "Always Grid Animation"
+                const forceAlwaysPlay = localStorage.getItem('alwaysGridAnimEnabled') === 'true';
+
                 const storageKey = 'lastGridAnim_' + sectionId;
                 const lastPlayed = localStorage.getItem(storageKey);
                 
-                if (lastPlayed) {
+                // Only apply the 7-day cooldown if they HAVEN'T forced it to always play
+                if (!forceAlwaysPlay && lastPlayed) {
                     const oneWeek = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
                     if (Date.now() - parseInt(lastPlayed) < oneWeek) {
                         return; // Skip animation, it has already played here this week!
                     }
                 }
                 
-                // Record the timestamp so it doesn't play again for 7 days
+                // Record the timestamp so it doesn't play again for 7 days (unless forced)
                 localStorage.setItem(storageKey, Date.now());
                 
-                // 🚨 Set a global flag so the Badges know they need to wait!
+                // Set a global flag so the Badges know they need to wait!
                 window.isGridAnimActive = true;
                 setTimeout(() => { window.isGridAnimActive = false; }, duration + 1200);
 
@@ -2553,9 +2555,9 @@
             toggleTwoGrid.checked = true;
             document.body.classList.add('force-two-cols');
         }
-        if(localStorage.getItem('gridAnimDisabled') === 'true') {
-            toggleGridAnim.checked = true;
-        }
+        toggleGridAnim.addEventListener('change', (e) => {
+            localStorage.setItem('alwaysGridAnimEnabled', e.target.checked);
+        });
         if(localStorage.getItem('lightModeEnabled') === 'true') {
             toggleLightMode.checked = true;
             document.body.classList.add('light-theme');
