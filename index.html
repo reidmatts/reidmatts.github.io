@@ -2091,9 +2091,33 @@
                 if (localStorage.getItem('twoGridEnabled') === 'true') return;
                 if (localStorage.getItem('lowDetailEnabled') === 'true') return;
 
-                const activeGrid = document.querySelector('.content-section:not(.hidden-section) .image-grid');
+                // Grab the currently active section to create a unique memory key
+                const activeSection = document.querySelector('.content-section:not(.hidden-section)');
+                if (!activeSection) return;
+                const sectionId = activeSection.id; 
+
+                // 🚨 NEW: 7-Day Cooldown Logic (Tracks each directory separately)
+                const storageKey = 'lastGridAnim_' + sectionId;
+                const lastPlayed = localStorage.getItem(storageKey);
                 
-                performSmoothLayoutChange(activeGrid, true);
+                if (lastPlayed) {
+                    const oneWeek = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+                    if (Date.now() - parseInt(lastPlayed) < oneWeek) {
+                        return; // Skip animation, it has already played here this week!
+                    }
+                }
+                
+                // Record the timestamp so it doesn't play again for 7 days
+                localStorage.setItem(storageKey, Date.now());
+                
+                // 🚨 Set a global flag so the Badges know they need to wait!
+                window.isGridAnimActive = true;
+                setTimeout(() => { window.isGridAnimActive = false; }, duration + 1200);
+
+                const gridElement = activeSection.querySelector('.image-grid');
+                if (!gridElement) return; // Failsafe
+                
+                performSmoothLayoutChange(gridElement, true);
                 clearTimeout(mobileGridTimer);
                 
                 mobileGridTimer = setTimeout(() => {
@@ -2407,7 +2431,8 @@
                     }
                 };
 
-                const delay = isMobile ? 5200 : 100;
+               // 🚨 NEW: Smart Delay! Instantly pops badges if the grid animation was skipped
+                const delay = (isMobile && window.isGridAnimActive) ? 5200 : 100;
                 
                 badgeTimer = setTimeout(() => {
                     let desktopStaggerCount = 0;
