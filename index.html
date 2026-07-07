@@ -375,6 +375,77 @@
         .hidden-section {
             display: none !important;
         }
+        /* --- SLANTED ABOUT ME BANNER --- */
+        .about-banner-container {
+            width: 100%;
+            height: 380px; 
+            position: relative;
+            overflow: hidden;
+            background-color: #121212; 
+            margin-bottom: 50px; 
+            border-radius: 8px; /* Optional: gives the outer box smooth corners */
+        }
+
+        .about-banner-grid {
+            display: flex;
+            width: 110%; /* Oversized to hide the empty edges created by the slant */
+            height: 100%;
+            margin-left: -5%; /* Shifts it back to dead-center */
+            transform: skewX(15deg); /* 🚨 Creates the / / / / angled slices */
+        }
+
+        .banner-item {
+            flex: 1; /* 🚨 This makes it auto-adjust to 7, 8, or any number of items! */
+            height: 100%;
+            overflow: hidden;
+            border-right: 5px solid #121212; /* The black separator lines */
+        }
+
+        .banner-item:last-child {
+            border-right: none; 
+        }
+
+        .banner-item img {
+            width: 160%; /* Scales the image up inside the slice */
+            height: 100%;
+            object-fit: cover; 
+            transform: skewX(-15deg); /* 🚨 Un-skews the photo so faces aren't distorted */
+            margin-left: -30%; /* Centers the photo perfectly inside the slanted slice */
+            transition: transform 0.5s ease, filter 0.5s ease;
+        }
+
+        .banner-item:hover img {
+            transform: skewX(-15deg) scale(1.05); /* Slight zoom on hover */
+            filter: brightness(1.2);
+        }
+
+        /* The fade shadow at the bottom to make your logo pop */
+        .banner-fade {
+            position: absolute;
+            bottom: 0; 
+            left: 0; 
+            right: 0;
+            height: 140px;
+            background: linear-gradient(to top, rgba(18,18,18,1) 0%, rgba(18,18,18,0) 100%);
+            pointer-events: none; /* Lets you still click images behind the shadow */
+            z-index: 5;
+        }
+
+        .banner-logo {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            max-width: 180px; /* Adjust this to fit your logo size */
+            z-index: 10;
+            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.8));
+        }
+
+        @media (max-width: 768px) {
+            .about-banner-container { height: 200px; margin-bottom: 30px; }
+            .banner-item { border-right: 3px solid #121212; }
+            .banner-logo { max-width: 120px; bottom: 10px; left: 15px; }
+            .banner-fade { height: 80px; }
+        }
 
         /* --- ABOUT ME SECTION STYLES --- */
         .about-wrapper {
@@ -998,6 +1069,11 @@
         body.light-theme .hamburger-btn span { background-color: #121212; }
         body.light-theme .hamburger-btn.open span { background-color: #e5a93d; }
         body.light-theme #sidebar-irl-links::after { background-color: #ddd; }
+        /* 🚨 Light Mode Overrides for the Slanted Banner */
+        body.light-theme .about-banner-container { background-color: #f4f4f4; }
+        body.light-theme .banner-item { border-right-color: #f4f4f4; }
+        body.light-theme .banner-fade { background: linear-gradient(to top, rgba(244,244,244,1) 0%, rgba(244,244,244,0) 100%); }
+        body.light-theme .banner-logo { filter: invert(1) drop-shadow(0px 2px 4px rgba(255,255,255,0.8)); }
         
         /* Updates SVG stroke colors in light mode */
         body.light-theme #openSettingsBtn, body.light-theme #backToNavBtn { stroke: #121212; }
@@ -1407,9 +1483,29 @@
                     <div class="image-item"><img src="PhotographyArchives/BW_POTRAIT_BACK.avif" loading="lazy" alt="Archives Gallery"></div>
                     <div class="image-item"><img src="PhotographyArchives/GIRLLEDGE.avif" loading="lazy" alt="Archives Gallery"></div> 
                     </div>
-</div>
+            </div>
 
             <div id="about-section" class="content-section hidden-section">
+
+                <!-- 🚨 THE NEW SLANTED FINE ARTS BANNER 🚨 -->
+                <div class="about-banner-container">
+                    <div class="about-banner-grid">
+                        <!-- Add or remove as many of these as you want! Flexbox auto-sizes them. -->
+                        <div class="banner-item"><img src="Photography2026/ORIG_34.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="Photography2026/ORIG_30.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="Photography2026/guyportrait.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="Photography2026/lightbirds.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="Photography2026/BW_PORTRAIT_1ST.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="PhotographyOfAllTime/SUNSET.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image"></div>
+                    </div>
+                    
+                    <!-- Bottom Shadow & Logo -->
+                    <div class="banner-fade"></div>
+                    <img class="banner-logo" src="logo.png" alt="Reid Matthew Logo">
+                </div>
+                <!-- 🚨 END BANNER 🚨 -->
+
                 <div class="about-wrapper">
                     <div class="about-block">
                         <h2 style="font-size: 2.2rem; color: #ffffff;">Creative <span class="text-magenta">Media</span></h2>
