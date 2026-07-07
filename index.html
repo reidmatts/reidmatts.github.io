@@ -15,6 +15,15 @@
     <meta name="twitter:description" content="Photography">
     <meta name="twitter:image" content="https://reidmatt.online/logoWithBG.avif">
     <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- 🚨 PRELOAD ENGINE: Forces the cinematic banner images to load instantly -->
+    <link rel="preload" as="image" href="AboutMe/ORIG_34.avif">
+    <link rel="preload" as="image" href="AboutMe/ORIG_30.avif">
+    <link rel="preload" as="image" href="AboutMe/guyportrait.avif">
+    <link rel="preload" as="image" href="AboutMe/lightbirds.avif">
+    <link rel="preload" as="image" href="AboutMe/BW_PORTRAIT_1ST.avif">
+    <link rel="preload" as="image" href="AboutMe/SUNSET.avif">
+    <link rel="preload" as="image" href="PhotographyArchives/capitol.avif">
     
     <style>
         /* Why is bro looking at my codes/
@@ -1395,6 +1404,10 @@
                     <label class="switch"><input type="checkbox" id="toggleGridAnim"><span class="slider"></span></label>
                 </div>
                 <div class="setting-item">
+                    <span>Always Enable Intro</span>
+                    <label class="switch"><input type="checkbox" id="toggleAlwaysIntro"><span class="slider"></span></label>
+                </div>
+                <div class="setting-item">
                     <span>Enable Light Mode</span>
                     <label class="switch"><input type="checkbox" id="toggleLightMode"><span class="slider"></span></label>
                 </div>
@@ -1541,16 +1554,16 @@
             <div id="about-section" class="content-section hidden-section">
 
                 <!-- 🚨 THE NEW SLANTED FINE ARTS BANNER 🚨 -->
-                <div class="about-banner-container">
+               <div class="about-banner-container">
                     <div class="about-banner-grid">
                         <!-- Add or remove as many of these as you want! Flexbox auto-sizes them. -->
-                        <div class="banner-item"><img src="AboutMe/ORIG_34.avif" alt="Banner Image"></div>
-                        <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image"></div>
-                        <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image"></div>
-                        <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image"></div>
-                        <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image"></div>
-                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image"></div>
-                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="AboutMe/ORIG_34.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" fetchpriority="high"></div>
                     </div>
                     
                     <!-- Bottom Shadow & Logo -->
@@ -1789,13 +1802,19 @@
     <script>
 //-------------1-----------------//
 
-      // 1. --- NOTIFICATION REDIRECT LOGIC ---
+     // 1. --- NOTIFICATION REDIRECT LOGIC ---
         const loadingToast = document.getElementById("loadingToast");
         let toastTimer;
 
         function showLoading() {
-            // Step 1: Pop up in the center
+            // 🚨 Bring it out of hiding (in case the cinematic intro hid it)
+            loadingToast.style.display = 'flex'; 
+            
+            // Safety resets to ensure it plays from the beginning
+            loadingToast.classList.remove("minimized"); 
             loadingToast.classList.add("show");
+            
+            clearTimeout(toastTimer); // Clear any old timers
             
             // Step 2: After 4 seconds, morph into the floating circle
             toastTimer = setTimeout(() => {
@@ -1811,19 +1830,19 @@
             clearTimeout(toastTimer); 
         });
 
-        setTimeout(showLoading, 100);
-
 //-------------2-----------------//
 
-
-                // 3. --- RANDOMIZE GALLERY ORDER (TRUE JS MASONRY FOR DESKTOP) ---
+// 3. --- RANDOMIZE GALLERY ORDER (TRUE JS MASONRY FOR DESKTOP) ---
         function shuffleGalleries() {
             const grids = document.querySelectorAll('.image-grid');
             const isDesktop = window.innerWidth > 768; 
             
             grids.forEach(grid => {
-                // Grab all items (this safely keeps your click-to-zoom modal events intact!)
+                // 🚨 THE BULLETPROOF FIX: Pull out the photos and destroy old columns first!
                 let allItems = Array.from(grid.querySelectorAll('.image-item'));
+                grid.innerHTML = ''; 
+                allItems.forEach(item => grid.appendChild(item));
+
                 let fixedItems = allItems.filter(item => item.classList.contains('fixed-order'));
                 let normalItems = allItems.filter(item => !item.classList.contains('fixed-order'));
 
@@ -1859,16 +1878,16 @@
                         let col = document.createElement('div');
                         col.style.display = 'flex';
                         col.style.flexDirection = 'column';
-                        col.style.gap = '20px'; // Replaces the CSS margin-bottom
+                        col.style.gap = '20px'; 
                         col.style.flex = '1';
-                        col.style.minWidth = '0'; // Prevents columns from stretching out of bounds
+                        col.style.minWidth = '0'; 
                         grid.appendChild(col);
                         columns.push(col);
                     }
                     
-                    // 4. Deal FIXED items first (Locks them to the absolute top of the physical divs)
+                    // 4. Deal FIXED items first
                     fixedItems.forEach((item, index) => {
-                        item.style.marginBottom = '0'; // Clean up old CSS margin
+                        item.style.marginBottom = '0'; 
                         columns[index % numCols].appendChild(item);
                     });
                     
@@ -1880,8 +1899,6 @@
                     
                 } else {
                     // MOBILE MODE: Respect 'fixed-order' strictly at the top of the single column
-                    
-                    // 🚨 STRIP DESKTOP INLINE STYLES: Allows the 2-Grid CSS toggle to work!
                     grid.style.columnCount = ''; 
                     grid.style.columnWidth = '';
                     grid.style.display = '';
@@ -2552,14 +2569,15 @@
 
 //----------10---------//
 
-        // 10. --- SETTINGS & LOCAL STORAGE MEMORY ENGINE ---
+       // 10. --- SETTINGS & LOCAL STORAGE MEMORY ENGINE ---
         const primaryNav = document.getElementById('primaryNav');
         const settingsNav = document.getElementById('settingsNav');
         const openSettingsBtn = document.getElementById('openSettingsBtn');
         const backToNavBtn = document.getElementById('backToNavBtn');
         
-         const toggleTwoGrid = document.getElementById('toggleTwoGrid');
+        const toggleTwoGrid = document.getElementById('toggleTwoGrid');
         const toggleGridAnim = document.getElementById('toggleGridAnim');
+        const toggleAlwaysIntro = document.getElementById('toggleAlwaysIntro');
         const toggleLightMode = document.getElementById('toggleLightMode');
         const toggleLowDetail = document.getElementById('toggleLowDetail');
         const toggleExperimental = document.getElementById('toggleExperimental');
@@ -2575,14 +2593,17 @@
             primaryNav.style.display = "block";
         };
 
-        // 2. LOAD SAVED MEMORY ON PAGE REFRESH
+        // 2. LOAD SAVED MEMORY ON PAGE REFRESH (Restores Visual Slider States)
         if(localStorage.getItem('twoGridEnabled') === 'true') {
             toggleTwoGrid.checked = true;
             document.body.classList.add('force-two-cols');
         }
-        toggleGridAnim.addEventListener('change', (e) => {
-            localStorage.setItem('alwaysGridAnimEnabled', e.target.checked);
-        });
+        if(localStorage.getItem('alwaysGridAnimEnabled') === 'true') {
+            toggleGridAnim.checked = true;
+        }
+        if(localStorage.getItem('alwaysIntroEnabled') === 'true') {
+            toggleAlwaysIntro.checked = true;
+        }
         if(localStorage.getItem('lightModeEnabled') === 'true') {
             toggleLightMode.checked = true;
             document.body.classList.add('light-theme');
@@ -2600,7 +2621,11 @@
         });
 
         toggleGridAnim.addEventListener('change', (e) => {
-            localStorage.setItem('gridAnimDisabled', e.target.checked);
+            localStorage.setItem('alwaysGridAnimEnabled', e.target.checked);
+        });
+
+        toggleAlwaysIntro.addEventListener('change', (e) => {
+            localStorage.setItem('alwaysIntroEnabled', e.target.checked);
         });
 
         toggleLightMode.addEventListener('change', (e) => {
@@ -2609,13 +2634,14 @@
             else document.body.classList.remove('light-theme');
         });
 
-       toggleLowDetail.addEventListener('change', (e) => {
+        toggleLowDetail.addEventListener('change', (e) => {
             localStorage.setItem('lowDetailEnabled', e.target.checked);
             if(e.target.checked) document.body.classList.add('low-detail');
             else document.body.classList.remove('low-detail');
         });
 
         // --- THE EASTER EGG ---
+    
      toggleExperimental.addEventListener('change', (e) => {
             if (e.target.checked) {
                 e.target.checked = false;
@@ -2668,8 +2694,147 @@
                 behavior: 'smooth'
             });
         });
+        
         document.getElementById("copyrightYear").innerText = new Date().getFullYear();
+
+       // =================================================== //
+        // 12. --- CINEMATIC FIRST-TIME DESKTOP INTRO ENGINE --- //
+        // =================================================== //
+        function runCinematicIntro() {
+            const isDesktop = window.innerWidth > 768;
+            
+            // Check memory keys
+            const hasSeenIntro = localStorage.getItem('hasSeenCinematicIntro');
+            const forceAlwaysIntro = localStorage.getItem('alwaysIntroEnabled') === 'true';
+
+            // 🚨 Plays if on desktop AND (they haven't seen it OR they forced it in settings)
+            if (isDesktop && (!hasSeenIntro || forceAlwaysIntro)) { 
+                
+                const lockOverlay = document.createElement('div');
+                lockOverlay.style.position = 'fixed';
+                lockOverlay.style.top = '0'; lockOverlay.style.left = '0';
+                lockOverlay.style.width = '100vw'; lockOverlay.style.height = '100vh';
+                lockOverlay.style.zIndex = '99999';
+                lockOverlay.style.backgroundColor = 'rgba(18,18,18,0)';
+                lockOverlay.style.transition = 'background-color 0.8s ease';
+                lockOverlay.style.cursor = 'wait'; 
+                document.body.appendChild(lockOverlay);
+
+                const preventScroll = (e) => e.preventDefault();
+                const preventKeys = (e) => {
+                    if(["Space","ArrowUp","ArrowDown","PageUp","PageDown","Home","End"].includes(e.code)) e.preventDefault();
+                };
+                window.addEventListener('wheel', preventScroll, { passive: false });
+                window.addEventListener('touchmove', preventScroll, { passive: false });
+                window.addEventListener('keydown', preventKeys, { passive: false });
+
+                function cinematicScroll(targetEl, duration) {
+                    const targetY = targetEl.getBoundingClientRect().top + window.scrollY - (window.innerHeight / 2) + (targetEl.offsetHeight / 2) - 40;
+                    const startY = window.scrollY;
+                    const diff = targetY - startY;
+                    let start = null;
+
+                    window.requestAnimationFrame(function step(timestamp) {
+                        if (!start) start = timestamp;
+                        const time = timestamp - start;
+                        let percent = Math.min(time / duration, 1);
+                        percent = percent < 0.5 ? 4 * percent * percent * percent : 1 - Math.pow(-2 * percent + 2, 3) / 2;
+                        window.scrollTo(0, startY + diff * percent);
+                        if (time < duration) window.requestAnimationFrame(step);
+                    });
+                }
+
+                hideAllSections();
+                navAbout.classList.add("active");
+                aboutSection.classList.remove("hidden-section");
+                window.scrollTo(0, 0);
+
+                if (loadingToast) loadingToast.style.display = 'none';
+
+                // 🚨 NETWORK PROTECTION: Wait for the banner to load before rolling cameras!
+                const bannerImgs = Array.from(document.querySelectorAll('.banner-item img'));
+                let loadedCount = 0;
+                let sequenceStarted = false;
+
+                const startMovieSequence = () => {
+                    if (sequenceStarted) return;
+                    sequenceStarted = true;
+
+                    // 🎬 ACT I: Wait 3 seconds at the fully loaded banner
+                    setTimeout(() => {
+                        const mobilePhotoBlock = aboutSection.querySelector('.about-block');
+                        if (mobilePhotoBlock) {
+                            cinematicScroll(mobilePhotoBlock, 2000); 
+                        }
+
+                        // 🎬 ACT II: Wait for 2s scroll + 1s reading time
+                        setTimeout(() => {
+                            lockOverlay.style.backgroundColor = '#121212'; 
+
+                            // 🎬 ACT III: Screen is black, swap pages
+                            setTimeout(() => {
+                                hideAllSections();
+                                nav2026.classList.add("active");
+                                grid2026.classList.remove("hidden-section");
+                                window.scrollTo(0, 0);
+
+                                shuffleGalleries(); 
+                                if (window.refreshBadges) window.refreshBadges();
+
+                                // 🎬 ACT IV: Fade back in
+                                lockOverlay.style.backgroundColor = 'rgba(18,18,18,0)';
+
+                                setTimeout(() => {
+                                    lockOverlay.remove();
+                                    window.removeEventListener('wheel', preventScroll);
+                                    window.removeEventListener('touchmove', preventScroll);
+                                    window.removeEventListener('keydown', preventKeys);
+                                    showLoading();
+                                    
+                                    // 🚨 STAMP MEMORY: Only saves if the sequence perfectly finishes!
+                                    if (!forceAlwaysIntro) {
+                                        localStorage.setItem('hasSeenCinematicIntro', 'true');
+                                    }
+                                }, 800); 
+                            }, 800); 
+                        }, 3000); 
+                    }, 3000); 
+                };
+
+                // Fallback: If network is terrible, force start movie after 5 seconds anyway
+                const fallbackTimer = setTimeout(startMovieSequence, 5000);
+
+                // Check image load status
+                if (bannerImgs.length === 0) {
+                    startMovieSequence();
+                } else {
+                    bannerImgs.forEach(img => {
+                        if (img.complete && img.naturalHeight !== 0) {
+                            loadedCount++;
+                        } else {
+                            img.addEventListener('load', () => { 
+                                loadedCount++; if(loadedCount === bannerImgs.length) startMovieSequence(); 
+                            }, { once: true });
+                            img.addEventListener('error', () => { 
+                                loadedCount++; if(loadedCount === bannerImgs.length) startMovieSequence(); 
+                            }, { once: true });
+                        }
+                    });
+                    if (loadedCount === bannerImgs.length) startMovieSequence();
+                }
+                
+                return true; 
+            }
+            return false; 
+        }
+
+        // Fire the cinematic checker
+        const isIntroRunning = runCinematicIntro();
+        if (!isIntroRunning) {
+            setTimeout(showLoading, 100);
+        }
     </script>
+    
 
 </body>
 </html>
