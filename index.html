@@ -454,7 +454,7 @@
 
         /* --- ABOUT ME SECTION STYLES --- */
         .about-wrapper {
-            max-width: 800px;
+            max-width: 1100px;
             margin: 0 auto;
             color: #ffffff; 
             line-height: 1.8;
@@ -486,12 +486,33 @@
 
         .video-thumbnail {
             width: 100%;
-            max-width: 800px;
+            max-width: 1100px;
             height: auto;
             border-radius: 8px;
             transition: filter 0.3s ease, transform 0.3s ease;
             display: block;
             border: 1px solid #333;
+        }
+        /* 🚨 2-COLUMN SPLIT FOR PHOTOGRAPHY SECTION */
+        .split-block {
+            display: flex;
+            align-items: center;
+            gap: 40px; /* Spacing between the text and the image */
+        }
+
+        .split-text {
+            flex: 1.2; /* Gives the text slightly more breathing room */
+        }
+
+        .split-image {
+            flex: 1; /* Locks the image area to the right side */
+        }
+
+        @media (max-width: 768px) {
+            .split-block {
+                flex-direction: column; /* Stacks vertically on mobile */
+                gap: 25px;
+            }
         }
 
         .video-thumbnail:hover {
@@ -504,6 +525,8 @@
             border-top: 1px solid #333;
             margin: 40px 0 20px 0;
         }
+
+
 
     
        /* --- POPUP NOTIFICATION (TOAST) CSS --- */
@@ -1512,67 +1535,105 @@
                 <!-- 🚨 END BANNER 🚨 -->
 
                 <div class="about-wrapper">
+                    
+                    <!-- 🚨 THE NEW SEPARATOR WITH EXTRA SPACING 🚨 -->
+                    <hr class="divider" style="margin-top: 10px; margin-bottom: 5px;">
+                    
                     <div class="about-block">
-                        <h2 style="font-size: 2.2rem; color: #ffffff;">Creative <span class="text-magenta">Media</span></h2>
-                        <h3 class="text-cyan" style="font-size: 1.6rem; margin-top: -10px;">Programs</h3>
-                        <p style="margin-top: 15px;">Editing has been a <span class="text-yellow">Personal Hobby</span> of mine, <br> 
-                             pursuing my primary focus on <span class="text-yellow">Creative Work</span> in real life.</p>
-                    </div>
+                        <div class="split-block">
+                            <!-- LEFT SIDE: Text -->
+                            <div class="split-text">
 
-                    <div class="resolve-splash-container">
-                         <img src="AboutMe/editing softwares.png" alt="DaVinci Resolve Studio Splash Screen" class="resolve-splash-img" style="width:100%; border-radius: 8px;">
-                    </div>
-
+                <div class="about-wrapper">
                     <div class="about-block">
-                        <h2 style="font-size: 2.2rem; color: #ffffff;">FEATURED</h2>
-                        <h2 class="text-magenta" style="font-size: 2.5rem; margin-top: -15px;">Motion Graphics</h2>
+                        <div class="about-block">
+                        <div class="split-block">
+                            <!-- LEFT SIDE: Text -->
+                            <div class="split-text">
+                                <h2 style="font-size: 2.2rem; color: #ffffff;">Mobile Photography</h2>
+                                <p><span class="text-cyan" style="font-weight: bold; font-size: 1.3rem;">2 years</span> of photography experience,</p>
+                                <p>Just a year ago, I bought a phone with little photography experience. Today, I push mobile photography to its pinnacle capturing images straight from the camera <br> <br>
+                                     As I grow through my teenage years alongside my mobile photography, I always wonder how a dedicated camera might expand my vision. I hope these works build my self-belief, proving that even as a young creator, I am capable of achieving incredible things and what I could do in the near decade.</p>
+                            </div>
+                            
+                            <!-- RIGHT SIDE: Xiaomi 15 Image -->
+                            <div class="split-image">
+                                <!-- Standard image-item class so it inherits your masonry zoom & click-to-fullscreen! -->
+                                <div class="image-item" style="margin-bottom: 0;">
+                                    <img src="AboutMe/xiaomi15.jpg" alt="Xiaomi 15 Leica Camera">
+                                </div>
+                            </div>
+                        </div>
                         
-                        <p style="margin-top: 10px;">I do <span class="text-yellow">Award-Winning Motion Graphics</span>, I specialize in Mixed-Media, Scrapbook Styled Animation similarly to VOX Animation.</p>
-                        <p>Using the full extent of Canva & Capcut to greatly increase the efficiency. It only takes an hour to create a 30s Infographics Animation.</p>
-                        
-                        <div class="video-container">
-                            <a href="https://www.youtube.com/watch?v=GPWcXqtpOBQ1" target="_blank">
-                                <img src="AboutMe/SS_3.png" alt="Hacker Motion Graphic" class="video-thumbnail">
-                            </a>
-                            <a href="https://www.youtube.com/watch?v=GPWcXqtpOBQ" target="_blank">
-                                <img src="AboutMe/SS_2.png" alt="DepEd Budget Graphic" class="video-thumbnail">
-                            </a>
+                        <!-- 🚨 CREATIVE MEDIA SECTION 🚨 -->
+                    <hr class="divider">
+                    <div class="about-block">
+                        <div class="split-block">
+                            <!-- LEFT SIDE: Text -->
+                            <div class="split-text">
+                                <h2 style="font-size: 2.2rem; color: #ffffff;">Creative <span class="text-magenta">Media</span></h2>
+                                <h3 class="text-cyan" style="font-size: 1.6rem; margin-top: -10px;">Programs</h3>
+                                <p style="margin-top: 15px;">Editing has been a <span class="text-yellow">Personal Hobby</span> of mine, <br> 
+                                     pursuing my primary focus on <span class="text-yellow">Creative Work</span> in real life.</p>
+                            </div>
+                            <!-- RIGHT SIDE: Image -->
+                            <div class="split-image">
+                                <div class="image-item" style="margin-bottom: 0;">
+                                    <img src="AboutMe/editing softwares.png" alt="DaVinci Resolve Studio Splash Screen" style="width:100%; border-radius: 8px;">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- 🚨 MOTION GRAPHICS SECTION 🚨 -->
+                    <hr class="divider">
                     <div class="about-block">
-                        <h2 class="text-magenta" style="font-size: 2.5rem;">Cinematography</h2>
-                        
-                        <p>I do <span class="text-yellow">Award-Winning Cinematography Competition</span>, I specialize in high-fidelity cinematography with a focus on color science and precise composition taken with a Smartphone.</p>
-                        <p>I currently use the <strong>Studio Version</strong> of <span class="text-cyan" style="font-style: italic;">Davinci Resolve</span> Industy standard for Film Making in Hollywood and Netflix editing software.</p>
-
-                        <div class="video-container">
-                            <a href="https://www.youtube.com/watch?v=YOUR_LINK_HERE" target="_blank">
-                                <img src="AboutMe/TROPHY.jpg" alt="Festival Cinematography" class="video-thumbnail">
-                            </a>
-                            <a href="https://www.youtube.com/watch?v=dRKKZPG2dPc" target="_blank">
-                                <img src="AboutMe/SS_1.png" alt="Trophy Cinematography" class="video-thumbnail">
-                                <img src="AboutMe/SS_CINEMA.jpg" alt="Trophy Cinematography" class="video-thumbnail">
-                                <img src="AboutMe/SSS_CINEMA2.jpg" alt="Trophy Cinematography" class="video-thumbnail">
-                            </a>
+                        <div class="split-block">
+                            <!-- LEFT SIDE: Text -->
+                            <div class="split-text">
+                                <h2 style="font-size: 2.2rem; color: #ffffff;">FEATURED</h2>
+                                <h2 class="text-magenta" style="font-size: 2.5rem; margin-top: -15px;">Motion Graphics</h2>
+                                <p style="margin-top: 10px;">I do <span class="text-yellow">Award-Winning Motion Graphics</span>, I specialize in Mixed-Media, Scrapbook Styled Animation similarly to VOX Animation.</p>
+                                <p>Using the full extent of Canva & Capcut to greatly increase the efficiency. It only takes an hour to create a 30s Infographics Animation.</p>
+                            </div>
+                            <!-- RIGHT SIDE: Videos/Thumbnails -->
+                            <div class="split-image">
+                                <div class="video-container" style="margin-top: 0;">
+                                    <a href="https://www.youtube.com/watch?v=GPWcXqtpOBQ1" target="_blank">
+                                        <img src="AboutMe/SS_3.png" alt="Hacker Motion Graphic" class="video-thumbnail">
+                                    </a>
+                                    <a href="https://www.youtube.com/watch?v=GPWcXqtpOBQ" target="_blank">
+                                        <img src="AboutMe/SS_2.png" alt="DepEd Budget Graphic" class="video-thumbnail">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- 🚨 CINEMATOGRAPHY SECTION 🚨 -->
+                    <hr class="divider">
                     <div class="about-block">
-                        <h2 style="font-size: 2.2rem; color: #ffffff;">Photography</h2>
-                        <p><span class="text-cyan" style="font-weight: bold;">4 years</span> of photography experience,</p>
-                        <p>Specializing with Cinematic and Dramatic Photography Styled high-quality smartphone captures. All images are shot in Auto Mode with no post-processing / editing applied. Offering pure Leica-colored DSLR-level quality straight from the camera.</p>
-                             <img src="AboutMe/SS_PHOTO.png" alt="Trophy Cinematography" class="video-thumbnail">
-                        
-                        <hr class="divider">
-                        
-                        <h3 style="color: white; font-size: 1.5rem; letter-spacing: 1px;">
-                            #<span class="text-cyan">P</span><span style="color:#ff0000">h</span><span style="color:#ff8800">o</span><span style="color:#ffff00">t</span><span style="color:#00ff00">o</span><span class="text-cyan">g</span><span style="color:#0000ff">r</span><span class="text-magenta">a</span><span style="color:#ff0000">p</span><span style="color:#ff8800">h</span><span style="color:#ffff00">y</span> 
-                        </h3>
+                        <div class="split-block">
+                            <!-- LEFT SIDE: Text -->
+                            <div class="split-text">
+                                <h2 class="text-magenta" style="font-size: 2.5rem;">Cinematography</h2>
+                                <p>I do <span class="text-yellow">Award-Winning Cinematography Competition</span>, I specialize in high-fidelity cinematography with a focus on color science and precise composition taken with a Smartphone.</p>
+                                <p>I currently use the <strong>Studio Version</strong> of <span class="text-cyan" style="font-style: italic;">Davinci Resolve</span> Industy standard for Film Making in Hollywood and Netflix editing software.</p>
+                            </div>
+                            <!-- RIGHT SIDE: Videos/Thumbnails -->
+                            <div class="split-image">
+                                <div class="video-container" style="margin-top: 0;">
+                                    <a href="https://www.youtube.com/watch?v=YOUR_LINK_HERE" target="_blank">
+                                    </a>
+                                    <a href="https://www.youtube.com/watch?v=dRKKZPG2dPc" target="_blank">
+                                        <img src="AboutMe/SS_1.png" alt="Trophy Cinematography" class="video-thumbnail">
+                                        <img src="AboutMe/SS_CINEMA.jpg" alt="Trophy Cinematography" class="video-thumbnail">
+                                        <img src="AboutMe/SSS_CINEMA2.jpg" alt="Trophy Cinematography" class="video-thumbnail">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                </div>
-            </div>
 
             <div id="cinematics-section" class="content-section hidden-section">
                 <div class="about-wrapper" style="text-align: center; margin-bottom: 40px; margin-top: 10vh;">
