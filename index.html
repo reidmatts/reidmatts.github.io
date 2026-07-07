@@ -20,6 +20,7 @@
         /* Why is bro looking at my codes/
         /* Its cool fr fr*/
         /* CSS Reset & Base Styles */
+      @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
         * {
             margin: 0;
             padding: 0;
@@ -382,7 +383,7 @@
             position: relative;
             overflow: hidden;
             background-color: #121212; 
-            margin-bottom: 50px; 
+            margin-bottom: 5px; 
             border-radius: 8px; /* Optional: gives the outer box smooth corners */
         }
 
@@ -971,36 +972,60 @@
         }
         @keyframes bgFadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
 
-        /* --- "NEW" TEXT BADGE --- */
+ /* --- "NEW" TEXT BADGE --- */
         .new-text-label {
             position: absolute;
-            bottom: 25px; 
-            right: 25px;
-            font-family: 'Vagabond', sans-serif; 
-            font-size: 0.85rem; 
-            font-weight: bold;
-            letter-spacing: 1.5px;
-            color: #ffcc00; 
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            top: 15px; 
+            right: 15px;
+            
+            /* Silver base with a crisp, subtle white sheer streak */
+            background: linear-gradient(110deg, #eeeeee 42%, #ffffff 50%, #eeeeee 58%);
+            background-size: 300% 100%;
+            background-position: 100% 0; /* Parks the white streak safely out of view */
+            background-repeat: no-repeat;
+            
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            
+            /* Clean drop shadow, no background pill */
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+            
+            padding: 0;
+            border-radius: 0;
+            
+            /* 🚨 The Call Me By Your Name Aesthetic 🚨 */
+            font-family: 'Permanent Marker', cursive; 
+            font-size: 1.1rem; 
+            font-weight: normal; 
+            letter-spacing: 2px;
             text-transform: uppercase; 
+            
             z-index: 10;
             pointer-events: none;
             opacity: 0;
+            
+            /* Split animations: Cubic-Bezier for entry/exit, ease-in-out for sheen */
             animation: 
-                newTextSlideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) calc(0.5s + var(--stagger-delay, 0s)) forwards,
-                newTextSlideOut 0.6s ease calc(8.2s + var(--stagger-delay, 0s)) forwards;
+                newTextAppear 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(1.5s + var(--stagger-delay, 0s)) forwards,
+                newTextSheen 2s ease-in-out calc(1.8s + var(--stagger-delay, 0s)) forwards,
+                newTextVanish 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(8.1s + var(--stagger-delay, 0s)) forwards;
         }
 
-        @keyframes newTextSlideIn {
-            from { opacity: 0; transform: translateX(-15px); }
-            to { opacity: 1; transform: translateX(0); }
+        @keyframes newTextAppear {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); } 
         }
 
-        @keyframes newTextSlideOut {
+        @keyframes newTextSheen {
+            from { background-position: 100% 0; }
+            to { background-position: 0% 0; } /* Sweeps exactly once */
+        }
+
+        @keyframes newTextVanish {
             from { opacity: 1; transform: translateX(0); }
-            to { opacity: 0; transform: translateX(15px); visibility: hidden; }
+            to { opacity: 0; transform: translateX(20px); visibility: hidden; } /* 🚨 Slides back out to the right */
         }
-
     
        /* --- CUSTOM CINEMATIC SCROLLBAR (DESKTOP) --- */
         ::-webkit-scrollbar {
@@ -1152,11 +1177,12 @@
                 lowDetailFadeIn 0.5s ease calc(1.1s + var(--stagger-delay, 0s)) forwards,
                 lowDetailFadeOut 0.5s ease calc(4.6s + var(--stagger-delay, 0s)) forwards !important;
         }
-        body.low-detail .new-text-label {
+      body.low-detail .new-text-label {
             transform: none !important; 
+            /* 🚨 Synced with the perfectly symmetrical entry and exit */
             animation: 
-                lowDetailFadeIn 0.6s ease calc(0.5s + var(--stagger-delay, 0s)) forwards,
-                lowDetailFadeOut 0.6s ease calc(8.2s + var(--stagger-delay, 0s)) forwards !important;
+                lowDetailFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(1.5s + var(--stagger-delay, 0s)) forwards,
+                lowDetailFadeOut 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(8.1s + var(--stagger-delay, 0s)) forwards !important;
         }
 
         /* --- MINIMALIST SCROLL TO TOP ARROW --- */
@@ -1418,7 +1444,6 @@
             <main class="main-content">
             <div id="grid-2026" class="content-section">
                 <div class="image-grid">
-                    
                     <div class="image-item fixed-order favorite"><img src="Photography2026/ORIG_34.avif" alt="1st"></div>
                     <div class="image-item fixed-order award-winning"><img src="Photography2026/ORIG_30.avif" alt="2nd"></div>
                     <div class="image-item fixed-order favorite"><img src="Photography2026/neonsignsblur.avif" alt="3rd"></div>
@@ -2406,12 +2431,12 @@
                         }, 6000 + (delaySeconds * 1000));
                     }
 
-                    // 2. Generate the Bottom-Right "New!" Text (If it has one)
+                    // 2. Generate the Top-Right "NEW" Text (If it has one)
                     if (isNew) {
                         const newText = document.createElement('div');
                         newText.className = 'new-text-label';
                         newText.style.setProperty('--stagger-delay', `${delaySeconds}s`);
-                        newText.innerText = 'New!';
+                        newText.innerText = 'NEW'; // 🚨 Updated text
 
                         item.appendChild(newText);
 
