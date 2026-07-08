@@ -451,8 +451,17 @@
         }
 
         @media (max-width: 768px) {
-            .about-banner-container { height: 200px; margin-bottom: 30px; }
+            .about-banner-container { height: 220px; margin-bottom: 30px; }
             .banner-item { border-right: 3px solid #121212; }
+            /* 🚨 THE EDGE FIX: Widens the bleed and zooms in slightly to kill white borders */
+            .banner-item img {
+                width: 200%; 
+                margin-left: -50%;
+                transform: skewX(-15deg) scale(1.15); /* Zooms past the white artifacts */
+            }
+            .banner-item:hover img {
+                transform: skewX(-15deg) scale(1.25);
+            }
             .banner-logo { max-width: 120px; bottom: 10px; left: 15px; }
             .banner-fade { height: 80px; }
             .banner-item:nth-child(6),
@@ -1636,19 +1645,21 @@
                     <div class="image-item"><img src="PhotographyArchives/GIRLLEDGE.avif" loading="lazy" alt="Archives Gallery"></div> 
                     </div>
             </div>
-            <div id="about-section" class="content-section hidden-section">
+           <div id="about-section" class="content-section hidden-section">
 
-                <!-- 🚨 THE NEW SLANTED FINE ARTS BANNER 🚨 -->
+                <!-- 🚨 THE SLANTED FINE ARTS BANNER 🚨 -->
                <div class="about-banner-container">
                     <div class="about-banner-grid">
-                        <!-- Add or remove as many of these as you want! Flexbox auto-sizes them. -->
-                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" fetchpriority="high"></div>
-                        <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image" fetchpriority="high"></div>
-                        <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image" fetchpriority="high"></div>
-                        <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image" fetchpriority="high"></div>
-                        <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image" fetchpriority="high"></div>
-                        <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image" fetchpriority="high"></div>
-                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" fetchpriority="high"></div>    
+                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
+                        
+                        <!-- 🚨 Reverted to 50% to perfectly center him on desktop -->
+                        <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
+                        
+                        <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>    
                     </div>
                     
                     <!-- Bottom Shadow & Logo -->
