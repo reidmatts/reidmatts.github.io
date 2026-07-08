@@ -1378,16 +1378,19 @@
         }
         .close-mobile-banner {
             position: absolute;
-            top: 5px;
+            top: 2px; /* Adjusted up slightly to compensate for the larger font */
             right: 15px;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 28px;
+            color: #e5a93d; /* 🚨 Changed to signature yellow */
+            font-size: 34px; /* 🚨 Made slightly bigger for better mobile tapping */
             z-index: 10;
             cursor: pointer;
-            transition: color 0.3s ease;
+            text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8); /* 🚨 Added subtle shadow to separate it from bright photos */
+            transition: color 0.3s ease, transform 0.2s ease;
         }
+        
         .close-mobile-banner:hover {
             color: #ffffff;
+            transform: scale(1.1); /* Adds a satisfying little 'pop' when tapped */
         }
         
         /* 🚨 Custom spacing for the new separator */
@@ -1407,7 +1410,14 @@
             color: #121212; 
             text-shadow: 0px 1px 3px rgba(255,255,255,0.8); 
         }
-        body.light-theme .close-mobile-banner { color: rgba(18,18,18,0.6); }
+        /* 🚨 Ensures the X stays yellow in light mode but gets a light shadow */
+        body.light-theme .close-mobile-banner { 
+            color: #e5a93d; 
+            text-shadow: 0px 2px 4px rgba(255,255,255,0.8); 
+        }
+        body.light-theme .close-mobile-banner:hover {
+            color: #121212;
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
