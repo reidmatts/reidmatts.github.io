@@ -17,13 +17,13 @@
     <link rel="icon" type="image/png" href="logo.png">
 
     <!-- 🚨 PRELOAD ENGINE: Forces the cinematic banner images to load instantly -->
-    <link rel="preload" as="image" href="AboutMe/ORIG_34.avif">
+    <link rel="preload" as="image" href="PhotographyArchives/capitol.avif">
+    <link rel="preload" as="image" href="PhotographyArchives/2024portraitgirl.avif">
     <link rel="preload" as="image" href="AboutMe/ORIG_30.avif">
     <link rel="preload" as="image" href="AboutMe/guyportrait.avif">
     <link rel="preload" as="image" href="AboutMe/lightbirds.avif">
     <link rel="preload" as="image" href="AboutMe/BW_PORTRAIT_1ST.avif">
     <link rel="preload" as="image" href="AboutMe/SUNSET.avif">
-    <link rel="preload" as="image" href="PhotographyArchives/capitol.avif">
     
     <style>
         /* Why is bro looking at my codes/
@@ -1605,13 +1605,14 @@
            <div id="grid-archives" class="content-section hidden-section">
           <div class="image-grid">
                     <!-- Top items (Fixed order, loaded immediately) -->
+                    <div class="image-item fixed-order"><img src="PhotographyArchives/2024portraitgirl.avif " loading="lazy" alt="Archives Gallery"></div> 
+                    <div class="image-item fixed-order"><img src="PhotographyArchives/gasstation.avif" loading="lazy" alt="5th"></div>
                     <div class="image-item fixed-order favorite"><img src="PhotographyArchives/capitol.avif" alt="first"></div>
                     <div class="image-item fixed-order"><img src="PhotographyArchives/HOUSE_NOSTALGIC.avif" alt="2nd"></div>
                     <div class="image-item fixed-order favorite"><img src="PhotographyArchives/robinsons2.avif" alt="3rd"></div>
                     <div class="image-item fixed-order"><img src="PhotographyArchives/POTRAIT_LLEDGE.avif" alt="4th"></div>
 
                       <!-- Remaining items (Lazy loaded to optimize memory and prevent UI stuttering) -->
-                    <div class="image-item fixed-order"><img src="PhotographyArchives/gasstation.avif" loading="lazy" alt="5th"></div>
                     <div class="image-item fixed-order"><img src="PhotographyArchives/POTRAITGUY.avif" loading="lazy" alt="6th"></div>
                     <div class="image-item fixed-order"><img src="PhotographyArchives/windmill.avif" loading="lazy" alt="7th"></div>
                     <div class="image-item fixed-order"><img src="PhotographyArchives/SWIMMINGPOOLSUNSET.avif" loading="lazy" alt="8th"></div>
@@ -1635,20 +1636,19 @@
                     <div class="image-item"><img src="PhotographyArchives/GIRLLEDGE.avif" loading="lazy" alt="Archives Gallery"></div> 
                     </div>
             </div>
-
             <div id="about-section" class="content-section hidden-section">
 
                 <!-- 🚨 THE NEW SLANTED FINE ARTS BANNER 🚨 -->
                <div class="about-banner-container">
                     <div class="about-banner-grid">
                         <!-- Add or remove as many of these as you want! Flexbox auto-sizes them. -->
-                        <div class="banner-item"><img src="AboutMe/ORIG_34.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image" fetchpriority="high"></div>
                         <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image" fetchpriority="high"></div>
                         <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image" fetchpriority="high"></div>
                         <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image" fetchpriority="high"></div>
                         <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image" fetchpriority="high"></div>
-                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" fetchpriority="high"></div>
-                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" fetchpriority="high"></div>
+                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" fetchpriority="high"></div>    
                     </div>
                     
                     <!-- Bottom Shadow & Logo -->
