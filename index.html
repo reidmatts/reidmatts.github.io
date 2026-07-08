@@ -1359,6 +1359,55 @@
                 margin-bottom: 15px;
             }
         }
+       /* --- MOBILE 2026 PROMO BANNER --- */
+        .mobile-banner-hide {
+            display: none !important;
+        }
+        .mobile-banner-text {
+            position: absolute;
+            bottom: 16px; /* Aligns vertically with the mobile logo */
+            left: 120px; /* 🚨 Pulled closely beside the logo */
+            color: #ffffff; /* 🚨 Changed to white */
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 0.6rem; /* 🚨 Made smaller */
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            z-index: 10;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.8); /* 🚨 Subtle, clean text shadow */
+        }
+        .close-mobile-banner {
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 28px;
+            z-index: 10;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close-mobile-banner:hover {
+            color: #ffffff;
+        }
+        
+        /* 🚨 Custom spacing for the new separator */
+        #mobileBannerDivider {
+            margin-top: 5px; 
+            margin-bottom: 25px;
+            transition: opacity 0.4s ease, margin 0.4s ease;
+        }
+
+        /* Failsafe: Absolutely kills the banner and separator on desktop */
+        @media (min-width: 769px) {
+            #mobile-2026-banner, #mobileBannerDivider { display: none !important; }
+        }
+
+        /* Light mode adjustments */
+        body.light-theme .mobile-banner-text { 
+            color: #121212; 
+            text-shadow: 0px 1px 3px rgba(255,255,255,0.8); 
+        }
+        body.light-theme .close-mobile-banner { color: rgba(18,18,18,0.6); }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -1464,6 +1513,20 @@
         
             <main class="main-content">
             <div id="grid-2026" class="content-section">
+                    <div id="mobile-2026-banner" class="about-banner-container mobile-banner-hide" data-version="v1" style="margin-bottom: 20px;">
+                    <div class="about-banner-grid">
+                        <!--featured images here -->
+                        <div class="banner-item"><img src="Photography2026/neonsignsblur.avif" alt="New Image"></div>
+                        <div class="banner-item"><img src="Photography2026/awardwinning.avif" alt="New Image"></div>
+                        <div class="banner-item"><img src="Photography2026/wideceiling.avif" alt="New Image"></div>
+                    </div>
+                    <div class="banner-fade"></div>
+                    <img class="banner-logo" src="logo.png" alt="Reid Matthew Logo">
+                    <span class="mobile-banner-text">New Curated Images</span>
+                    <span class="close-mobile-banner" id="closeMobileBanner">&times;</span>
+                </div>
+                <!-- 🚨 NEW SEPARATOR BELOW BANNER -->
+                <hr class="divider mobile-banner-hide" id="mobileBannerDivider">
                 <div class="image-grid">
                     <div class="image-item fixed-order favorite"><img src="Photography2026/ORIG_34.avif" alt="1st"></div>
                     <div class="image-item fixed-order award-winning"><img src="Photography2026/ORIG_30.avif" alt="2nd"></div>
@@ -2841,6 +2904,54 @@
         if (!isIntroRunning) {
             setTimeout(showLoading, 100);
         }
+       
+     // 13. --- MOBILE 2026 PROMO BANNER ENGINE --- //
+       
+        function initMobileBanner() {
+            const mobileBanner = document.getElementById('mobile-2026-banner');
+            const mobileDivider = document.getElementById('mobileBannerDivider');
+            if (!mobileBanner) return;
+
+            const isMobile = window.innerWidth <= 768;
+            const bannerVersion = mobileBanner.getAttribute('data-version');
+            const memoryKey = 'seenMobileBanner_' + bannerVersion;
+
+            if (isMobile) {
+                
+                // 🚨 DEBUG MODE: Bypassing memory check so it shows every refresh!
+                // if (!localStorage.getItem(memoryKey)) {
+                    mobileBanner.classList.remove('mobile-banner-hide');
+                    if (mobileDivider) mobileDivider.classList.remove('mobile-banner-hide');
+                // }
+
+                // Handle the 'X' close button
+                const closeBtn = document.getElementById('closeMobileBanner');
+                if (closeBtn) {
+                    closeBtn.onclick = function() {
+                        
+                        // Smooth fade out for both elements
+                        mobileBanner.style.opacity = '0';
+                        if (mobileDivider) mobileDivider.style.opacity = '0';
+                        
+                        mobileBanner.style.transition = 'opacity 0.4s ease, margin 0.4s ease, height 0.4s ease';
+                        
+                        mobileBanner.style.height = '0px';
+                        mobileBanner.style.marginBottom = '0px';
+                        if (mobileDivider) mobileDivider.style.margin = '0px';
+                        
+                        setTimeout(() => {
+                            mobileBanner.style.display = 'none';
+                            if (mobileDivider) mobileDivider.style.display = 'none';
+                            
+                            // Lock it in memory
+                            localStorage.setItem(memoryKey, 'true');
+                        }, 400);
+                    };
+                }
+            }
+        }
+        
+        initMobileBanner();
     </script>
     
 
