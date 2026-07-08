@@ -1460,6 +1460,10 @@
                     <span>Always Grid Animation</span>
                     <label class="switch"><input type="checkbox" id="toggleGridAnim"><span class="slider"></span></label>
                 </div>
+                <div class="setting-item mobile-only">
+                    <span>Always Show Promo Banner</span>
+                    <label class="switch"><input type="checkbox" id="toggleAlwaysPromo"><span class="slider"></span></label>
+                </div>
                 <div class="setting-item desktop-only">
                     <span>Always Enable Intro</span>
                     <label class="switch"><input type="checkbox" id="toggleAlwaysIntro"><span class="slider"></span></label>
@@ -2648,6 +2652,7 @@
         
         const toggleTwoGrid = document.getElementById('toggleTwoGrid');
         const toggleGridAnim = document.getElementById('toggleGridAnim');
+        const toggleAlwaysPromo = document.getElementById('toggleAlwaysPromo');
         const toggleAlwaysIntro = document.getElementById('toggleAlwaysIntro');
         const toggleLightMode = document.getElementById('toggleLightMode');
         const toggleLowDetail = document.getElementById('toggleLowDetail');
@@ -2675,6 +2680,9 @@
         if(localStorage.getItem('alwaysIntroEnabled') === 'true') {
             toggleAlwaysIntro.checked = true;
         }
+        if(localStorage.getItem('alwaysPromoEnabled') === 'true') {
+            toggleAlwaysPromo.checked = true; // 🚨 NEW 2
+        }
         if(localStorage.getItem('lightModeEnabled') === 'true') {
             toggleLightMode.checked = true;
             document.body.classList.add('light-theme');
@@ -2693,6 +2701,9 @@
 
         toggleGridAnim.addEventListener('change', (e) => {
             localStorage.setItem('alwaysGridAnimEnabled', e.target.checked);
+        });
+        toggleAlwaysPromo.addEventListener('change', (e) => {
+            localStorage.setItem('alwaysPromoEnabled', e.target.checked); // 🚨 NEW 3
         });
 
         toggleAlwaysIntro.addEventListener('change', (e) => {
@@ -2915,14 +2926,17 @@
             const isMobile = window.innerWidth <= 768;
             const bannerVersion = mobileBanner.getAttribute('data-version');
             const memoryKey = 'seenMobileBanner_' + bannerVersion;
+            
+            // Fetch the user's setting override
+            const forceAlwaysPromo = localStorage.getItem('alwaysPromoEnabled') === 'true';
 
             if (isMobile) {
                 
-                // 🚨 DEBUG MODE: Bypassing memory check so it shows every refresh!
-                // if (!localStorage.getItem(memoryKey)) {
+                // 🚨 PRODUCTION MODE: Checks memory OR the new settings override
+                if (!localStorage.getItem(memoryKey) || forceAlwaysPromo) {
                     mobileBanner.classList.remove('mobile-banner-hide');
                     if (mobileDivider) mobileDivider.classList.remove('mobile-banner-hide');
-                // }
+                }
 
                 // Handle the 'X' close button
                 const closeBtn = document.getElementById('closeMobileBanner');
@@ -2943,8 +2957,10 @@
                             mobileBanner.style.display = 'none';
                             if (mobileDivider) mobileDivider.style.display = 'none';
                             
-                            // Lock it in memory
-                            localStorage.setItem(memoryKey, 'true');
+                            // 🚨 STAMP MEMORY: Only lock it away if they haven't forced it to always show
+                            if (!forceAlwaysPromo) {
+                                localStorage.setItem(memoryKey, 'true');
+                            }
                         }, 400);
                     };
                 }
