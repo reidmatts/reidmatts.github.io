@@ -408,13 +408,13 @@
         }
 
         .banner-item img {
-            /* 🚨 2. THE HOLY GRAIL: Uses 160% zoom, but forces a hard 120px minimum bleed on narrow screens! */
-            width: max(160%, calc(100% + 120px)); 
+            /* 🚨 2. THE HOLY GRAIL: Updated to 240px bleed to cover the double-skew gap */
+            width: max(160%, calc(100% + 240px));
             height: 100%;
-            object-fit: cover; 
-            transform: skewX(-15deg); 
+            object-fit: cover;
+            transform: skewX(-15deg);
             /* 🚨 3. Centers the photo perfectly based on which mathematical width won above */
-            margin-left: min(-30%, -60px); 
+            margin-left: min(-30%, -120px);
             transition: transform 0.5s ease, filter 0.5s ease;
         }
 
