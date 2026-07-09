@@ -444,21 +444,39 @@
         @media (max-width: 768px) {
             .about-banner-container { height: 220px; margin-bottom: 30px; }
             .banner-item { border-right: 3px solid #121212; }
-            /* 🚨 THE EDGE FIX: Widens the bleed and zooms in slightly to kill white borders */
+            
+            /* 🚨 REVERTED: Back to original scale without the extreme zoom */
             .banner-item img {
-                width: 200%; 
-                margin-left: -50%;
-                transform: skewX(-15deg) scale(1.15); /* Zooms past the white artifacts */
+                width: 160%; 
+                margin-left: -30%;
+                transform: skewX(-15deg) scale(1); 
             }
             .banner-item:hover img {
-                transform: skewX(-15deg) scale(1.25);
+                transform: skewX(-15deg) scale(1.05);
             }
+            
             .banner-logo { max-width: 120px; bottom: 10px; left: 15px; }
             .banner-fade { height: 80px; }
             .banner-item:nth-child(6),
             .banner-item:nth-child(7),
             .banner-item:nth-child(8) {
                 display: none;
+            }
+
+          /* 🚨 NEW: Styles for the single mobile About banner (Native Ratio) */
+            .mobile-single-banner {
+                width: 100%;
+                height: auto; /* 🚨 Allows the container to stretch to the photo's exact native height */
+                position: relative;
+                margin-bottom: 30px;
+                border-radius: 6px;
+                overflow: hidden;
+            }
+            
+            .mobile-single-banner img.bg-image {
+                width: 100%;
+                height: auto; /* 🚨 Shows 100% of the image with absolutely zero cropping */
+                display: block;
             }
         }
 
@@ -1638,8 +1656,8 @@
             </div>
            <div id="about-section" class="content-section hidden-section">
 
-                <!-- 🚨 THE SLANTED FINE ARTS BANNER 🚨 -->
-              <div class="about-banner-container">
+                <!-- 🚨 THE SLANTED FINE ARTS BANNER (DESKTOP ONLY) 🚨 -->
+               <div class="about-banner-container desktop-only">
                     <div class="about-banner-grid">
                         <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
                         <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
@@ -1654,7 +1672,17 @@
                     <div class="banner-fade"></div>
                     <img class="banner-logo" src="logo.png" alt="Reid Matthew Logo">
                 </div>
-                <!-- 🚨 END BANNER 🚨 -->
+
+                <!-- 🚨 NEW: SINGLE IMAGE BANNER (MOBILE ONLY) 🚨 -->
+                <div class="mobile-single-banner mobile-only">
+                    <!-- Replace SRC with whatever image for the banner -->
+                    <img src="AboutMe\BANNER_MOBILE.png" alt="Mobile Banner" class="bg-image">
+                    
+                    <!-- Bottom Shadow & Logo (keeps the branding consistent) -->
+                    <div class="banner-fade"></div>
+                    <img class="banner-logo" src="logo.png" alt="Reid Matthew Logo">
+                </div>
+                <!-- 🚨 END BANNERS 🚨 -->
 
                 <div class="about-wrapper">
                     
