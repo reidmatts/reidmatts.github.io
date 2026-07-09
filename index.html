@@ -15,7 +15,6 @@
     <meta name="twitter:description" content="Photography">
     <meta name="twitter:image" content="https://reidmatt.online/logoWithBG.avif">
     <link rel="icon" type="image/png" href="logo.png">
-    
     <style>
         /* Why is bro looking at my codes/
         /* Its cool fr fr*/
@@ -376,7 +375,7 @@
         .hidden-section {
             display: none !important;
         }
-/* --- SLANTED ABOUT ME BANNER --- */
+        /* --- SLANTED ABOUT ME BANNER --- */
         .about-banner-container {
             width: 100%;
             height: 380px; 
@@ -384,7 +383,7 @@
             overflow: hidden;
             background-color: #121212; 
             margin-bottom: 5px; 
-            border-radius: 8px; 
+            border-radius: 8px; /* Optional: gives the outer box smooth corners */
         }
 
         .about-banner-grid {
@@ -392,14 +391,14 @@
             width: 110%; /* Oversized to hide the empty edges created by the slant */
             height: 100%;
             margin-left: -5%; /* Shifts it back to dead-center */
-            transform: skewX(15deg); /* Creates the / / / / angled slices */
+            transform: skewX(15deg); /* 🚨 Creates the / / / / angled slices */
         }
 
         .banner-item {
-            flex: 1; 
+            flex: 1; /* 🚨 This makes it auto-adjust to 7, 8, or any number of items! */
             height: 100%;
             overflow: hidden;
-            border-right: 5px solid #121212; 
+            border-right: 5px solid #121212; /* The black separator lines */
         }
 
         .banner-item:last-child {
@@ -410,13 +409,13 @@
             width: 160%; /* Scales the image up inside the slice */
             height: 100%;
             object-fit: cover; 
-            transform: skewX(-15deg); /* Un-skews the photo so faces aren't distorted */
+            transform: skewX(-15deg); /* 🚨 Un-skews the photo so faces aren't distorted */
             margin-left: -30%; /* Centers the photo perfectly inside the slanted slice */
             transition: transform 0.5s ease, filter 0.5s ease;
         }
 
         .banner-item:hover img {
-            transform: skewX(-15deg) scale(1.05); 
+            transform: skewX(-15deg) scale(1.05); /* Slight zoom on hover */
             filter: brightness(1.2);
         }
 
@@ -428,7 +427,7 @@
             right: 0;
             height: 140px;
             background: linear-gradient(to top, rgba(18,18,18,1) 0%, rgba(18,18,18,0) 100%);
-            pointer-events: none; 
+            pointer-events: none; /* Lets you still click images behind the shadow */
             z-index: 5;
         }
 
@@ -436,47 +435,20 @@
             position: absolute;
             bottom: 20px;
             left: 30px;
-            max-width: 180px; 
+            max-width: 180px; /* Adjust this to fit your logo size */
             z-index: 10;
             filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.8));
         }
 
         @media (max-width: 768px) {
-            .about-banner-container { height: 220px; margin-bottom: 30px; }
+            .about-banner-container { height: 200px; margin-bottom: 30px; }
             .banner-item { border-right: 3px solid #121212; }
-            
-            /* 🚨 REVERTED: Back to original scale without the extreme zoom */
-            .banner-item img {
-                width: 160%; 
-                margin-left: -30%;
-                transform: skewX(-15deg) scale(1); 
-            }
-            .banner-item:hover img {
-                transform: skewX(-15deg) scale(1.05);
-            }
-            
             .banner-logo { max-width: 120px; bottom: 10px; left: 15px; }
             .banner-fade { height: 80px; }
             .banner-item:nth-child(6),
             .banner-item:nth-child(7),
             .banner-item:nth-child(8) {
                 display: none;
-            }
-
-            /* 🚨 NEW: Styles for the single mobile About banner */
-            .mobile-single-banner {
-                width: 100%;
-                height: 220px;
-                position: relative;
-                margin-bottom: 30px;
-                border-radius: 6px;
-                overflow: hidden;
-            }
-            .mobile-single-banner img.bg-image {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
             }
         }
 
@@ -1623,7 +1595,7 @@
            <div id="grid-archives" class="content-section hidden-section">
           <div class="image-grid">
                     <!-- Top items (Fixed order, loaded immediately) -->
-                    <div class="image-item fixed-order"><img src="PhotographyArchives/2024portraitgirl.avif" loading="lazy" alt="Archives Gallery"></div> 
+                    <div class="image-item fixed-order"><img src="PhotographyArchives/2024portraitgirl.avif " loading="lazy" alt="Archives Gallery"></div> 
                     <div class="image-item fixed-order"><img src="PhotographyArchives/gasstation.avif" loading="lazy" alt="5th"></div>
                     <div class="image-item fixed-order favorite"><img src="PhotographyArchives/capitol.avif" alt="first"></div>
                     <div class="image-item fixed-order"><img src="PhotographyArchives/HOUSE_NOSTALGIC.avif" alt="2nd"></div>
@@ -1654,40 +1626,31 @@
                     <div class="image-item"><img src="PhotographyArchives/GIRLLEDGE.avif" loading="lazy" alt="Archives Gallery"></div> 
                     </div>
             </div>
-           <div id="about-section" class="content-section hidden-section">
+            <div id="about-section" class="content-section hidden-section">
 
-               <!-- 🚨 THE SLANTED FINE ARTS BANNER (DESKTOP ONLY) -->
-                <div class="about-banner-container desktop-only">
+                <!-- 🚨 THE NEW SLANTED FINE ARTS BANNER 🚨 -->
+               <div class="about-banner-container">
                     <div class="about-banner-grid">
-                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
-                        <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
-                        <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
-                        <!-- Guy fixing wrist perfectly centered -->
-                        <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
-                        <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
-                        <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
-                        <!-- Sunset fixed by increasing bleed width in CSS below -->
-                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>    
+                        <!-- Add or remove as many of these as you want! Flexbox auto-sizes them. -->
+                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image"></div>
+                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image"></div>    
                     </div>
                     
-                    <!-- Bottom Shadow & Logo (Only one instance now) -->
+                    <!-- Bottom Shadow & Logo -->
                     <div class="banner-fade"></div>
                     <img class="banner-logo" src="logo.png" alt="Reid Matthew Logo">
                 </div>
-                <!-- 🚨 NEW: SINGLE IMAGE BANNER (MOBILE ONLY) 🚨 -->
-                <div class="mobile-single-banner mobile-only">
-                    <!-- Replace SRC with whatever image for the banner -->
-                    <img src="AboutMe\BANNER_MOBILE.png" alt="Mobile Banner" class="bg-image">
-                    
-                    <!-- Bottom Shadow & Logo (keeps the branding consistent) -->
-                    <div class="banner-fade"></div>
-                    <img class="banner-logo" src="logo.png" alt="Reid Matthew Logo">
-                </div>
-                <!-- 🚨 END BANNERS 🚨 -->
+                <!-- 🚨 END BANNER 🚨 -->
 
                 <div class="about-wrapper">
                     
-                    <hr class="divider">
+                    <!-- 🚨 THE NEW SEPARATOR WITH EXTRA SPACING 🚨 -->
+                    <hr class="divider" style="margin-top: 10px; margin-bottom: 60px;">
                     
                     <!-- 🚨 MOBILE PHOTOGRAPHY SECTION 🚨 -->
                     <div class="about-block">
@@ -1838,31 +1801,31 @@
        <div id="mc-cinema-section" class="content-section hidden-section">
                 <div class="image-grid">
                      <div class="image-item">
-                        <iframe loading="lazy" srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/cJHG68M50mY?autoplay=1><img src=https://img.youtube.com/vi/cJHG68M50mY/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/cJHG68M50mY?autoplay=1><img src=https://img.youtube.com/vi/cJHG68M50mY/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                      </div>
                      
                      <div class="image-item">
-                       <iframe loading="lazy" srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/oB4ysmOkxAs?autoplay=1><img src=https://img.youtube.com/vi/oB4ysmOkxAs/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/oB4ysmOkxAs?autoplay=1><img src=https://img.youtube.com/vi/oB4ysmOkxAs/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                      </div>
                      
                      <div class="image-item">
-                       <iframe loading="lazy" srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/Z0-D7COr_0U?autoplay=1><img src=https://img.youtube.com/vi/Z0-D7COr_0U/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/Z0-D7COr_0U?autoplay=1><img src=https://img.youtube.com/vi/Z0-D7COr_0U/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                      </div>
                      
                      <div class="image-item">
-                         <iframe loading="lazy" srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/-vbC_uBGKGE?autoplay=1><img src=https://img.youtube.com/vi/-vbC_uBGKGE/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/-vbC_uBGKGE?autoplay=1><img src=https://img.youtube.com/vi/-vbC_uBGKGE/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                      </div>
 
                      <div class="image-item">
-                        <iframe loading="lazy" srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/jpZ110P6lr0?autoplay=1><img src=https://img.youtube.com/vi/jpZ110P6lr0/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/jpZ110P6lr0?autoplay=1><img src=https://img.youtube.com/vi/jpZ110P6lr0/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                      </div>
 
                      <div class="image-item">
-                        <iframe loading="lazy" srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/eegQ9PvR2SQ?autoplay=1><img src=https://img.youtube.com/vi/eegQ9PvR2SQ/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/eegQ9PvR2SQ?autoplay=1><img src=https://img.youtube.com/vi/eegQ9PvR2SQ/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                      </div>
                        
                      <div class="image-item">
-                      <iframe loading="lazy" srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/Z-eum2PuG6k?autoplay=1><img src=https://img.youtube.com/vi/Z-eum2PuG6k/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/Z-eum2PuG6k?autoplay=1><img src=https://img.youtube.com/vi/Z-eum2PuG6k/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                      </div>
                 </div>
             </div>
@@ -1886,9 +1849,17 @@
         <p>&copy; <span id="copyrightYear"></span> Reid Matthew. All Rights Reserved.</p>
      </footer>
 
-<!-- 🚨 THE REDIRECT TRAP (LOCAL VIDEO + AUDIO) -->
+   <!-- 🚨 THE REDIRECT TRAP (LOCAL VIDEO + AUDIO) -->
     <div id="trapOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:9999; align-items:center; justify-content:center;">
+        <video id="trapVideo" width="100%" height="100%" playsinline muted>
+            <source src="EasterEgg/Video.mp4" type="video/mp4">
+        </video>
+        <!-- Add your audio file here -->
+        <audio id="trapAudio" loop>
+            <source src="EasterEgg/Music.mp3" type="audio/mpeg">
+        </audio>
     </div>
+
     <!-- 🚨 SCROLL TO TOP BUTTON (Minimalist Centered) -->
     <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
         <svg viewBox="0 0 24 24">
@@ -2021,23 +1992,20 @@
         });
 
 
-       // --- MAKE GRID RESPONSIVE TO ZOOM & RESIZE ---
+        // --- MAKE GRID RESPONSIVE TO ZOOM & RESIZE ---
         let resizeTimer;
         let currentWindowWidth = window.innerWidth; 
 
         window.addEventListener('resize', () => {
-            // 🚨 THE FIX: Only trigger if the screen width changes by MORE than 50 pixels!
-            // This completely ignores the 15px scrollbar appearing/disappearing.
-            if (Math.abs(window.innerWidth - currentWindowWidth) < 50) {
+            if (window.innerWidth === currentWindowWidth) {
                 return; 
             }
-            
             currentWindowWidth = window.innerWidth;
             clearTimeout(resizeTimer);
             
             resizeTimer = setTimeout(() => {
                 
-                // 2. KILL GLITCHY BADGES: Wipe out mid-animation badges before the rebuild
+                // 🚨 2. KILL GLITCHY BADGES: Wipe out mid-animation badges before the rebuild
                 document.querySelectorAll('.favorite-badge, .award-badge').forEach(badge => badge.remove());
                 document.querySelectorAll('.badge-completed').forEach(item => item.classList.remove('badge-completed'));
 
@@ -2051,7 +2019,7 @@
                 
                 shuffleGalleries();
                 
-                // 3. RESTART ENGINE: Trigger the badges to cleanly play on the new layout
+                // 🚨 3. RESTART ENGINE: Trigger the badges to cleanly play on the new layout
                 if (window.refreshBadges) window.refreshBadges();
                 
             }, 250); 
@@ -2754,41 +2722,31 @@
             else document.body.classList.remove('low-detail');
         });
 
-     // --- THE EASTER EGG ---
-        toggleExperimental.addEventListener('change', (e) => {
+        // --- THE EASTER EGG ---
+    
+     toggleExperimental.addEventListener('change', (e) => {
             if (e.target.checked) {
-                e.target.checked = false; // Instantly uncheck the toggle
-                
+                e.target.checked = false;
                 const trap = document.getElementById('trapOverlay');
+                const video = document.getElementById('trapVideo');
+                const audio = document.getElementById('trapAudio');
+                
                 trap.style.display = "flex";
                 
-                // 🚨 THE GHOST ENGINE: Creates the video & audio out of thin air!
-                // This guarantees the browser downloads 0 bytes until this exact millisecond.
-                const video = document.createElement('video');
-                video.style.width = "100%";
-                video.style.height = "100%";
-                video.setAttribute('playsinline', '');
+                // 1. Play Video (Muted to satisfy autoplay policy)
                 video.muted = true;
-                video.src = "EasterEgg/Video.mp4";
-                
-                const audio = document.createElement('audio');
-                audio.loop = true;
-                audio.src = "EasterEgg/Music.mp3";
-                
-                trap.appendChild(video);
-                trap.appendChild(audio);
-
-                // Play the trap
                 video.play().catch(err => console.log("Video play error:", err));
+
+                // 2. Play Audio (This is the trick to get sound!)
                 audio.play().catch(err => console.log("Audio play error:", err));
 
-                // Request full-screen
+                // 3. Request full-screen
                 const elem = document.documentElement;
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen().catch(() => {});
                 }
                 
-                // Force Landscape
+                // 4. Force Landscape
                 if (screen.orientation && screen.orientation.lock) {
                     screen.orientation.lock('landscape').catch(() => {});
                 }
