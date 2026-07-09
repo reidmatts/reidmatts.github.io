@@ -389,13 +389,11 @@
 
         .about-banner-grid {
             display: flex;
-            /* 1. Sets a flat 120px safety bleed for the outer container */
-            width: calc(100% + 120px); 
+            width: calc(100% + 240px); 
             height: 100%;
-            margin-left: -60px; 
+            margin-left: -120px; 
             transform: skewX(15deg); 
         }
-
         .banner-item {
             flex: 1; 
             height: 100%;
@@ -407,13 +405,11 @@
             border-right: none; 
         }
 
-        .banner-item img {
-            /* 🚨 2. THE HOLY GRAIL: Updated to 240px bleed to cover the double-skew gap */
+       .banner-item img {
             width: max(160%, calc(100% + 240px));
             height: 100%;
             object-fit: cover;
             transform: skewX(-15deg);
-            /* 🚨 3. Centers the photo perfectly based on which mathematical width won above */
             margin-left: min(-30%, -120px);
             transition: transform 0.5s ease, filter 0.5s ease;
         }
