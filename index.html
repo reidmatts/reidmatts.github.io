@@ -376,7 +376,7 @@
         .hidden-section {
             display: none !important;
         }
-        /* --- SLANTED ABOUT ME BANNER --- */
+ /* --- SLANTED ABOUT ME BANNER --- */
         .about-banner-container {
             width: 100%;
             height: 380px; 
@@ -384,22 +384,23 @@
             overflow: hidden;
             background-color: #121212; 
             margin-bottom: 5px; 
-            border-radius: 8px; /* Optional: gives the outer box smooth corners */
+            border-radius: 8px; 
         }
 
         .about-banner-grid {
             display: flex;
-            width: 110%; /* Oversized to hide the empty edges created by the slant */
+            /* 1. Sets a flat 120px safety bleed for the outer container */
+            width: calc(100% + 120px); 
             height: 100%;
-            margin-left: -5%; /* Shifts it back to dead-center */
-            transform: skewX(15deg); /* 🚨 Creates the / / / / angled slices */
+            margin-left: -60px; 
+            transform: skewX(15deg); 
         }
 
         .banner-item {
-            flex: 1; /* 🚨 This makes it auto-adjust to 7, 8, or any number of items! */
+            flex: 1; 
             height: 100%;
             overflow: hidden;
-            border-right: 5px solid #121212; /* The black separator lines */
+            border-right: 5px solid #121212; 
         }
 
         .banner-item:last-child {
@@ -407,16 +408,18 @@
         }
 
         .banner-item img {
-            width: 160%; /* Scales the image up inside the slice */
+            /* 🚨 2. THE HOLY GRAIL: Uses 160% zoom, but forces a hard 120px minimum bleed on narrow screens! */
+            width: max(160%, calc(100% + 120px)); 
             height: 100%;
             object-fit: cover; 
-            transform: skewX(-15deg); /* 🚨 Un-skews the photo so faces aren't distorted */
-            margin-left: -30%; /* Centers the photo perfectly inside the slanted slice */
+            transform: skewX(-15deg); 
+            /* 🚨 3. Centers the photo perfectly based on which mathematical width won above */
+            margin-left: min(-30%, -60px); 
             transition: transform 0.5s ease, filter 0.5s ease;
         }
 
         .banner-item:hover img {
-            transform: skewX(-15deg) scale(1.05); /* Slight zoom on hover */
+            transform: skewX(-15deg) scale(1.05); 
             filter: brightness(1.2);
         }
 
@@ -428,7 +431,7 @@
             right: 0;
             height: 140px;
             background: linear-gradient(to top, rgba(18,18,18,1) 0%, rgba(18,18,18,0) 100%);
-            pointer-events: none; /* Lets you still click images behind the shadow */
+            pointer-events: none; 
             z-index: 5;
         }
 
@@ -436,7 +439,7 @@
             position: absolute;
             bottom: 20px;
             left: 30px;
-            max-width: 180px; /* Adjust this to fit your logo size */
+            max-width: 180px; 
             z-index: 10;
             filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.8));
         }
@@ -1656,23 +1659,24 @@
             </div>
            <div id="about-section" class="content-section hidden-section">
 
-                <!-- 🚨 THE SLANTED FINE ARTS BANNER (DESKTOP ONLY) 🚨 -->
-               <div class="about-banner-container desktop-only">
+               <!-- 🚨 THE SLANTED FINE ARTS BANNER (DESKTOP ONLY) -->
+                <div class="about-banner-container desktop-only">
                     <div class="about-banner-grid">
                         <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
                         <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
                         <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
+                        <!-- Guy fixing wrist perfectly centered -->
                         <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
                         <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
                         <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
+                        <!-- Sunset fixed by increasing bleed width in CSS below -->
                         <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>    
                     </div>
                     
-                    <!-- Bottom Shadow & Logo -->
+                    <!-- Bottom Shadow & Logo (Only one instance now) -->
                     <div class="banner-fade"></div>
                     <img class="banner-logo" src="logo.png" alt="Reid Matthew Logo">
                 </div>
-
                 <!-- 🚨 NEW: SINGLE IMAGE BANNER (MOBILE ONLY) 🚨 -->
                 <div class="mobile-single-banner mobile-only">
                     <!-- Replace SRC with whatever image for the banner -->
