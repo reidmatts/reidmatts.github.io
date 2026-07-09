@@ -463,19 +463,19 @@
                 display: none;
             }
 
-          /* 🚨 NEW: Styles for the single mobile About banner (Native Ratio) */
+            /* 🚨 NEW: Styles for the single mobile About banner */
             .mobile-single-banner {
                 width: 100%;
-                height: auto; /* 🚨 Allows the container to stretch to the photo's exact native height */
+                height: 220px;
                 position: relative;
                 margin-bottom: 30px;
                 border-radius: 6px;
                 overflow: hidden;
             }
-            
             .mobile-single-banner img.bg-image {
                 width: 100%;
-                height: auto; /* 🚨 Shows 100% of the image with absolutely zero cropping */
+                height: 100%;
+                object-fit: cover;
                 display: block;
             }
         }
@@ -536,19 +536,11 @@
             flex: 1; /* Locks the image area to the right side */
         }
 
-       @media (max-width: 768px) {
-            /* 🚨 THE FIX: Forces side-by-side layout on mobile instead of stacking */
+        @media (max-width: 768px) {
             .split-block {
-                flex-direction: row !important; 
-                gap: 15px; /* Tighter gap so both elements fit nicely */
-                align-items: center;
+                flex-direction: column; /* Stacks vertically on mobile */
+                gap: 25px;
             }
-            
-            /* 🚨 Auto-scales the text down slightly so it fits elegantly next to the photo */
-            .split-text h2 { font-size: 1.4rem !important; margin-top: 0 !important; }
-            .split-text h3 { font-size: 1.1rem !important; }
-            .split-text p { font-size: 0.85rem !important; line-height: 1.4 !important; margin-bottom: 10px !important; }
-            .split-text span { font-size: 1rem !important; } /* Catches the "2 years" text */
         }
 
         .video-thumbnail:hover {
@@ -1694,7 +1686,7 @@
 
                 <div class="about-wrapper">
                     
-                 <hr class="divider">
+                    <hr class="divider">
                     
                     <!-- 🚨 MOBILE PHOTOGRAPHY SECTION 🚨 -->
                     <div class="about-block">
