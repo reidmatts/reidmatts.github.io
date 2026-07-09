@@ -376,7 +376,7 @@
         .hidden-section {
             display: none !important;
         }
- /* --- SLANTED ABOUT ME BANNER --- */
+/* --- SLANTED ABOUT ME BANNER --- */
         .about-banner-container {
             width: 100%;
             height: 380px; 
@@ -389,11 +389,12 @@
 
         .about-banner-grid {
             display: flex;
-            width: calc(100% + 240px); 
+            width: 110%; /* Oversized to hide the empty edges created by the slant */
             height: 100%;
-            margin-left: -120px; 
-            transform: skewX(15deg); 
+            margin-left: -5%; /* Shifts it back to dead-center */
+            transform: skewX(15deg); /* Creates the / / / / angled slices */
         }
+
         .banner-item {
             flex: 1; 
             height: 100%;
@@ -405,12 +406,12 @@
             border-right: none; 
         }
 
-       .banner-item img {
-            width: max(160%, calc(100% + 240px));
+        .banner-item img {
+            width: 160%; /* Scales the image up inside the slice */
             height: 100%;
-            object-fit: cover;
-            transform: skewX(-15deg);
-            margin-left: min(-30%, -120px);
+            object-fit: cover; 
+            transform: skewX(-15deg); /* Un-skews the photo so faces aren't distorted */
+            margin-left: -30%; /* Centers the photo perfectly inside the slanted slice */
             transition: transform 0.5s ease, filter 0.5s ease;
         }
 
