@@ -15,15 +15,6 @@
     <meta name="twitter:description" content="Photography">
     <meta name="twitter:image" content="https://reidmatt.online/logoWithBG.avif">
     <link rel="icon" type="image/png" href="logo.png">
-
-    <!-- 🚨 PRELOAD ENGINE: Forces the cinematic banner images to load instantly -->
-    <link rel="preload" as="image" href="PhotographyArchives/capitol.avif">
-    <link rel="preload" as="image" href="PhotographyArchives/2024portraitgirl.avif">
-    <link rel="preload" as="image" href="AboutMe/ORIG_30.avif">
-    <link rel="preload" as="image" href="AboutMe/guyportrait.avif">
-    <link rel="preload" as="image" href="AboutMe/lightbirds.avif">
-    <link rel="preload" as="image" href="AboutMe/BW_PORTRAIT_1ST.avif">
-    <link rel="preload" as="image" href="AboutMe/SUNSET.avif">
     
     <style>
         /* Why is bro looking at my codes/
@@ -1648,18 +1639,15 @@
            <div id="about-section" class="content-section hidden-section">
 
                 <!-- 🚨 THE SLANTED FINE ARTS BANNER 🚨 -->
-               <div class="about-banner-container">
+              <div class="about-banner-container">
                     <div class="about-banner-grid">
-                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
-                        <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
-                        <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
-                        
-                        <!-- 🚨 Reverted to 50% to perfectly center him on desktop -->
-                        <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
-                        
-                        <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
-                        <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>
-                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" fetchpriority="high" style="object-position: 50% 50%;"></div>    
+                        <div class="banner-item"><img src="PhotographyArchives/capitol.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="PhotographyArchives/2024portraitgirl.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="AboutMe/ORIG_30.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="AboutMe/guyportrait.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="AboutMe/lightbirds.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="AboutMe/BW_PORTRAIT_1ST.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>
+                        <div class="banner-item"><img src="AboutMe/SUNSET.avif" alt="Banner Image" style="object-position: 50% 50%;"></div>    
                     </div>
                     
                     <!-- Bottom Shadow & Logo -->
@@ -1872,12 +1860,6 @@
 
 <!-- 🚨 THE REDIRECT TRAP (LOCAL VIDEO + AUDIO) -->
     <div id="trapOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000; z-index:9999; align-items:center; justify-content:center;">
-        <video id="trapVideo" width="100%" height="100%" playsinline muted preload="none">
-            <source data-src="EasterEgg/Video.mp4" type="video/mp4">
-        </video>
-        <audio id="trapAudio" loop preload="none">
-            <source data-src="EasterEgg/Music.mp3" type="audio/mpeg">
-        </audio>
     </div>
     <!-- 🚨 SCROLL TO TOP BUTTON (Minimalist Centered) -->
     <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">
@@ -2744,46 +2726,41 @@
             else document.body.classList.remove('low-detail');
         });
 
-      // --- THE EASTER EGG ---
-    
+     // --- THE EASTER EGG ---
         toggleExperimental.addEventListener('change', (e) => {
             if (e.target.checked) {
-                e.target.checked = false;
-                const trap = document.getElementById('trapOverlay');
-                const video = document.getElementById('trapVideo');
-                const audio = document.getElementById('trapAudio');
+                e.target.checked = false; // Instantly uncheck the toggle
                 
+                const trap = document.getElementById('trapOverlay');
                 trap.style.display = "flex";
                 
-                // 🚨 THE NEW ENGINE: Injects the heavy files into the network right now!
-                const vidSource = video.querySelector('source');
-                if (vidSource && vidSource.getAttribute('data-src')) {
-                    vidSource.src = vidSource.getAttribute('data-src');
-                    vidSource.removeAttribute('data-src');
-                    video.load();
-                }
-
-                const audSource = audio.querySelector('source');
-                if (audSource && audSource.getAttribute('data-src')) {
-                    audSource.src = audSource.getAttribute('data-src');
-                    audSource.removeAttribute('data-src');
-                    audio.load();
-                }
-                
-                // 1. Play Video (Muted to satisfy autoplay policy)
+                // 🚨 THE GHOST ENGINE: Creates the video & audio out of thin air!
+                // This guarantees the browser downloads 0 bytes until this exact millisecond.
+                const video = document.createElement('video');
+                video.style.width = "100%";
+                video.style.height = "100%";
+                video.setAttribute('playsinline', '');
                 video.muted = true;
-                video.play().catch(err => console.log("Video play error:", err));
+                video.src = "EasterEgg/Video.mp4";
+                
+                const audio = document.createElement('audio');
+                audio.loop = true;
+                audio.src = "EasterEgg/Music.mp3";
+                
+                trap.appendChild(video);
+                trap.appendChild(audio);
 
-                // 2. Play Audio (This is the trick to get sound!)
+                // Play the trap
+                video.play().catch(err => console.log("Video play error:", err));
                 audio.play().catch(err => console.log("Audio play error:", err));
 
-                // 3. Request full-screen
+                // Request full-screen
                 const elem = document.documentElement;
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen().catch(() => {});
                 }
                 
-                // 4. Force Landscape
+                // Force Landscape
                 if (screen.orientation && screen.orientation.lock) {
                     screen.orientation.lock('landscape').catch(() => {});
                 }
