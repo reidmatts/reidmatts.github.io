@@ -394,11 +394,12 @@
             transform: skewX(15deg); /* 🚨 Creates the / / / / angled slices */
         }
 
-        .banner-item {
-            flex: 1; /* 🚨 This makes it auto-adjust to 7, 8, or any number of items! */
+       .banner-item {
+            flex: 1 1 0%; /* 🚨 FORCES perfectly equal slice widths! */
+            min-width: 0; /* 🚨 Prevents high-res images from stealing space */
             height: 100%;
             overflow: hidden;
-            border-right: 5px solid #121212; /* The black separator lines */
+            border-right: 5px solid #121212; 
         }
 
         .banner-item:last-child {
@@ -414,8 +415,8 @@
             transition: transform 0.5s ease, filter 0.5s ease;
         }
 
-        .banner-item:hover img {
-            transform: skewX(-15deg) scale(1.05); /* Slight zoom on hover */
+       .banner-item:hover img {
+            transform: skewX(-15deg) scale(1.05); 
             filter: brightness(1.2);
         }
 
@@ -439,7 +440,36 @@
             z-index: 10;
             filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.8));
         }
+       /* 🚨 AUTO-STRAIGHTEN ENTIRE BANNER (TRIGGERED BY JS) 🚨 */
+        .about-banner-container.straight-mode .about-banner-grid {
+            transform: none !important; /* Removes the 15deg slant */
+            width: 100% !important; /* Resets to normal width */
+            margin-left: 0 !important; /* Removes the centering offset */
+        }
 
+        .about-banner-container.straight-mode .banner-item img {
+            transform: none !important; /* Removes the inner un-skew */
+            width: 100% !important; /* Removes the 160% zoom */
+            margin-left: 0 !important; /* Resets centering */
+            object-fit: cover; /* Default for the adjacent landscape images */
+        }
+
+        /* Forces ONLY the portrait image to contain cleanly without zooming */
+        .about-banner-container.straight-mode .banner-item.is-portrait img {
+            object-fit: contain !important;
+            object-position: top center !important;
+            background-color: #121212;
+        }
+
+        /* Restores the hover effect, but keeps it straight */
+        .about-banner-container.straight-mode .banner-item:hover img {
+            transform: scale(1.05) !important;
+        }
+
+        /* 🚨 KILLS THE WARPING ANIMATION ON LOAD 🚨 */
+        .about-banner-container.snap-active .banner-item img {
+            transition: none !important;
+        }
         @media (max-width: 768px) {
             .about-banner-container { height: 200px; margin-bottom: 30px; }
             .banner-item { border-right: 3px solid #121212; }
@@ -1521,7 +1551,8 @@
                     <div class="about-banner-grid">
                         <!--featured images here -->
                         <div class="banner-item"><img src="Photography2026/neonsignsblur.avif" alt="New Image"></div>
-                        <div class="banner-item"><img src="Photography2026/awardwinning.avif" alt="New Image"></div>
+                        <!-- 🚨 THE FIX: Added 'poster-fit' to the center item -->
+                        <div class="banner-item"><img src="Photography2026/voque.avif" alt="New Image"></div>
                         <div class="banner-item"><img src="Photography2026/wideceiling.avif" alt="New Image"></div>
                     </div>
                     <div class="banner-fade"></div>
@@ -2980,6 +3011,47 @@
         }
         
         initMobileBanner();
+
+
+       // 14. --- AUTO-DETECT PORTRAITS IN 2026 BANNER --- //
+        function autoStraightenBanner() {
+            const promoBanner = document.getElementById('mobile-2026-banner');
+            if (!promoBanner) return;
+
+            const bannerImages = promoBanner.querySelectorAll('.banner-item img');
+            
+            bannerImages.forEach(img => {
+                const applyStraighten = () => {
+                    // Detects if the image is a portrait (taller than it is wide)
+                    if (img.naturalHeight > img.naturalWidth) {
+                        
+                        // 1. Temporarily freeze animations to prevent the "warp" effect
+                        promoBanner.classList.add('snap-active');
+                        
+                        // 2. Straighten the ENTIRE banner grid
+                        promoBanner.classList.add('straight-mode');
+                        
+                        // 3. Mark the specific portrait so it fits perfectly (contain)
+                        img.parentElement.classList.add('is-portrait');
+                        
+                        // 4. Turn animations back on 50ms later so hover effects still work
+                        setTimeout(() => {
+                            promoBanner.classList.remove('snap-active');
+                        }, 50);
+                    }
+                };
+
+                // Trigger instantly if loaded, otherwise wait for load
+                if (img.complete && img.naturalHeight !== 0) {
+                    applyStraighten();
+                } else {
+                    img.addEventListener('load', applyStraighten);
+                }
+            });
+        }
+        
+        // Run the engine
+        autoStraightenBanner();
     </script>
     
 
