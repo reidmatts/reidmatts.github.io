@@ -15,6 +15,7 @@
     <meta name="twitter:description" content="Photography">
     <meta name="twitter:image" content="https://reidmatt.online/logoWithBG.avif">
     <link rel="icon" type="image/png" href="logo.png">
+    <link rel="manifest" href="manifest.json?v=2">
     <style>
         /* Why is bro looking at my codes/
         /* Its cool fr fr*/
@@ -3068,7 +3069,7 @@
         // 15. --- PWA SERVICE WORKER REGISTRATION --- //
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then((registration) => {
+               navigator.serviceWorker.register('sw.js?v=2').then((registration) => {
                     console.log('ServiceWorker registration successful with scope: ', registration.scope);
                 }).catch((err) => {
                     console.log('ServiceWorker registration failed: ', err);
