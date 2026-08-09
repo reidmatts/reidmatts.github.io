@@ -793,6 +793,42 @@
             to { opacity: 1; }
         }
 
+/* --- SKIP INTRO BUTTON --- */
+        .skip-intro-btn {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            color: #ffffff; /* 🚨 White font color */
+            font-family: 'Permanent Marker', cursive;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            opacity: 0;
+            transition: text-shadow 0.3s ease, transform 0.3s ease, opacity 0.8s ease;
+            z-index: 100000;
+        }
+
+        .skip-intro-btn svg {
+            width: 50px; /* 🚨 Extended width for the longer arrow body */
+            height: 28px;
+            stroke: #e5a93d; /* Gold arrow */
+            fill: none;
+            stroke-width: 2.5;
+            transition: filter 0.3s ease;
+        }
+
+        /* 🚨 The Gold Glow Radiance on Hover 🚨 */
+        .skip-intro-btn:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(229, 169, 61, 0.8);
+            transform: scale(1.05);
+        }
+
+        .skip-intro-btn:hover svg {
+            filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.8));
+        }
 
         /* --- RESPONSIVE DESIGN --- */
       @media (max-width: 768px) {
@@ -1495,9 +1531,9 @@
                     <span>Always Show Promo Banner</span>
                     <label class="switch"><input type="checkbox" id="toggleAlwaysPromo"><span class="slider"></span></label>
                 </div>
-                <div class="setting-item desktop-only">
-                    <span>Always Enable Intro</span>
-                    <label class="switch"><input type="checkbox" id="toggleAlwaysIntro"><span class="slider"></span></label>
+              <div class="setting-item desktop-only">
+                    <span>Disable Intro Animation</span>
+                    <label class="switch"><input type="checkbox" id="toggleDisableIntro"><span class="slider"></span></label>
                 </div>
                 <div class="setting-item">
                     <span>Enable Light Mode</span>
@@ -1551,10 +1587,10 @@
                     <div id="mobile-2026-banner" class="about-banner-container mobile-banner-hide" data-version="v1" style="margin-bottom: 20px;">
                     <div class="about-banner-grid">
                         <!--featured images here -->
-                        <div class="banner-item"><img src="Photography2026/birdguy.avif" alt="New Image"></div>
+                        <div class="banner-item"><img src="Photography2026/coralkid.avif" alt="New Image"></div>
                         <!-- 🚨 THE FIX: Added 'poster-fit' to the center item -->
-                        <div class="banner-item"><img src="Photography2026/waterfall.avif" alt="New Image"></div>
                         <div class="banner-item"><img src="Photography2026/sharkgirl.avif" alt="New Image"></div>
+                        <div class="banner-item"><img src="Photography2026/birdguy.avif" alt="New Image"></div>
                     </div>
                     <div class="banner-fade"></div>
                     <img class="banner-logo" src="logo.png" alt="Reid Matthew Logo">
@@ -2709,7 +2745,7 @@
         const toggleTwoGrid = document.getElementById('toggleTwoGrid');
         const toggleGridAnim = document.getElementById('toggleGridAnim');
         const toggleAlwaysPromo = document.getElementById('toggleAlwaysPromo');
-        const toggleAlwaysIntro = document.getElementById('toggleAlwaysIntro');
+        const toggleDisableIntro = document.getElementById('toggleDisableIntro');
         const toggleLightMode = document.getElementById('toggleLightMode');
         const toggleLowDetail = document.getElementById('toggleLowDetail');
         const toggleExperimental = document.getElementById('toggleExperimental');
@@ -2733,8 +2769,8 @@
         if(localStorage.getItem('alwaysGridAnimEnabled') === 'true') {
             toggleGridAnim.checked = true;
         }
-        if(localStorage.getItem('alwaysIntroEnabled') === 'true') {
-            toggleAlwaysIntro.checked = true;
+        if(localStorage.getItem('disableIntroAnimation') === 'true') {
+            toggleDisableIntro.checked = true;
         }
         if(localStorage.getItem('alwaysPromoEnabled') === 'true') {
             toggleAlwaysPromo.checked = true; // 🚨 NEW 2
@@ -2762,8 +2798,8 @@
             localStorage.setItem('alwaysPromoEnabled', e.target.checked); // 🚨 NEW 3
         });
 
-        toggleAlwaysIntro.addEventListener('change', (e) => {
-            localStorage.setItem('alwaysIntroEnabled', e.target.checked);
+        toggleDisableIntro.addEventListener('change', (e) => {
+            localStorage.setItem('disableIntroAnimation', e.target.checked);
         });
 
         toggleLightMode.addEventListener('change', (e) => {
@@ -2835,18 +2871,22 @@
         
         document.getElementById("copyrightYear").innerText = new Date().getFullYear();
 
-       // =================================================== //
-        // 12. --- CINEMATIC FIRST-TIME DESKTOP INTRO ENGINE --- //
+      // =================================================== //
+        // 12. --- CINEMATIC DESKTOP INTRO ENGINE (UPGRADED) --- //
         // =================================================== //
         function runCinematicIntro() {
             const isDesktop = window.innerWidth > 768;
             
-            // Check memory keys
-            const hasSeenIntro = localStorage.getItem('hasSeenCinematicIntro');
-            const forceAlwaysIntro = localStorage.getItem('alwaysIntroEnabled') === 'true';
+            // 🚨 Detect Page Reload/Refresh vs Normal Domain Visit
+            const navEntries = performance.getEntriesByType('navigation');
+            const isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
 
-            // 🚨 Plays if on desktop AND (they haven't seen it OR they forced it in settings)
-            if (isDesktop && (!hasSeenIntro || forceAlwaysIntro)) { 
+            // Checks memory keys
+            const hasSeenIntro = localStorage.getItem('hasSeenCinematicIntro') === 'true';
+            const disableIntro = localStorage.getItem('disableIntroAnimation') === 'true';
+
+            // 🚨 Plays ONLY if on desktop, NOT disabled in settings, AND NOT a page refresh
+            if (isDesktop && !disableIntro && !isReload) { 
                 
                 const lockOverlay = document.createElement('div');
                 lockOverlay.style.position = 'fixed';
@@ -2858,6 +2898,18 @@
                 lockOverlay.style.cursor = 'wait'; 
                 document.body.appendChild(lockOverlay);
 
+                // 🚨 Create the Skip Button with Extended Arrow Body (ONLY visible on 2nd+ visit)
+                let skipBtn = null;
+                if (hasSeenIntro) {
+                    skipBtn = document.createElement('div');
+                    skipBtn.className = 'skip-intro-btn';
+                    /* 🚨 SVG path extended (M2 12h30) for a significantly longer arrow stem */
+                    skipBtn.innerHTML = `Skip <svg viewBox="0 0 38 24"><path d="M2 12h32M26 5l8 7-8 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+                    lockOverlay.appendChild(skipBtn);
+                    
+                    setTimeout(() => { skipBtn.style.opacity = '1'; }, 1000);
+                }
+
                 const preventScroll = (e) => e.preventDefault();
                 const preventKeys = (e) => {
                     if(["Space","ArrowUp","ArrowDown","PageUp","PageDown","Home","End"].includes(e.code)) e.preventDefault();
@@ -2866,6 +2918,7 @@
                 window.addEventListener('touchmove', preventScroll, { passive: false });
                 window.addEventListener('keydown', preventKeys, { passive: false });
 
+                let scrollAnimId = null;
                 function cinematicScroll(targetEl, duration) {
                     const targetY = targetEl.getBoundingClientRect().top + window.scrollY - (window.innerHeight / 2) + (targetEl.offsetHeight / 2) - 40;
                     const startY = window.scrollY;
@@ -2878,7 +2931,9 @@
                         let percent = Math.min(time / duration, 1);
                         percent = percent < 0.5 ? 4 * percent * percent * percent : 1 - Math.pow(-2 * percent + 2, 3) / 2;
                         window.scrollTo(0, startY + diff * percent);
-                        if (time < duration) window.requestAnimationFrame(step);
+                        if (time < duration) {
+                            scrollAnimId = window.requestAnimationFrame(step);
+                        }
                     });
                 }
 
@@ -2889,60 +2944,72 @@
 
                 if (loadingToast) loadingToast.style.display = 'none';
 
-                // 🚨 NETWORK PROTECTION: Wait for the banner to load before rolling cameras!
-                const bannerImgs = Array.from(document.querySelectorAll('.banner-item img'));
                 let loadedCount = 0;
                 let sequenceStarted = false;
+                let t1, t2, t3, fallbackTimer;
+
+                const finalizeIntro = () => {
+                    hideAllSections();
+                    nav2026.classList.add("active");
+                    grid2026.classList.remove("hidden-section");
+                    window.scrollTo(0, 0);
+
+                    shuffleGalleries(); 
+                    if (window.refreshBadges) window.refreshBadges();
+
+                    lockOverlay.style.backgroundColor = 'rgba(18,18,18,0)';
+
+                    setTimeout(() => {
+                        lockOverlay.remove();
+                        window.removeEventListener('wheel', preventScroll);
+                        window.removeEventListener('touchmove', preventScroll);
+                        window.removeEventListener('keydown', preventKeys);
+                        showLoading();
+                        
+                        localStorage.setItem('hasSeenCinematicIntro', 'true');
+                    }, 800);
+                };
+
+                const skipSequence = () => {
+                    clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(fallbackTimer);
+                    if (scrollAnimId) cancelAnimationFrame(scrollAnimId);
+                    
+                    if (skipBtn) skipBtn.style.opacity = '0';
+                    
+                    lockOverlay.style.transition = 'background-color 0.4s ease';
+                    lockOverlay.style.backgroundColor = '#121212';
+                    
+                    setTimeout(finalizeIntro, 400); 
+                };
+
+                if (skipBtn) {
+                    skipBtn.addEventListener('click', skipSequence);
+                }
 
                 const startMovieSequence = () => {
                     if (sequenceStarted) return;
                     sequenceStarted = true;
 
-                    // 🎬 ACT I: Wait 3 seconds at the fully loaded banner
-                    setTimeout(() => {
+                    t1 = setTimeout(() => {
                         const mobilePhotoBlock = aboutSection.querySelector('.about-block');
                         if (mobilePhotoBlock) {
                             cinematicScroll(mobilePhotoBlock, 2000); 
                         }
 
-                        // 🎬 ACT II: Wait for 2s scroll + 1s reading time
-                        setTimeout(() => {
+                        t2 = setTimeout(() => {
+                            if (skipBtn) skipBtn.style.opacity = '0';
                             lockOverlay.style.backgroundColor = '#121212'; 
 
-                            // 🎬 ACT III: Screen is black, swap pages
-                            setTimeout(() => {
-                                hideAllSections();
-                                nav2026.classList.add("active");
-                                grid2026.classList.remove("hidden-section");
-                                window.scrollTo(0, 0);
-
-                                shuffleGalleries(); 
-                                if (window.refreshBadges) window.refreshBadges();
-
-                                // 🎬 ACT IV: Fade back in
-                                lockOverlay.style.backgroundColor = 'rgba(18,18,18,0)';
-
-                                setTimeout(() => {
-                                    lockOverlay.remove();
-                                    window.removeEventListener('wheel', preventScroll);
-                                    window.removeEventListener('touchmove', preventScroll);
-                                    window.removeEventListener('keydown', preventKeys);
-                                    showLoading();
-                                    
-                                    // 🚨 STAMP MEMORY: Only saves if the sequence perfectly finishes!
-                                    if (!forceAlwaysIntro) {
-                                        localStorage.setItem('hasSeenCinematicIntro', 'true');
-                                    }
-                                }, 800); 
+                            t3 = setTimeout(() => {
+                                finalizeIntro();
                             }, 800); 
                         }, 3000); 
                     }, 3000); 
                 };
 
-                // Fallback: If network is terrible, force start movie after 5 seconds anyway
-                const fallbackTimer = setTimeout(startMovieSequence, 5000);
+                const bannerImgs = Array.from(document.querySelectorAll('.banner-item img'));
+                fallbackTimer = setTimeout(startMovieSequence, 5000);
 
-                // Check image load status
                 if (bannerImgs.length === 0) {
                     startMovieSequence();
                 } else {
