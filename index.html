@@ -830,47 +830,52 @@
             filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.8));
         }
 
-        /* --- RESPONSIVE DESIGN --- */
-      @media (max-width: 768px) {
-            .central-header { padding: 20px 20px 15px; }
-            .central-header img.logo { max-width: 180px; }
-            .page-container { flex-direction: column; }
-            .mobile-break {
-                display: inline; 
+       /* --- RESPONSIVE DESIGN: TABLETS & PHONES (<= 1280px) --- */
+        @media (max-width: 1280px) {
+            .central-header { 
+                padding: 20px 20px 15px; 
             }
-            .right-sidebar nav a {
-                text-align: center;
-                line-height: 1.3;
-                font-size: 0.8rem; /* Slightly smaller to prevent overlapping */
-                white-space: normal; 
+            .central-header img.logo { 
+                max-width: 180px; 
             }
             
-            /* Cleaned up padding for the mobile menu container */
-           .right-sidebar {
+            /* Stacks layout vertically below the tagline */
+            .page-container { 
+                flex-direction: column; 
+            }
+            
+            .mobile-break { 
+                display: inline; 
+            }
+
+            /* Horizontal navigation bar beneath tagline */
+            .right-sidebar {
                 width: 100%;
                 position: relative; 
                 top: 0; 
-                padding: 20px 10px; 
+                padding: 15px 10px; 
                 text-align: center;
                 border-bottom: 1px solid #222;
                 max-height: none; 
                 overflow-y: visible;
             }
             
-           /* --- MOBILE NAV LAYOUT RESTORATION --- */
-            
-            /* 1. Makes the Main Photography links display horizontally side-by-side */
+            .right-sidebar nav a {
+                text-align: center;
+                line-height: 1.3;
+                font-size: 0.85rem;
+                white-space: normal; 
+            }
+
             .right-sidebar nav #sidebar-irl-links {
                 display: flex !important;
                 flex-direction: row !important; 
                 justify-content: center;
                 align-items: flex-start;
-                gap: 5px; 
+                gap: 15px; 
                 padding: 0;
                 margin: 0;
                 width: 100%;
-                
-                /* Kills the JS collapse so it always stays visible */
                 max-height: 500px !important; 
                 opacity: 1 !important;
                 pointer-events: auto !important;
@@ -883,41 +888,79 @@
                 text-align: center;
             }
 
-            /* 2. Completely hides the "Main Gallery" dropdown toggle on mobile */
-            #irl-toggle-btn {
-                display: none !important;
-            }
-
-            /* 🚨 Hides the desktop separator line on mobile */
+            #irl-toggle-btn,
+            #sidebar-mc-links,
             .right-sidebar nav #sidebar-irl-links::after {
                 display: none !important;
-            }
-
-            /* 3. Completely hides the Minecraft links in this top menu on mobile */
-            #sidebar-mc-links {
-                display: none !important;
-            }
-            .mobile-break {
-                display: inline; 
             }
             
             .main-content {
                 width: 100%;
-                padding: 30px 20px; 
+                padding: 25px 15px; 
             }
-            
+
             .modal-content {
                 max-width: 95%;
                 max-height: 95%;
             }
-            
+
             .toast-notification {
                 width: 90%;
                 text-align: center;
             }
+
+            /* Hides desktop scrollbars on touch devices */
+            ::-webkit-scrollbar {
+                display: none; 
+            }
+            html, body {
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            .mobile-scroll-progress {
+                display: block;
+            }
         }
 
-        /* --- MOBILE LAYOUT --- */
+        /* --- TABLETS ONLY (481px to 1280px) --- */
+        @media (min-width: 481px) and (max-width: 1280px) {
+            /* 2-Column Gallery Grid */
+            .image-grid {
+                column-count: 2 !important;
+                column-gap: 16px !important;
+                column-width: auto !important;
+            }
+
+            .image-item {
+                margin-bottom: 16px !important;
+            }
+
+            /* Balanced 5-slice banner for tablets */
+            .about-banner-container {
+                height: 300px !important;
+                margin-bottom: 25px !important;
+            }
+
+            .banner-item {
+                border-right: 4px solid #121212;
+            }
+
+            .about-banner-grid .banner-item:nth-child(n+6) {
+                display: none !important;
+            }
+
+            .banner-logo {
+                max-width: 150px;
+                bottom: 15px;
+                left: 20px;
+            }
+
+            .banner-fade {
+                height: 110px;
+            }
+        }
+
+        /* --- PHONES ONLY (<= 480px) --- */
         @media (max-width: 480px) {
             .main-content {
                 padding: 20px 10px; 
@@ -938,6 +981,24 @@
             .hamburger-btn {
                 top: 20px;
                 right: 20px;
+            }
+            .about-banner-container { 
+                height: 200px; 
+                margin-bottom: 30px; 
+            }
+            .banner-item { 
+                border-right: 3px solid #121212; 
+            }
+            .banner-logo { 
+                max-width: 120px; 
+                bottom: 10px; 
+                left: 15px; 
+            }
+            .banner-fade { 
+                height: 80px; 
+            }
+            .about-banner-grid .banner-item:nth-child(n+4) {
+                display: none;
             }
         }
         /* --- FAVORITE & AWARD BADGE STYLES --- */
@@ -2000,12 +2061,12 @@
 //-------------2-----------------//
 
 // 3. --- RANDOMIZE GALLERY ORDER (TRUE JS MASONRY FOR DESKTOP) ---
+       // Inside shuffleGalleries()
         function shuffleGalleries() {
             const grids = document.querySelectorAll('.image-grid');
-            const isDesktop = window.innerWidth > 768; 
+           const isDesktop = window.innerWidth > 1280;
             
             grids.forEach(grid => {
-                // 🚨 THE BULLETPROOF FIX: Pull out the photos and destroy old columns first!
                 let allItems = Array.from(grid.querySelectorAll('.image-item'));
                 grid.innerHTML = ''; 
                 allItems.forEach(item => grid.appendChild(item));
@@ -2020,26 +2081,22 @@
                     }
                 };
 
-                // Safety check: if a section is entirely empty, skip it
                 if (allItems.length === 0) return;
 
                 if (isDesktop) {
-                    // DESKTOP MODE: Build physical columns to guarantee strict top placement
+                    // DESKTOP MODE (Width > 1024px): Physical Flex Columns
                     shuffleArray(fixedItems);
                     shuffleArray(normalItems);
 
-                    // 1. Override CSS column-width with a Flexbox row
                     grid.style.columnCount = 'auto'; 
                     grid.style.columnWidth = 'auto';
                     grid.style.display = 'flex';
                     grid.style.alignItems = 'flex-start';
                     grid.style.gap = '15px';
 
-                    // 2. Calculate how many columns we need
                     let estimatedGridWidth = window.innerWidth - 320;
                     let numCols = Math.max(1, Math.floor(estimatedGridWidth / 315)); 
                     
-                    // 3. Generate physical column wrappers
                     let columns = [];
                     for (let i = 0; i < numCols; i++) {
                         let col = document.createElement('div');
@@ -2052,20 +2109,18 @@
                         columns.push(col);
                     }
                     
-                    // 4. Deal FIXED items first
                     fixedItems.forEach((item, index) => {
                         item.style.marginBottom = '0'; 
                         columns[index % numCols].appendChild(item);
                     });
                     
-                    // 5. Deal NORMAL items underneath
                     normalItems.forEach((item, index) => {
                         item.style.marginBottom = '0'; 
                         columns[index % numCols].appendChild(item);
                     });
                     
                 } else {
-                    // MOBILE MODE: Respect 'fixed-order' strictly at the top of the single column
+                    // TABLET & MOBILE MODE (Width <= 1024px): Pure CSS Columns
                     grid.style.columnCount = ''; 
                     grid.style.columnWidth = '';
                     grid.style.display = '';
@@ -2875,7 +2930,7 @@
         // 12. --- CINEMATIC DESKTOP INTRO ENGINE (UPGRADED) --- //
         // =================================================== //
         function runCinematicIntro() {
-            const isDesktop = window.innerWidth > 768;
+           const isDesktop = window.innerWidth > 1280;
             
             // 🚨 Detect Page Reload/Refresh vs Normal Domain Visit
             const navEntries = performance.getEntriesByType('navigation');
