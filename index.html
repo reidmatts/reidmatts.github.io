@@ -829,6 +829,41 @@
         .skip-intro-btn:hover svg {
             filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.8));
         }
+        /* --- MOTION GRAPHICS PROMO LINK IN GRID --- */
+        .motion-promo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #e5a93d; /* Signature yellow/gold */
+            font-family: 'Permanent Marker', cursive;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: text-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .motion-promo-link svg {
+            width: 38px;
+            height: 22px;
+            stroke: #e5a93d;
+            fill: none;
+            stroke-width: 2.5;
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Gold glow radiance on hover */
+        .motion-promo-link:hover {
+            color: #e5a93d;
+            text-shadow: 0 0 14px rgba(229, 169, 61, 0.85);
+            transform: translateX(4px);
+        }
+
+        .motion-promo-link:hover svg {
+            filter: drop-shadow(0 0 8px rgba(229, 169, 61, 0.9));
+            transform: translateX(4px);
+        }
 
        /* --- RESPONSIVE DESIGN: TABLETS & PHONES (<= 1280px) --- */
         @media (max-width: 1280px) {
@@ -1000,6 +1035,59 @@
             .about-banner-grid .banner-item:nth-child(n+4) {
                 display: none;
             }
+        }
+        /* --- MOTION GRAPHICS PROMO (TABLET & PHONE ONLY) --- */
+        .motion-grid-promo {
+            display: none !important; /* Hidden on Desktop */
+        }
+
+        @media (max-width: 1280px) {
+            .motion-grid-promo {
+                display: block !important; /* Visible on Tablet & Phone */
+            }
+        }
+
+        .motion-promo-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #ffffff; /* 🚨 White font color */
+            font-family: 'Permanent Marker', cursive;
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+            margin: 10px 0 14px 0;
+            cursor: pointer;
+            transition: text-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .motion-promo-link svg {
+            width: 38px;
+            height: 22px;
+            stroke: #e5a93d; /* Gold arrow */
+            fill: none;
+            stroke-width: 2.5;
+            transition: filter 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Gold glow radiance on hover */
+        .motion-promo-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 14px rgba(229, 169, 61, 0.85);
+            transform: translateX(4px);
+        }
+
+        .motion-promo-link:hover svg {
+            filter: drop-shadow(0 0 8px rgba(229, 169, 61, 0.9));
+            transform: translateX(4px);
+        }
+
+        /* Divider lines above and below */
+        .motion-promo-divider {
+            border: 0;
+            border-top: 1px solid #333;
+            width: 100%;
+            margin: 18px 0;
         }
         /* --- FAVORITE & AWARD BADGE STYLES --- */
         .favorite-badge, .award-badge {
@@ -1680,25 +1768,38 @@
                     <div class="image-item fixed-order favorite"><img src="Photography2026/coralnemo.avif" alt="7th"></div>
                     <div class="image-item fixed-order favorite"><img src="Photography2026/guyportrait.avif" alt="9th"></div>
                     <div class="image-item fixed-order favorite"><img src="Photography2026/sharkkid.avif" alt="7th"></div>
-                    <div class="image-item fixed-order favorite new"><img src="Photography2026/birdguy.avif" alt="0th"></div> 
+                  <div class="image-item fixed-order favorite new"><img src="Photography2026/birdguy.avif" alt="0th"></div> 
+
+                    <!-- 🚨 MOTION GRAPHIC PROMO (TABLET & MOBILE ONLY) -->
+                    <div class="image-item fixed-order motion-grid-promo">
+                        <hr class="motion-promo-divider">
+                        
+                        <a href="#" id="grid-visit-motion" class="motion-promo-link">
+                            <span>Visit Motion Graphics</span>
+                            <svg viewBox="0 0 38 24"><path d="M2 12h32M26 5l8 7-8 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+                        
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/nnRU2x07k8Q?autoplay=1><img src=https://img.youtube.com/vi/nnRU2x07k8Q/maxresdefault.jpg alt='Motion Graphic Feature'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        
+                        <hr class="motion-promo-divider">
+                    </div>
+
                     <div class="image-item fixed-order award-winning new"><img src="Photography2026/waterfall.avif" alt="7th"></div>
 
-
-
+                    <div class="image-item fixed-order award-winning new"><img src="Photography2026/waterfall.avif" alt="7th"></div>
+                    <div class="image-item fixed-order award-winning new"><img src="Photography2026/waterfall.avif" alt="7th"></div>
                     <div class="image-item fixed-order award-winning new"><img src="Photography2026/2024portraitgirl.avif" alt="0th"></div> 
                     <div class="image-item fixed-order favorite"><img src="Photography2026/BW_PORTRAIT_1ST.avif" alt="12th"></div>
                     <div class="image-item fixed-order"><img src="Photography2026/ORIG_26.avif" alt="2026 Gallery"></div>
                     <div class="image-item fixed-order favorite"><img src="Photography2026/GIRLONLEDGE.avif" alt="10th"></div>
                     <div class="image-item fixed-order"><img src="Photography2026/ORIG_27.avif" alt="2026 Gallery"></div>
-
                     <div class="image-item fixed-order"><img src="Photography2026/ORIG_73.avif" alt="13th"></div>
-
                     <div class="image-item"><img src="Photography2026/ORIG_28.avif" alt="2026 Gallery"></div>
-                    
                     <div class="image-item"><img src="Photography2026/POTRAITBYTHEOCEANHOUSE.avif" alt="2026 Gallery"></div>
                     <div class="image-item"><img src="Photography2026/STATUEINDOOR.avif" alt="2026 Gallery"></div>
                 </div>
         </div>
+        
                
          <div id="grid-all-time" class="content-section hidden-section">
                 <div class="image-grid">
@@ -2610,7 +2711,15 @@
             navMotion.classList.add("active");
             motionSection.classList.remove("hidden-section");
             if (leftDrawer.classList.contains("open")) toggleDrawer();
-            setSidebarMode('irl');
+            setSidebarMode('isrl');
+        }
+        // 🚨 Routes the in-grid "Visit Motion Graphics ->" link to the Motion Graphics section
+        const gridVisitMotion = document.getElementById("grid-visit-motion");
+        if (gridVisitMotion) {
+            gridVisitMotion.onclick = function(event) {
+                event.preventDefault();
+                navMotion.click();
+            };
         }
 
         navCinematics.onclick = function(event) {
