@@ -1479,37 +1479,30 @@
             filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.6));
         }
 
-      /* --- SIDEBAR TOGGLE & ACCORDION ANIMATIONS --- */
+     /* --- SIDEBAR TOGGLE & ACCORDION ANIMATIONS --- */
         #sidebar-irl-links {
-            /* 🚨 Upgraded to a premium, buttery-smooth ease-out curve */
             transition: max-height 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease-in-out;
-            max-height: 200px; /* 🚨 CHANGED FROM 150px TO 200px SO THE LINE FITS */
+            max-height: 260px; /* Room for all links + divider */
             opacity: 1;
             overflow: hidden;
         }
 
-        /* 🚨 DESKTOP SEPARATOR LINE BELOW ARCHIVES */
-        #sidebar-irl-links::after {
-            content: '';
-            display: block;
-            width: 100%;
-            height: 1px;
-            background-color: #333;
-            margin-top: 5px; /* Creates spacing directly below the last link */
-            transition: background-color 0.4s ease;
-        }
-
+        /* 🚨 Correctly collapses to 0 on Minecraft mode */
         #sidebar-irl-links.collapsed {
-            max-height: 0;
-            opacity: 0;
-            pointer-events: none; 
+            max-height: 0 !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
 
-        /* 🚨 NEW: Utility class to instantly snap the menu closed without animating */
+        #sidebar-irl-links::after {
+            display: none !important;
+        }
+
         .no-transition {
             transition: none !important;
         }
 
+        /* 🚨 RESTORED: Main Gallery Toggle Button Styles 🚨 */
         .sidebar-toggle {
             display: flex;
             align-items: center;
@@ -1518,27 +1511,19 @@
             color: #9e9e9e; 
             font-size: 0.95rem; 
             padding-bottom: 6px;
-            /* 🚨 THE NEW DIVIDER STYLES */
             margin-top: 15px; 
             padding-top: 15px;
             border-top: 1px solid #333;
-             
-            margin-top: 25px; /* Creates separation from the Minecraft links above */
             margin-bottom: 20px; 
             transition: color 0.3s ease;
             width: 100%;
-            
-            /* 🚨 Leftward Slide Animation on load */
             opacity: 0;
             transform: translateX(15px);
             animation: slideLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
         }
 
         @keyframes slideLeft {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .sidebar-toggle:hover {
@@ -1563,6 +1548,35 @@
                 justify-content: center;
                 gap: 10px;
                 margin-bottom: 15px;
+            }
+        }
+
+        /* --- SIDEBAR SEPARATOR & "NEW!" BADGE --- */
+        .sidebar-divider {
+            border: 0;
+            border-top: 1px solid #333;
+            width: 100%;
+            margin: 10px 0;
+            transition: border-color 0.4s ease;
+        }
+
+        .sidebar-new-badge {
+            font-family: 'Permanent Marker', cursive;
+            color: #e5a93d; /* Signature yellow */
+            font-size: 0.72rem;
+            letter-spacing: 1px;
+            margin-left: 6px;
+            display: inline-block;
+            vertical-align: middle;
+            text-shadow: 0 0 8px rgba(229, 169, 61, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Hide divider and extra desktop link in tablet/mobile horizontal bar */
+        @media (max-width: 1280px) {
+            .sidebar-divider,
+            .desktop-sidebar-only {
+                display: none !important;
             }
         }
        /* --- MOBILE 2026 PROMO BANNER --- */
@@ -1624,6 +1638,38 @@
         body.light-theme .close-mobile-banner:hover {
             color: #121212;
         }
+        /* --- SIDEBAR SEPARATOR & "NEW!" BADGE --- */
+        .sidebar-divider {
+            border: 0;
+            border-top: 1px solid #333;
+            width: 100%;
+            margin: 10px 0;
+            transition: border-color 0.4s ease;
+        }
+
+        .sidebar-new-badge {
+            font-family: 'Permanent Marker', cursive;
+            color: #e5a93d; /* Signature yellow */
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            margin-left: 6px;
+            display: inline-block;
+            vertical-align: middle;
+            text-shadow: 0 0 8px rgba(229, 169, 61, 0.6);
+            transform: translateY(-1px);
+        }
+
+        /* Expand sidebar max-height to fit the new link smoothly */
+        #sidebar-irl-links {
+            max-height: 280px !important;
+        }
+
+        /* Hide the divider in horizontal tablet/mobile menu */
+        @media (max-width: 1280px) {
+            .sidebar-divider {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -1646,10 +1692,10 @@
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
                 </svg>
             </div>
-            <nav>
+       <nav>
                 <ul>
                     <li><a href="#" id="nav-about">About Me</a></li>
-                    <li><a href="#" id="nav-motion">Motion Graphics</a></li>
+                    <li><a href="#" id="nav-motion">Motion Graphics <span class="sidebar-new-badge">NEW!</span></a></li>
                     <li><a href="#" id="nav-cinematics">Cinematics</a></li>
                     <hr class="drawer-divider">
                     <li><a href="#" id="nav-mc-photo">Minecraft Photography</a></li>
@@ -1722,12 +1768,15 @@
                     <span>Main Gallery</span>
                     <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
-
-                <!-- 3. Original Main Links (Visible and expanded by default) -->
+              <!-- 3. Original Main Links (Visible and expanded by default) -->
                 <ul id="sidebar-irl-links">
                     <li><a href="#" id="nav-2026" class="active">Photography of <br class="mobile-break"> 2026</a></li>
                     <li><a href="#" id="nav-all-time">Photography of <br class="mobile-break"> All Time</a></li>
                     <li><a href="#" id="nav-archives">Photography <br class="mobile-break"> Archives</a></li>
+                    <hr class="sidebar-divider">
+                    <li class="desktop-sidebar-only">
+                        <a href="#" id="side-nav-motion">Motion <br class="mobile-break">Graphics <span class="sidebar-new-badge">NEW!</span></a>
+                    </li>
                 </ul>
                 </nav>
             </aside>
@@ -1752,7 +1801,7 @@
                 <div class="image-grid">
                     <div class="image-item fixed-order award-winning new"><img src="Photography2026/voque.avif" alt="1st"></div>
                     <div class="image-item fixed-order award-winning"><img src="Photography2026/awardwinning.avif" alt="9th"></div>
-                     <!-- 🚨 MOTION GRAPHIC PROMO (TABLET & MOBILE ONLY) -->
+               <!-- 🚨 MOTION GRAPHIC PROMO (TABLET & MOBILE ONLY) -->
                     <div class="image-item fixed-order motion-grid-promo">
                         <hr class="motion-promo-divider">
                         
@@ -1761,7 +1810,7 @@
                             <svg viewBox="0 0 38 24"><path d="M2 12h32M26 5l8 7-8 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </a>
                         
-                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/nnRU2x07k8Q?autoplay=1><img src=https://img.youtube.com/vi/nnRU2x07k8Q/maxresdefault.jpg alt='Motion Graphic Feature'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/nnRU2x07k8Q?autoplay=1><img src=https://img.youtube.com/vi/nnRU2x07k8Q/maxresdefault.jpg alt='Video'><div class=top-bar>Motion Graphics Feature</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                         
                         <hr class="motion-promo-divider">
                     </div>
@@ -1867,37 +1916,38 @@
                 </div>
             </div> <!-- 🚨 Correctly closes #grid-archives here -->
 
-           <!-- 🚨 MOTION GRAPHICS SECTION 🚨 -->
+         <!-- 🚨 MOTION GRAPHICS SECTION 🚨 -->
             <div id="motion-section" class="content-section hidden-section">
                 <div class="image-grid">
 
                     <!-- Video 1: GPWcXqtpOBQ -->
                     <div class="image-item">
-                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/GPWcXqtpOBQ?autoplay=1><img src=https://img.youtube.com/vi/GPWcXqtpOBQ/maxresdefault.jpg alt='Motion Graphic 1'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/GPWcXqtpOBQ?autoplay=1><img src=https://img.youtube.com/vi/GPWcXqtpOBQ/maxresdefault.jpg alt='Motion Graphic #1'><div class=top-bar>MOTION GRAPHICS #1</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                     </div>
 
                     <!-- Video 2: to2yMwHJQo0 -->
                     <div class="image-item">
-                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/to2yMwHJQo0?autoplay=1><img src=https://img.youtube.com/vi/to2yMwHJQo0/maxresdefault.jpg alt='Motion Graphic 2'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/to2yMwHJQo0?autoplay=1><img src=https://img.youtube.com/vi/to2yMwHJQo0/maxresdefault.jpg alt='Motion Graphic #2'><div class=top-bar>MOTION GRAPHICS #2</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                     </div>
 
                     <!-- Video 3: -afxK1gxKys -->
                     <div class="image-item">
-                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/-afxK1gxKys?autoplay=1><img src=https://img.youtube.com/vi/-afxK1gxKys/maxresdefault.jpg alt='Motion Graphic 3'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/-afxK1gxKys?autoplay=1><img src=https://img.youtube.com/vi/-afxK1gxKys/maxresdefault.jpg alt='Motion Graphic #3'><div class=top-bar>MOTION GRAPHIC #3</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                     </div>
 
-                    <!-- Video 4: ZDMxZTuIMUc (NEW) -->
+                    <!-- Video 4: ZDMxZTuIMUc -->
                     <div class="image-item">
-                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/ZDMxZTuIMUc?autoplay=1><img src=https://img.youtube.com/vi/ZDMxZTuIMUc/maxresdefault.jpg alt='Motion Graphic 4'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/ZDMxZTuIMUc?autoplay=1><img src=https://img.youtube.com/vi/ZDMxZTuIMUc/maxresdefault.jpg alt='Motion Graphic #4'><div class=top-bar>Motion Graphics #4</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                     </div>
 
-                    <!-- Video 5: OezXOZ53P-s (NEW) -->
+                    <!-- Video 5: OezXOZ53P-s -->
                     <div class="image-item">
-                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/OezXOZ53P-s?autoplay=1><img src=https://img.youtube.com/vi/OezXOZ53P-s/maxresdefault.jpg alt='Motion Graphic 5'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/OezXOZ53P-s?autoplay=1><img src=https://img.youtube.com/vi/OezXOZ53P-s/maxresdefault.jpg alt='Motion Graphic #5'><div class=top-bar>MOTION GRAPHIC #5</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
                     </div>
 
                 </div>
             </div>
+        
             <div id="about-section" class="content-section hidden-section">
 
                 <!-- 🚨 THE NEW SLANTED FINE ARTS BANNER 🚨 -->
@@ -2078,35 +2128,45 @@
             <div class="image-item"><img src="OthersMinecraftPhotography/GRASSPIC.avif" loading="lazy" alt="UMSOEA Geometry 3"></div>
         </div>
 </div>
-       <div id="mc-cinema-section" class="content-section hidden-section">
+      <!-- 🚨 MINECRAFT CINEMATICS SECTION 🚨 -->
+            <div id="mc-cinema-section" class="content-section hidden-section">
                 <div class="image-grid">
-                     <div class="image-item">
-                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/cJHG68M50mY?autoplay=1><img src=https://img.youtube.com/vi/cJHG68M50mY/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                     </div>
-                     
-                     <div class="image-item">
-                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/oB4ysmOkxAs?autoplay=1><img src=https://img.youtube.com/vi/oB4ysmOkxAs/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                     </div>
-                     
-                     <div class="image-item">
-                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/Z0-D7COr_0U?autoplay=1><img src=https://img.youtube.com/vi/Z0-D7COr_0U/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                     </div>
-                     
-                     <div class="image-item">
-                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/-vbC_uBGKGE?autoplay=1><img src=https://img.youtube.com/vi/-vbC_uBGKGE/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                     </div>
 
-                     <div class="image-item">
-                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/jpZ110P6lr0?autoplay=1><img src=https://img.youtube.com/vi/jpZ110P6lr0/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                     </div>
+                    <!-- Video 1: cJHG68M50mY -->
+                    <div class="image-item">
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/cJHG68M50mY?autoplay=1><img src=https://img.youtube.com/vi/cJHG68M50mY/maxresdefault.jpg alt='Minecraft Cinematic #1'><div class=top-bar>Minecraft Cinematic #1</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                    </div>
 
-                     <div class="image-item">
-                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/eegQ9PvR2SQ?autoplay=1><img src=https://img.youtube.com/vi/eegQ9PvR2SQ/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                     </div>
-                       
-                     <div class="image-item">
-                         <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto;object-fit:cover;height:100%}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:white;text-shadow:0 0 0.5em black;transition:transform 0.2s}a:hover span{transform:scale(1.1)}</style><a href=https://www.youtube.com/embed/Z-eum2PuG6k?autoplay=1><img src=https://img.youtube.com/vi/Z-eum2PuG6k/maxresdefault.jpg alt='Minecraft Cinematic'><span>▶</span></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                     </div>
+                    <!-- Video 2: oB4ysmOkxAs -->
+                    <div class="image-item">
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/oB4ysmOkxAs?autoplay=1><img src=https://img.youtube.com/vi/oB4ysmOkxAs/maxresdefault.jpg alt='Minecraft Cinematic #2'><div class=top-bar>Minecraft Cinematic #2</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                    </div>
+
+                    <!-- Video 3: Z0-D7COr_0U -->
+                    <div class="image-item">
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/Z0-D7COr_0U?autoplay=1><img src=https://img.youtube.com/vi/Z0-D7COr_0U/maxresdefault.jpg alt='Minecraft Cinematic #3'><div class=top-bar>Minecraft Cinematic #3</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                    </div>
+
+                    <!-- Video 4: -vbC_uBGKGE -->
+                    <div class="image-item">
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/-vbC_uBGKGE?autoplay=1><img src=https://img.youtube.com/vi/-vbC_uBGKGE/maxresdefault.jpg alt='Minecraft Cinematic #4'><div class=top-bar>Minecraft Cinematic #4</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                    </div>
+
+                    <!-- Video 5: jpZ110P6lr0 -->
+                    <div class="image-item">
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/jpZ110P6lr0?autoplay=1><img src=https://img.youtube.com/vi/jpZ110P6lr0/maxresdefault.jpg alt='Minecraft Cinematic #5'><div class=top-bar>Minecraft Cinematic #5</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                    </div>
+
+                    <!-- Video 6: eegQ9PvR2SQ -->
+                    <div class="image-item">
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/eegQ9PvR2SQ?autoplay=1><img src=https://img.youtube.com/vi/eegQ9PvR2SQ/maxresdefault.jpg alt='Minecraft Cinematic #6'><div class=top-bar>Minecraft Cinematic #6</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                    </div>
+
+                    <!-- Video 7: Z-eum2PuG6k -->
+                    <div class="image-item">
+                        <iframe srcdoc="<style>*{padding:0;margin:0;overflow:hidden;box-sizing:border-box}html,body{height:100%;background:#000}img{position:absolute;width:100%;height:100%;object-fit:cover;top:0;left:0}a{display:flex;align-items:center;justify-content:center;height:100%;text-decoration:none}.yt-btn{width:68px;height:48px;position:relative;z-index:2;transition:transform 0.2s cubic-bezier(0,0,0.2,1)}.yt-btn svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4))}a:hover .yt-btn{transform:scale(1.12)}.top-bar{position:absolute;top:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to bottom,rgba(0,0,0,0.7) 0%,transparent 100%);color:#fff;font-family:Roboto,sans-serif;font-size:15px;font-weight:500;z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</style><a href=https://www.youtube.com/embed/Z-eum2PuG6k?autoplay=1><img src=https://img.youtube.com/vi/Z-eum2PuG6k/maxresdefault.jpg alt='Minecraft Cinematic #7'><div class=top-bar>Minecraft Cinematic #7</div><div class=yt-btn><svg viewBox='0 0 68 48'><path d='M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z' fill='#f00'/><polygon points='28,34 45,24 28,14' fill='#fff'/></svg></div></a>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+                    </div>
+
                 </div>
             </div>
         </main>
@@ -2531,6 +2591,7 @@
         const nav2026 = document.getElementById("nav-2026");
         const navAllTime = document.getElementById("nav-all-time");
         const navArchives = document.getElementById("nav-archives"); 
+        const sideNavMotion = document.getElementById("side-nav-motion");
         
         // Right sidebar links (Minecraft) + Toggle
         const sideNavMcPhoto = document.getElementById("side-nav-mc-photo");
@@ -2657,6 +2718,7 @@
             
             if(sideNavMcPhoto) sideNavMcPhoto.classList.remove("active");
             if(sideNavMcCinema) sideNavMcCinema.classList.remove("active");
+            if(sideNavMotion) sideNavMotion.classList.remove("active"); 
 
             headerQuote.innerText = defaultQuote;
         }
@@ -2698,13 +2760,27 @@
             if (leftDrawer.classList.contains("open")) toggleDrawer();
             setSidebarMode('irl');
         }
+      // Drawer click
         navMotion.onclick = function(event) {
             event.preventDefault();
             hideAllSections();
             navMotion.classList.add("active");
+            if (sideNavMotion) sideNavMotion.classList.add("active");
             motionSection.classList.remove("hidden-section");
             if (leftDrawer.classList.contains("open")) toggleDrawer();
-            setSidebarMode('isrl');
+            setSidebarMode('irl');
+        };
+
+        // Desktop sidebar click
+        if (sideNavMotion) {
+            sideNavMotion.onclick = function(event) {
+                event.preventDefault();
+                hideAllSections();
+                sideNavMotion.classList.add("active");
+                navMotion.classList.add("active");
+                motionSection.classList.remove("hidden-section");
+                setSidebarMode('irl');
+            };
         }
         // 🚨 Routes the in-grid "Visit Motion Graphics ->" link to the Motion Graphics section
         const gridVisitMotion = document.getElementById("grid-visit-motion");
