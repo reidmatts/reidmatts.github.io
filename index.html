@@ -18,7 +18,7 @@
     <link rel="manifest" href="manifest.json?v=3">
     <style>
         /* Why is bro looking at my codes/
-        /* Its cool fr fr*/
+        /* Its cool fr fr*/ 
         /* CSS Reset & Base Styles */
       @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
         * {
@@ -3149,9 +3149,7 @@
         
         document.getElementById("copyrightYear").innerText = new Date().getFullYear();
 
-      // =================================================== //
         // 12. --- CINEMATIC DESKTOP INTRO ENGINE (UPGRADED) --- //
-        // =================================================== //
         function runCinematicIntro() {
            const isDesktop = window.innerWidth > 1280;
             
@@ -3421,8 +3419,60 @@
                 });
             });
         }
-    </script>
-    
+       
+        // 16. --- YOUTUBE AUTO-PAUSE ENGINE --- //
+        function setupYouTubeAutoPause() {
+            const iframes = document.querySelectorAll('.image-item iframe');
 
+            // 1. Inject the YouTube API enabler into all iframes behind the scenes
+            iframes.forEach(iframe => {
+                const srcdoc = iframe.getAttribute('srcdoc');
+                // Upgrades srcdoc embeds
+                if (srcdoc && !srcdoc.includes('enablejsapi=1')) {
+                    iframe.setAttribute('srcdoc', srcdoc.replace('?autoplay=1', '?autoplay=1&enablejsapi=1'));
+                } 
+                // Upgrades standard src embeds
+                else if (iframe.src && iframe.src.includes('youtube.com') && !iframe.src.includes('enablejsapi')) {
+                    iframe.src += (iframe.src.includes('?') ? '&' : '?') + 'enablejsapi=1';
+                }
+            });
+
+            // 2. The command sender to pause the video
+            const pauseVideo = (iframe) => {
+                if (iframe && iframe.contentWindow) {
+                    iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
+                }
+            };
+
+            // 3. Pause when the user scrolls past the video
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // If the video leaves the screen (threshold 0), pause it
+                    if (!entry.isIntersecting) {
+                        pauseVideo(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 }); // Triggers when 90% of the video is out of view
+
+            iframes.forEach(iframe => observer.observe(iframe));
+
+            // 4. Pause when the user switches browser tabs
+            document.addEventListener("visibilitychange", () => {
+                if (document.hidden) {
+                    iframes.forEach(pauseVideo);
+                }
+            });
+            
+            // 5. Pause when switching gallery navigation sections
+            document.querySelectorAll('nav a, .sidebar-toggle').forEach(link => {
+                link.addEventListener('click', () => {
+                    iframes.forEach(pauseVideo);
+                });
+            });
+        }
+        
+        // Boot the engine when the site loads
+        document.addEventListener('DOMContentLoaded', setupYouTubeAutoPause);
+    </script>
 </body>
 </html>
