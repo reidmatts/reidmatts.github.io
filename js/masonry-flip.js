@@ -1,7 +1,9 @@
 // --- 2. RANDOMIZE GALLERY ORDER (TRUE JS MASONRY FOR DESKTOP) ---
-function shuffleGalleries() {
+function shuffleGalleries(forceReshuffle = false) {
     const grids = document.querySelectorAll('.image-grid');
     const isDesktop = window.innerWidth > 1280;
+    const estimatedGridWidth = window.innerWidth - 320;
+    const targetCols = isDesktop ? Math.max(1, Math.floor(estimatedGridWidth / 315)) : 0;
     
     const shuffleArray = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
@@ -11,6 +13,14 @@ function shuffleGalleries() {
     };
 
     grids.forEach(grid => {
+        const currentMode = isDesktop ? `desktop-${targetCols}` : 'mobile';
+        const isAlreadyShuffled = grid.dataset.shuffled === 'true';
+
+        // Skip DOM teardown if layout mode & column count haven't changed (prevents iframe reloads)
+        if (!forceReshuffle && isAlreadyShuffled && grid.dataset.layoutMode === currentMode) {
+            return;
+        }
+
         const allItems = Array.from(grid.querySelectorAll('.image-item'));
         if (allItems.length === 0) return;
 
@@ -25,8 +35,10 @@ function shuffleGalleries() {
         });
 
         if (isDesktop) {
-            shuffleArray(fixedItems);
-            shuffleArray(normalItems);
+            if (!isAlreadyShuffled || forceReshuffle) {
+                shuffleArray(fixedItems);
+                shuffleArray(normalItems);
+            }
 
             grid.style.columnCount = 'auto'; 
             grid.style.columnWidth = 'auto';
@@ -34,9 +46,7 @@ function shuffleGalleries() {
             grid.style.alignItems = 'flex-start';
             grid.style.gap = '15px';
 
-            const estimatedGridWidth = window.innerWidth - 320;
-            const numCols = Math.max(1, Math.floor(estimatedGridWidth / 315)); 
-            
+            const numCols = targetCols;
             const columns = [];
             for (let i = 0; i < numCols; i++) {
                 const col = document.createElement('div');
@@ -69,7 +79,9 @@ function shuffleGalleries() {
             grid.style.alignItems = '';
             grid.style.gap = '';
 
-            shuffleArray(normalItems);
+            if (!isAlreadyShuffled || forceReshuffle) {
+                shuffleArray(normalItems);
+            }
             
             fixedItems.forEach((item, index) => {
                 item.style.marginBottom = '';
@@ -90,6 +102,9 @@ function shuffleGalleries() {
                 grid.appendChild(item);
             });
         }
+
+        grid.dataset.shuffled = 'true';
+        grid.dataset.layoutMode = currentMode;
     });
 }
 

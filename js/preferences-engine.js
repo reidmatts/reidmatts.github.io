@@ -39,9 +39,20 @@ if (localStorage.getItem('lightModeEnabled') === 'true') {
     toggleLightMode.checked = true;
     document.body.classList.add('light-theme');
 }
-if (localStorage.getItem('lowDetailEnabled') === 'true') {
+const savedLowDetail = localStorage.getItem('lowDetailEnabled');
+if (savedLowDetail === 'true') {
     toggleLowDetail.checked = true;
     document.body.classList.add('low-detail');
+} else if (savedLowDetail === null) {
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isLowMemory = navigator.deviceMemory && navigator.deviceMemory <= 4;
+    const isLowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+    const isDataSaver = navigator.connection && navigator.connection.saveData === true;
+
+    if (prefersReducedMotion || isDataSaver || (isLowMemory && isLowCPU)) {
+        toggleLowDetail.checked = true;
+        document.body.classList.add('low-detail');
+    }
 }
 
 toggleTwoGrid.addEventListener('change', (e) => {
