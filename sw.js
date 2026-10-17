@@ -1,35 +1,38 @@
-const CACHE_NAME = 'reid-portfolio-v3';
+const CODE_CACHE_NAME = 'reid-code-v4';
+const MEDIA_CACHE_NAME = 'reid-media-v1';
+
 const CORE_ASSETS = [
     './',
     './index.html',
     './logo.png',
-    './css/base-theme.css',
-    './css/navigation.css',
-    './css/gallery-masonry.css',
-    './css/about-editorial.css',
-    './css/liquid-glass-ui.css',
-    './js/preferences-engine.js',
-    './js/masonry-flip.js',
-    './js/navigation-router.js',
-    './js/ambilight-modal.js',
-    './js/badges-observer.js',
-    './js/cinematic-intro.js',
-    './js/media-utils.js'
+    './css/base-theme.css?v=4',
+    './css/navigation.css?v=4',
+    './css/gallery-masonry.css?v=4',
+    './css/about-editorial.css?v=4',
+    './css/liquid-glass-ui.css?v=4',
+    './js/preferences-engine.js?v=4',
+    './js/masonry-flip.js?v=4',
+    './js/navigation-router.js?v=4',
+    './js/ambilight-modal.js?v=4',
+    './js/badges-observer.js?v=4',
+    './js/cinematic-intro.js?v=4',
+    './js/media-utils.js?v=4'
 ];
 
 self.addEventListener('install', (e) => {
     self.skipWaiting();
     e.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS)).catch(() => {})
+        caches.open(CODE_CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS)).catch(() => {})
     );
 });
 
 self.addEventListener('activate', (e) => {
+    const validCaches = [CODE_CACHE_NAME, MEDIA_CACHE_NAME];
     e.waitUntil(
         caches.keys().then((keys) =>
             Promise.all(
                 keys.map((key) => {
-                    if (key !== CACHE_NAME) return caches.delete(key);
+                    if (!validCaches.includes(key)) return caches.delete(key);
                 })
             )
         ).then(() => self.clients.claim())
@@ -48,30 +51,33 @@ self.addEventListener('fetch', (e) => {
     const isImageOrFont = /\.(avif|png|jpg|jpeg|webp|woff2?|ttf|otf)$/i.test(url.pathname);
 
     if (isImageOrFont) {
-        // Cache-first for heavy immutable images/fonts, revalidate in background
+        // Instant 0ms return from cache, while silently checking in the background if the file was replaced on GitHub
         e.respondWith(
-            caches.open(CACHE_NAME).then((cache) =>
+            caches.open(MEDIA_CACHE_NAME).then((cache) =>
                 cache.match(e.request).then((cached) => {
-                    const networkFetch = fetch(e.request).then((response) => {
+                    const networkUpdate = fetch(e.request).then((response) => {
                         if (response && response.status === 200) {
                             cache.put(e.request, response.clone());
                         }
                         return response;
                     }).catch(() => cached);
-                    return cached || networkFetch;
+
+                    return cached || networkUpdate;
                 })
             )
         );
     } else {
-        // Network-first / Stale-While-Revalidate for HTML, CSS, JS so GitHub pushes show up immediately
+        // Network-first with cache: 'no-cache' for HTML, CSS, JS so browser HTTP disk cache never serves stale scripts
         e.respondWith(
-            fetch(e.request).then((response) => {
+            fetch(e.request, { cache: 'no-cache' }).then((response) => {
                 if (response && response.status === 200) {
                     const clone = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+                    caches.open(CODE_CACHE_NAME).then((cache) => cache.put(e.request, clone));
                 }
                 return response;
             }).catch(() => caches.match(e.request))
         );
     }
-});
+});
+
+
