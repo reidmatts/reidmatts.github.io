@@ -1,4 +1,27 @@
-// --- 12. CINEMATIC DESKTOP INTRO ENGINE ---
+// --- 12. CINEMATIC DESKTOP INTRO & FIRST-TIMER LOADING ENGINE ---
+function createFirstVisitLoader() {
+    const loader = document.createElement('div');
+    loader.className = 'first-visit-loader';
+    loader.innerHTML = `<div class="first-visit-loader-spinner"></div><span>Website is Loading</span>`;
+    document.body.appendChild(loader);
+
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            loader.classList.add('show');
+        });
+    });
+
+    return {
+        dismiss: () => {
+            if (!loader.parentNode) return;
+            loader.classList.remove('show');
+            setTimeout(() => {
+                if (loader.parentNode) loader.remove();
+            }, 650);
+        }
+    };
+}
+
 function runCinematicIntro() {
     const isDesktop = window.innerWidth > 1280;
     const navEntries = performance.getEntriesByType('navigation');
@@ -6,14 +29,22 @@ function runCinematicIntro() {
 
     const hasSeenIntro = localStorage.getItem('hasSeenCinematicIntro') === 'true';
     const disableIntro = localStorage.getItem('disableIntroAnimation') === 'true';
+    const isFirstVisit = !hasSeenIntro;
 
-    if (isDesktop && !disableIntro && !isReload) { 
+    // Run on Desktop if not disabled, and either it's a first visit (even on reload after cache clear) or a normal navigation
+    if (isDesktop && !disableIntro && (!isReload || isFirstVisit)) { 
         const isLight = document.body.classList.contains('light-theme');
         const overlayFadeColor = isLight ? '#f5f5f7' : '#121212';
 
         const lockOverlay = document.createElement('div');
         lockOverlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;background-color:rgba(18,18,18,0);transition:background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1);cursor:wait;';
         document.body.appendChild(lockOverlay);
+
+        // Show "Website is Loading" popup with spinner only on first-time visit (or after cache clear)
+        let firstVisitPopup = null;
+        if (isFirstVisit) {
+            firstVisitPopup = createFirstVisitLoader();
+        }
 
         let skipBtn = null;
         if (hasSeenIntro) {
@@ -63,6 +94,8 @@ function runCinematicIntro() {
         let t1, t2, t3, fallbackTimer;
 
         const finalizeIntro = () => {
+            if (firstVisitPopup) firstVisitPopup.dismiss();
+
             hideAllSections();
             nav2026.classList.add("active");
             grid2026.classList.remove("hidden-section");
@@ -80,6 +113,7 @@ function runCinematicIntro() {
                 window.removeEventListener('keydown', preventKeys);
                 showLoading();
                 localStorage.setItem('hasSeenCinematicIntro', 'true');
+                localStorage.setItem('hasVisitedWebsite', 'true');
             }, 800);
         };
 
@@ -87,6 +121,7 @@ function runCinematicIntro() {
             clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(fallbackTimer);
             if (scrollAnimId) cancelAnimationFrame(scrollAnimId);
             if (skipBtn) skipBtn.style.opacity = '0';
+            if (firstVisitPopup) firstVisitPopup.dismiss();
             
             lockOverlay.style.transition = 'background-color 0.4s ease';
             lockOverlay.style.backgroundColor = overlayFadeColor;
@@ -100,6 +135,12 @@ function runCinematicIntro() {
         const startMovieSequence = () => {
             if (sequenceStarted) return;
             sequenceStarted = true;
+            clearTimeout(fallbackTimer);
+
+            // Dismiss the "Website is Loading" popup smoothly once the banner images are ready and intro starts playing
+            if (firstVisitPopup) {
+                setTimeout(() => firstVisitPopup.dismiss(), 600);
+            }
 
             t1 = setTimeout(() => {
                 const mobilePhotoBlock = aboutSection.querySelector('.about-block');
@@ -119,6 +160,7 @@ function runCinematicIntro() {
         };
 
         const bannerImgs = Array.from(aboutSection.querySelectorAll('.banner-item img'));
+        // Wait up to 5 seconds for About Me banner images to load; proceed immediately once all are loaded
         fallbackTimer = setTimeout(startMovieSequence, 5000);
 
         if (bannerImgs.length === 0) {
@@ -129,10 +171,12 @@ function runCinematicIntro() {
                     loadedCount++;
                 } else {
                     img.addEventListener('load', () => { 
-                        loadedCount++; if (loadedCount === bannerImgs.length) startMovieSequence(); 
+                        loadedCount++; 
+                        if (loadedCount === bannerImgs.length) startMovieSequence(); 
                     }, { once: true });
                     img.addEventListener('error', () => { 
-                        loadedCount++; if (loadedCount === bannerImgs.length) startMovieSequence(); 
+                        loadedCount++; 
+                        if (loadedCount === bannerImgs.length) startMovieSequence(); 
                     }, { once: true });
                 }
             });
@@ -146,5 +190,23 @@ function runCinematicIntro() {
 
 const isIntroRunning = runCinematicIntro();
 if (!isIntroRunning) {
-    setTimeout(showLoading, 100);
+    // If on Mobile/Tablet (or intro disabled) on a very first visit / cleared cache, show the loading popup briefly until initial images load
+    if (localStorage.getItem('hasVisitedWebsite') !== 'true' && localStorage.getItem('hasSeenCinematicIntro') !== 'true') {
+        const mobileFirstLoader = createFirstVisitLoader();
+        const finishMobileFirstLoad = () => {
+            mobileFirstLoader.dismiss();
+            localStorage.setItem('hasVisitedWebsite', 'true');
+            setTimeout(showLoading, 500);
+        };
+
+        if (document.readyState === 'complete') {
+            setTimeout(finishMobileFirstLoad, 1200);
+        } else {
+            window.addEventListener('load', () => setTimeout(finishMobileFirstLoad, 600), { once: true });
+            setTimeout(finishMobileFirstLoad, 5000);
+        }
+    } else {
+        setTimeout(showLoading, 100);
+    }
 }
+
