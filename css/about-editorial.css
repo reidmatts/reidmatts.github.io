@@ -1,0 +1,435 @@
+/* --- SLANTED ABOUT ME BANNER --- */
+.about-banner-container {
+    width: 100%;
+    height: 380px; 
+    position: relative;
+    overflow: hidden;
+    background-color: var(--bg-primary); 
+    margin-bottom: 5px; 
+    border-radius: 8px;
+    transition: background-color 0.45s var(--ease-liquid);
+}
+
+.about-banner-grid {
+    display: flex;
+    width: 110%;
+    height: 100%;
+    margin-left: -5%;
+    transform: skewX(15deg);
+}
+
+.banner-item {
+    flex: 1 1 0%;
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    border-right: 5px solid var(--bg-primary); 
+    transition: border-color 0.45s var(--ease-liquid);
+}
+
+.banner-item:last-child {
+    border-right: none; 
+}
+
+.banner-item img {
+    width: 160%;
+    height: 100%;
+    object-fit: cover; 
+    transform: skewX(-15deg) scale(1);
+    margin-left: -30%;
+    transition: transform 0.7s var(--ease-liquid), filter 0.6s var(--ease-liquid);
+    will-change: transform;
+}
+
+.banner-item:hover img {
+    transform: skewX(-15deg) scale(1.06); 
+    filter: brightness(1.15);
+}
+
+.banner-fade {
+    position: absolute;
+    bottom: 0; 
+    left: 0; 
+    right: 0;
+    height: 140px;
+    background: linear-gradient(to top, rgba(18,18,18,1) 0%, rgba(18,18,18,0) 100%);
+    pointer-events: none;
+    z-index: 5;
+    transition: background 0.45s var(--ease-liquid);
+}
+
+.banner-logo {
+    position: absolute;
+    bottom: 20px;
+    left: 30px;
+    max-width: 180px;
+    z-index: 10;
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.8));
+    transition: filter 0.45s var(--ease-liquid);
+}
+
+/* AUTO-STRAIGHTEN ENTIRE BANNER */
+.about-banner-container.straight-mode .about-banner-grid {
+    transform: none !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+.about-banner-container.straight-mode .banner-item img {
+    transform: none !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    object-fit: cover;
+}
+
+.about-banner-container.straight-mode .banner-item.is-portrait img {
+    object-fit: contain !important;
+    object-position: top center !important;
+    background-color: var(--bg-primary);
+}
+
+.about-banner-container.straight-mode .banner-item:hover img {
+    transform: scale(1.05) !important;
+}
+
+.about-banner-container.snap-active .banner-item img {
+    transition: none !important;
+}
+
+/* =========================================================
+   ABOUT ME SECTION: PREMIUM LIQUID EDITORIAL ARCHITECTURE
+   ========================================================= */
+.about-wrapper {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 10px 40px;
+    color: var(--text-primary); 
+    line-height: 1.8;
+    font-size: 1.15rem; 
+    display: flex;
+    flex-direction: column;
+    gap: 45px; 
+}
+
+.about-block h2 {
+    margin-bottom: 6px;
+    line-height: 1.18;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.about-block p {
+    margin-bottom: 18px;
+    color: var(--text-primary);
+}
+
+.about-block p:last-child {
+    margin-bottom: 0;
+}
+
+/* Liquid Shimmer Typography Accents (Dark Mode) */
+@keyframes liquidTextFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.text-magenta { 
+    color: #ff01e6;
+    background: linear-gradient(110deg, #ff01e6 0%, #ff7bf0 50%, #ff01e6 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: liquidTextFlow 6s ease-in-out infinite;
+}
+
+.text-cyan { 
+    color: #00ffff;
+    background: linear-gradient(110deg, #00ffff 0%, #99ffff 50%, #00e1ff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: liquidTextFlow 6s ease-in-out infinite;
+}
+
+.text-yellow { 
+    color: #ffff00; 
+    font-weight: bold; 
+    background: linear-gradient(110deg, #ffff00 0%, #e5a93d 50%, #ffff00 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: liquidTextFlow 5s ease-in-out infinite;
+}
+
+/* High-Contrast Editorial Accents for Light Mode (Sharp & Readable) */
+body.light-theme .text-magenta { 
+    background: none;
+    -webkit-text-fill-color: #c200ad;
+    color: #c200ad; 
+}
+body.light-theme .text-cyan { 
+    background: none;
+    -webkit-text-fill-color: #007788;
+    color: #007788; 
+}
+body.light-theme .text-yellow { 
+    background: none;
+    -webkit-text-fill-color: #b36b00;
+    color: #b36b00; 
+}
+
+/* Top Anchor Block (Mobile Photography - Preserves Exact Intro Coordinates) */
+.split-block {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+}
+
+.split-text {
+    flex: 1.15;
+}
+
+.split-image {
+    flex: 1;
+}
+
+/* Scroll-Triggered Liquid Reveal Animation */
+.about-reveal {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0) scale(0.985);
+    transition: opacity 0.8s var(--ease-liquid), transform 0.85s var(--ease-liquid);
+    will-change: opacity, transform;
+}
+
+.about-reveal.in-view {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+/* Layout 1: Reversed Split for Creative Media (Image Left, Text Right) */
+.showcase-reverse-split {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    align-items: center;
+    gap: 44px;
+}
+
+.showcase-reverse-split .split-image {
+    order: 1;
+}
+
+.showcase-reverse-split .split-text {
+    order: 2;
+}
+
+/* Layout 2: Motion Graphics (Editorial Header + 2-Column Cinema Grid) */
+.showcase-editorial-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.showcase-editorial-header {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: end;
+    gap: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-divider);
+}
+
+.showcase-title-group h2 {
+    margin: 0;
+}
+
+.showcase-description-group p {
+    margin-bottom: 10px;
+    font-size: 1.08rem;
+    line-height: 1.7;
+}
+
+.showcase-description-group p:last-child {
+    margin-bottom: 0;
+}
+
+.motion-dual-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+/* Layout 3: Cinematography (Sticky Narrative Left + 3-Image Bento Grid Right) */
+.showcase-bento-layout {
+    display: grid;
+    grid-template-columns: 0.9fr 1.35fr;
+    align-items: center;
+    gap: 42px;
+}
+
+.cinema-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+/* First image spans full top row as Hero Frame; next 2 sit side-by-side below */
+.cinema-bento-grid .media-card-link:first-child {
+    grid-column: 1 / -1;
+}
+
+/* Interactive Media Cards with Play Indicator & Liquid Zoom */
+.media-card-link {
+    position: relative;
+    display: block;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    background-color: #080808;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    transition: transform 0.6s var(--ease-liquid), border-color 0.4s ease, box-shadow 0.6s var(--ease-liquid);
+}
+
+body.light-theme .media-card-link {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Liquid Glass Play Badge Overlay on Video Thumbnails */
+.media-card-link::after {
+    content: '▶';
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(18, 18, 20, 0.68);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    backdrop-filter: blur(10px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #e5a93d;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 2px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    transition: transform 0.45s var(--ease-spring), background-color 0.3s ease, color 0.3s ease;
+    pointer-events: none;
+}
+
+.video-thumbnail {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s var(--ease-liquid), filter 0.55s var(--ease-liquid);
+    will-change: transform;
+}
+
+@media (hover: hover) {
+    .media-card-link:hover {
+        transform: translate3d(0, -4px, 0);
+        border-color: rgba(229, 169, 61, 0.6);
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(229, 169, 61, 0.15);
+    }
+    .media-card-link:hover .video-thumbnail {
+        transform: scale(1.05);
+        filter: brightness(0.88);
+    }
+    .media-card-link:hover::after {
+        transform: scale(1.14);
+        background: #e5a93d;
+        color: #121212;
+        border-color: #ffffff;
+    }
+}
+
+/* --- RESPONSIVE DESIGN: TABLETS & PHONES (<= 1280px) --- */
+@media (max-width: 1280px) {
+    .showcase-editorial-header {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .showcase-bento-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+}
+
+/* --- TABLETS ONLY (481px to 1280px) --- */
+@media (min-width: 481px) and (max-width: 1280px) {
+    .about-banner-container {
+        height: 300px !important;
+        margin-bottom: 25px !important;
+    }
+    .banner-item { border-right: 4px solid var(--bg-primary); }
+    .about-banner-grid .banner-item:nth-child(n+6) { display: none !important; }
+    .banner-logo { max-width: 150px; bottom: 15px; left: 20px; }
+    .banner-fade { height: 110px; }
+}
+
+/* --- MOBILE BREAKPOINT (<= 768px) --- */
+@media (max-width: 768px) {
+    .about-banner-container { height: 200px; margin-bottom: 30px; }
+    .banner-item { border-right: 3px solid var(--bg-primary); }
+    .banner-logo { max-width: 120px; bottom: 10px; left: 15px; }
+    .banner-fade { height: 80px; }
+    .banner-item:nth-child(6),
+    .banner-item:nth-child(7),
+    .banner-item:nth-child(8) { display: none; }
+    
+    .split-block { flex-direction: column; gap: 25px; }
+    
+    /* Mobile Restructure for About Me Showcases */
+    .about-wrapper {
+        gap: 32px;
+        font-size: 1.05rem;
+    }
+    .showcase-reverse-split {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .showcase-reverse-split .split-text {
+        order: 1;
+    }
+    .showcase-reverse-split .split-image {
+        order: 2;
+    }
+    .motion-dual-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+    .cinema-bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
+
+/* --- PHONES ONLY (<= 480px) --- */
+@media (max-width: 480px) {
+    .about-banner-container { height: 200px; margin-bottom: 30px; }
+    .banner-item { border-right: 3px solid var(--bg-primary); }
+    .banner-logo { max-width: 120px; bottom: 10px; left: 15px; }
+    .banner-fade { height: 80px; }
+    .about-banner-grid .banner-item:nth-child(n+4) { display: none; }
+    
+    .cinema-bento-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+}
+
+/* --- ADDITIONAL LIGHT MODE VISUAL REFINEMENTS --- */
+body.light-theme .banner-fade { 
+    background: linear-gradient(to top, rgba(245, 245, 247, 1) 0%, rgba(245, 245, 247, 0) 100%); 
+}
+body.light-theme .banner-logo { 
+    filter: invert(1) drop-shadow(0px 2px 6px rgba(255, 255, 255, 0.9)); 
+}
+body.light-theme .about-block h2[style*="color: #ffffff"] { 
+    color: var(--text-primary) !important; 
+}

@@ -1,0 +1,569 @@
+@keyframes simpleFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Liquid Glass Showcase Container for Lower Sections */
+.about-glass-showcase {
+    position: relative;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 42px;
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+    transition: 
+        transform 0.65s var(--ease-liquid),
+        border-color 0.45s var(--ease-liquid),
+        background-color 0.45s var(--ease-liquid),
+        box-shadow 0.65s var(--ease-liquid);
+}
+
+/* Specular Liquid Top Rim Highlight */
+.about-glass-showcase::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), rgba(229, 169, 61, 0.45), transparent);
+    pointer-events: none;
+    opacity: 0.7;
+    transition: opacity 0.45s ease;
+}
+
+body.light-theme .about-glass-showcase::before {
+    background: linear-gradient(90deg, transparent, rgba(196, 131, 18, 0.35), transparent);
+}
+
+@media (hover: hover) {
+    .about-glass-showcase:hover {
+        border-color: var(--glass-border-highlight);
+        background: var(--glass-bg-hover);
+        transform: translate3d(0, -3px, 0);
+    }
+    .about-glass-showcase:hover::before {
+        opacity: 1;
+    }
+}
+
+/* --- LIQUID GLASS "DYNAMIC ISLAND" POPUP (TOAST) CSS --- */
+.toast-notification {
+    position: fixed;
+    bottom: 30px; 
+    left: 50%; 
+    transform: translate3d(-50%, 100px, 0) scale(0.92); 
+    background: linear-gradient(rgba(20, 20, 22, 0.72), rgba(20, 20, 22, 0.72)) padding-box,
+                linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(229, 169, 61, 0.95) 50%, rgba(255, 255, 255, 0.25) 100%) border-box;
+    -webkit-backdrop-filter: blur(18px) saturate(190%);
+    backdrop-filter: blur(18px) saturate(190%);
+    border: 1.5px solid transparent;
+    border-radius: 999px; 
+    color: #ffffff; 
+    height: 52px;
+    width: 320px; 
+    padding: 0 32px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: 0.5px;
+    font-size: 1rem;
+    z-index: 2000; 
+    opacity: 0; 
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.45),
+        0 4px 15px rgba(229, 169, 61, 0.2),
+        inset 0 1px 1px rgba(255, 255, 255, 0.35),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.4);
+    transition: 
+        transform 0.65s var(--ease-spring),
+        left 0.7s var(--ease-liquid),
+        width 0.65s var(--ease-spring),
+        padding 0.65s var(--ease-liquid),
+        opacity 0.45s var(--ease-liquid),
+        box-shadow 0.4s var(--ease-liquid),
+        background 0.45s var(--ease-liquid);
+    pointer-events: none; 
+    cursor: pointer;
+    will-change: transform, width, left;
+}
+
+body.light-theme .toast-notification {
+    background: linear-gradient(rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.78)) padding-box,
+                linear-gradient(135deg, rgba(196, 131, 18, 0.85) 0%, rgba(229, 169, 61, 0.9) 50%, rgba(196, 131, 18, 0.25) 100%) border-box;
+    color: #111113;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.1),
+        0 4px 15px rgba(196, 131, 18, 0.2),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.9),
+        inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.toast-notification.show {
+    transform: translate3d(-50%, 0, 0) scale(1); 
+    opacity: 1; 
+    pointer-events: auto; 
+}
+
+.toast-notification.minimized {
+    left: calc(100% - 82px); 
+    transform: translate3d(0, 0, 0) scale(1); 
+    width: 52px;
+    padding: 0;
+}
+
+.toast-text {
+    transition: opacity 0.25s var(--ease-liquid), max-width 0.55s var(--ease-liquid), transform 0.45s var(--ease-liquid);
+    opacity: 1;
+    max-width: 300px; 
+    transform: translateX(0);
+}
+
+.toast-notification.minimized .toast-text {
+    opacity: 0;
+    max-width: 0;
+    transform: translateX(-10px);
+}
+
+.redirect-icon {
+    margin-left: 10px;
+    display: inline-block;
+    transition: transform 0.35s var(--ease-spring), margin 0.55s var(--ease-liquid), font-size 0.45s var(--ease-spring);
+    color: #e5a93d; 
+}
+
+body.light-theme .redirect-icon {
+    color: #c48312;
+}
+
+.toast-notification.minimized .redirect-icon {
+    margin-left: 0;
+    font-size: 1.3rem;
+}
+
+.toast-notification:hover {
+    box-shadow: 0 8px 30px rgba(229, 169, 61, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.45); 
+}
+
+.toast-notification.show:not(.minimized):hover {
+    transform: translate3d(-50%, -2px, 0) scale(1.02);
+}
+
+.toast-notification.minimized:hover {
+    transform: translate3d(0, -2px, 0) scale(1.08);
+}
+
+.toast-notification:hover .redirect-icon {
+    transform: translateX(4px);
+}
+
+.toast-notification.minimized:hover .redirect-icon {
+    transform: translateX(2px);
+}
+
+/* --- FULL SCREEN LIGHTBOX (MODAL) CSS --- */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0); 
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out; 
+    animation: modalBgIn 0.45s var(--ease-liquid) forwards;
+}
+
+.modal-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70vw;
+    height: 70vw;
+    max-width: 800px;
+    max-height: 800px;
+    border-radius: 50%;
+    filter: blur(120px); 
+    z-index: 0;
+    opacity: 0;
+    transition: background-color 0.3s ease, opacity 0.8s var(--ease-liquid);
+    pointer-events: none; 
+}
+
+.modal.open-glow .modal-glow {
+    opacity: 0.15; 
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; 
+    border-radius: 6px;
+    cursor: default; 
+    opacity: 0;
+    position: relative;
+    z-index: 100;
+    isolation: isolate;
+    box-shadow: 0 15px 60px rgba(0, 0, 0, 0.75); 
+    animation: imagePopIn 0.55s var(--ease-liquid) 0.05s forwards;
+    will-change: transform, opacity;
+}
+
+.close-modal {
+    position: fixed;
+    top: 20px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 50px;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.35s var(--ease-spring);
+    cursor: pointer;
+    z-index: 2001;
+    line-height: 1;
+    opacity: 0;
+    animation: simpleFadeIn 0.4s ease 0.25s forwards;
+    margin: 0;
+}
+
+.close-modal:hover { 
+    color: #e5a93d; 
+    transform: scale(1.12); 
+}
+
+.modal.closing { 
+    animation: modalBgOut 0.4s var(--ease-liquid) forwards; 
+}
+.modal.closing .modal-content { 
+    animation: imagePopOut 0.38s var(--ease-liquid) forwards; 
+}
+.modal.closing .close-modal { 
+    opacity: 0; 
+}
+
+@keyframes modalBgIn {
+    from { 
+        background-color: rgba(0, 0, 0, 0); 
+        -webkit-backdrop-filter: blur(0px);
+        backdrop-filter: blur(0px);
+    }
+    to { 
+        background-color: rgba(0, 0, 0, 0.78); 
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+    }
+}
+
+@keyframes modalBgOut {
+    from { 
+        background-color: rgba(0, 0, 0, 0.78); 
+        -webkit-backdrop-filter: blur(5px);
+        backdrop-filter: blur(5px);
+    }
+    to { 
+        background-color: rgba(0, 0, 0, 0); 
+        -webkit-backdrop-filter: blur(0px);
+        backdrop-filter: blur(0px);
+    }
+}
+
+@keyframes imagePopIn {
+    from { transform: scale(0.92) translate3d(0, 14px, 10px); opacity: 0; }
+    to { transform: scale(1) translate3d(0, 0, 10px); opacity: 1; }
+}
+
+@keyframes imagePopOut {
+    from { transform: scale(1) translate3d(0, 0, 10px); opacity: 1; }
+    to { transform: scale(0.95) translate3d(0, 8px, 10px); opacity: 0; }
+}
+
+/* --- SKIP INTRO BUTTON --- */
+.skip-intro-btn {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    color: #ffffff;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    opacity: 0;
+    transition: text-shadow 0.3s ease, transform 0.35s var(--ease-spring), opacity 0.8s ease;
+    z-index: 100000;
+}
+
+.skip-intro-btn svg {
+    width: 50px;
+    height: 28px;
+    stroke: #e5a93d;
+    fill: none;
+    stroke-width: 2.5;
+    transition: filter 0.3s ease, transform 0.35s var(--ease-spring);
+}
+
+.skip-intro-btn:hover {
+    color: #ffffff;
+    text-shadow: 0 0 15px rgba(229, 169, 61, 0.8);
+    transform: scale(1.05);
+}
+
+.skip-intro-btn:hover svg {
+    filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.8));
+    transform: translateX(4px);
+}
+
+/* --- LIQUID GLASS FAVORITE & AWARD BADGE STYLES --- */
+.favorite-badge, .award-badge {
+    position: absolute;
+    top: 10px; 
+    left: 10px;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+    padding: 4px 8px 4px 4px; 
+    pointer-events: none; 
+}
+
+.fav-bg-rect {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(25, 25, 28, 0.65) 0%, rgba(25, 25, 28, 0.25) 100%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35), inset 0 1px 0.5px rgba(255, 255, 255, 0.25);
+    z-index: -1;
+    opacity: 0;
+    animation: 
+        bgFadeIn 0.4s var(--ease-liquid) calc(0.3s + var(--stagger-delay, 0s)) forwards,
+        bgFadeOut 0.5s var(--ease-liquid) calc(5.2s + var(--stagger-delay, 0s)) forwards;
+}
+
+.fav-icon-shadow {
+    transform: translateY(-150%);
+    opacity: 0;
+    animation: 
+        popDown 0.65s var(--ease-spring) calc(0.5s + var(--stagger-delay, 0s)) forwards,
+        popUp 0.55s var(--ease-liquid) calc(5.1s + var(--stagger-delay, 0s)) forwards; 
+}
+
+.favorite-badge .fav-icon-shadow { filter: drop-shadow(0 2px 4px rgba(204, 150, 53, 0.4)); }
+.favorite-badge .fav-icon-ribbon { background: linear-gradient(135deg, #f0f0f0 0%, #c68f2e 100%); }
+
+.award-badge .fav-icon-shadow { filter: drop-shadow(0 2px 4px rgba(204, 0, 0, 0.5)); }
+.award-badge .fav-icon-ribbon { background: linear-gradient(135deg, #ffcccc 0%, #cc0000 100%); }
+
+.fav-icon-ribbon {
+    width: 20px; 
+    height: 28px; 
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 75%, 0% 100%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 4px; 
+}
+
+.fav-icon-ribbon svg {
+    fill: #ffffff;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.4));
+}
+
+.favorite-badge svg { width: 10px; height: 10px; }
+.award-badge svg { width: 13px; height: 13px; margin-top: 1px; }
+
+.fav-text {
+    font-family: 'Vagabond', 'Helvetica Neue', sans-serif; 
+    font-weight: bold; 
+    font-size: 0.6rem; 
+    letter-spacing: 1.5px;
+    margin-left: 6px; 
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.85);
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 0;
+    opacity: 0;
+    animation: 
+        slideTextIn 0.55s var(--ease-liquid) calc(1.1s + var(--stagger-delay, 0s)) forwards,
+        slideTextOut 0.5s var(--ease-liquid) calc(4.6s + var(--stagger-delay, 0s)) forwards; 
+}
+
+@keyframes popDown {
+    from { transform: translateY(-150%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+@keyframes slideTextIn {
+    from { max-width: 0; opacity: 0; }
+    to { max-width: 140px; opacity: 1; } 
+}
+@keyframes bgFadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+@keyframes slideTextOut {
+    from { max-width: 140px; opacity: 1; }
+    to { max-width: 0; opacity: 0; }
+}
+@keyframes popUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-150%); opacity: 0; visibility: hidden; }
+}
+@keyframes bgFadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+
+/* --- "NEW" TEXT BADGE --- */
+.new-text-label {
+    position: absolute;
+    top: 15px; 
+    right: 15px;
+    background: linear-gradient(110deg, #eeeeee 42%, #ffffff 50%, #eeeeee 58%);
+    background-size: 300% 100%;
+    background-position: 100% 0;
+    background-repeat: no-repeat;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.85));
+    padding: 0;
+    border-radius: 0;
+    font-family: 'Permanent Marker', cursive; 
+    font-size: 1.1rem; 
+    font-weight: normal; 
+    letter-spacing: 2px;
+    text-transform: uppercase; 
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    animation: 
+        newTextAppear 0.6s var(--ease-silk) calc(1.5s + var(--stagger-delay, 0s)) forwards,
+        newTextSheen 2s ease-in-out calc(1.8s + var(--stagger-delay, 0s)) forwards,
+        newTextVanish 0.6s var(--ease-silk) calc(8.1s + var(--stagger-delay, 0s)) forwards;
+}
+
+@keyframes newTextAppear {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); } 
+}
+
+@keyframes newTextSheen {
+    from { background-position: 100% 0; }
+    to { background-position: 0% 0; }
+}
+
+@keyframes newTextVanish {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(20px); visibility: hidden; }
+}
+
+/* --- LIQUID GLASS SCROLL TO TOP CAPSULE --- */
+.scroll-top-btn {
+    position: fixed;
+    bottom: 80px; 
+    left: 50%; 
+    background: rgba(25, 25, 28, 0.55);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1400; 
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(-50%, 20px, 0) scale(0.9);
+    transition: opacity 0.4s var(--ease-liquid), transform 0.5s var(--ease-spring), background-color 0.4s ease;
+}
+
+body.light-theme .scroll-top-btn {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+.scroll-top-btn.show {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+.scroll-top-btn.show:hover {
+    transform: translate3d(-50%, 0, 0) scale(1.16);
+}
+
+.scroll-top-btn svg {
+    width: 26px; 
+    height: 34px;
+    stroke: var(--text-primary); 
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.8));
+    transition: stroke 0.3s ease, filter 0.4s ease;
+    animation: bounceArrow 1.8s infinite ease-in-out;
+}
+
+.scroll-top-btn:hover svg {
+    stroke: url(#goldGrad); 
+    filter: drop-shadow(0 0 12px rgba(229, 169, 61, 0.9));
+}
+
+@keyframes bounceArrow {
+    0%, 100% { transform: translateY(3px); }
+    50% { transform: translateY(-3px); }
+}
+
+/* --- RESPONSIVE DESIGN: TABLETS & PHONES (<= 1280px) --- */
+@media (max-width: 1280px) {
+    .modal-content {
+        max-width: 95%;
+        max-height: 95%;
+    }
+
+    .toast-notification {
+        width: 90%;
+        max-width: 340px;
+        text-align: center;
+    }
+
+    .about-glass-showcase {
+        padding: 32px;
+    }
+}
+
+/* --- MOBILE BREAKPOINT (<= 768px) --- */
+@media (max-width: 768px) {
+    .about-glass-showcase {
+        padding: 24px 20px;
+        border-radius: 16px;
+    }
+    .close-modal { top: 15px; right: 20px; font-size: 40px; }
+}
+
+/* --- ADDITIONAL LIGHT MODE VISUAL REFINEMENTS --- */
+body.light-theme .scroll-top-btn svg { 
+    stroke: var(--text-primary); 
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18)); 
+}
+body.light-theme .scroll-top-btn:hover svg { 
+    stroke: url(#goldGrad); 
+    filter: drop-shadow(0 0 10px rgba(196, 131, 18, 0.5)); 
+}

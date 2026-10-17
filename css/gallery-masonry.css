@@ -1,0 +1,242 @@
+/* --- MAIN PAGE LAYOUT --- */
+.page-container {
+    display: flex;
+    flex-direction: row-reverse; 
+    align-items: flex-start; 
+    width: 100%;
+    max-width: 100%; 
+    margin: 0 auto;
+}
+
+/* --- MAIN CONTENT & MASONRY GRID --- */
+.main-content {
+    flex: 1; 
+    padding: 40px 10px;
+    min-width: 0;
+}
+
+.image-grid {
+    column-width: 300px; 
+    column-gap: 15px; 
+}
+
+.image-item {
+    position: relative;
+    z-index: 1;
+    display: block; 
+    width: 100%;
+    break-inside: avoid; 
+    -webkit-column-break-inside: avoid;
+    margin-bottom: 20px; 
+    overflow: hidden; 
+    border-radius: 6px;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    transition: box-shadow 0.45s var(--ease-liquid);
+}
+
+body.light-theme .image-item:not(.motion-grid-promo) {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.image-item img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; 
+    display: block;
+    transition: transform 0.65s var(--ease-liquid), filter 0.5s var(--ease-liquid);
+    cursor: pointer; 
+    will-change: transform;
+}
+
+@media (hover: hover) {
+    .image-item:hover img {
+        transform: scale(1.045); 
+        filter: brightness(0.84);
+    }
+    body.light-theme .image-item:hover img {
+        filter: brightness(0.92);
+    }
+}
+
+.image-item iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9; 
+    border: none;
+    display: block;
+    background-color: #000;
+}
+
+/* --- FLUID FADE-IN ANIMATION FOR SECTIONS --- */
+.content-section {
+    animation: sectionFadeIn 0.65s var(--ease-liquid) forwards;
+    will-change: opacity, transform;
+}
+
+@keyframes sectionFadeIn {
+    from {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0) scale(0.992); 
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1); 
+    }
+}
+
+.hidden-section {
+    display: none !important;
+}
+
+/* --- MOTION GRAPHICS PROMO (TABLET & PHONE ONLY) --- */
+.motion-grid-promo {
+    display: none !important;
+}
+
+@media (max-width: 1280px) {
+    .motion-grid-promo {
+        display: block !important;
+    }
+}
+
+.motion-promo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    margin: 10px 0 14px 0;
+    cursor: pointer;
+    transition: text-shadow 0.3s ease, transform 0.35s var(--ease-spring), color 0.3s ease;
+}
+
+.motion-promo-link svg {
+    width: 38px;
+    height: 22px;
+    stroke: var(--accent-gold);
+    fill: none;
+    stroke-width: 2.5;
+    transition: filter 0.3s ease, transform 0.35s var(--ease-spring);
+}
+
+.motion-promo-link:hover {
+    color: var(--text-primary);
+    text-shadow: 0 0 14px var(--accent-gold-glow);
+    transform: translateX(4px);
+}
+
+body.light-theme .motion-promo-link:hover {
+    color: var(--accent-gold);
+    text-shadow: none;
+}
+
+.motion-promo-link:hover svg {
+    filter: drop-shadow(0 0 8px var(--accent-gold-glow));
+    transform: translateX(4px);
+}
+
+.motion-promo-divider {
+    border: 0;
+    border-top: 1px solid var(--border-divider);
+    width: 100%;
+    margin: 18px 0;
+    transition: border-color 0.45s var(--ease-liquid);
+}
+
+/* --- MOBILE 2026 PROMO BANNER --- */
+.mobile-banner-hide {
+    display: none !important;
+}
+
+.mobile-banner-text {
+    position: absolute;
+    bottom: 16px;
+    left: 120px;
+    color: var(--text-primary);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 10;
+    text-shadow: 0px 2px 4px rgba(0,0,0,0.8);
+}
+
+.close-mobile-banner {
+    position: absolute;
+    top: 2px;
+    right: 15px;
+    color: #e5a93d;
+    font-size: 34px;
+    z-index: 10;
+    cursor: pointer;
+    text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+    transition: color 0.3s ease, transform 0.3s var(--ease-spring);
+}
+
+.close-mobile-banner:hover {
+    color: var(--text-primary);
+    transform: scale(1.12);
+}
+
+#mobileBannerDivider {
+    margin-top: 5px; 
+    margin-bottom: 25px;
+    transition: opacity 0.45s var(--ease-liquid), margin 0.45s var(--ease-liquid);
+}
+
+@media (min-width: 769px) {
+    #mobile-2026-banner, #mobileBannerDivider { display: none !important; }
+}
+
+/* --- RESPONSIVE DESIGN: TABLETS & PHONES (<= 1280px) --- */
+@media (max-width: 1280px) {
+    .page-container { flex-direction: column; }
+    .main-content {
+        width: 100%;
+        padding: 25px 15px; 
+    }
+}
+
+/* --- TABLETS ONLY (481px to 1280px) --- */
+@media (min-width: 481px) and (max-width: 1280px) {
+    .image-grid {
+        column-count: 2 !important;
+        column-gap: 16px !important;
+        column-width: auto !important;
+    }
+    .image-item { margin-bottom: 16px !important; }
+}
+
+/* --- PHONES ONLY (<= 480px) --- */
+@media (max-width: 480px) {
+    .main-content { padding: 20px 10px; }
+    .image-grid { 
+        column-count: 1; 
+        column-width: auto; 
+        column-gap: 12px; 
+    }
+    .image-grid.show-two-columns,
+    body.force-two-cols .image-grid {
+        column-count: 2 !important; 
+    }
+    .image-item {
+        margin-bottom: 12px; 
+        border-radius: 6px; 
+        will-change: transform;
+    }
+}
+
+/* --- ADDITIONAL LIGHT MODE BANNER REFINEMENTS --- */
+body.light-theme .mobile-banner-text { 
+    color: var(--text-primary); 
+    text-shadow: 0px 1px 4px rgba(255, 255, 255, 0.95); 
+}
+body.light-theme .close-mobile-banner { 
+    color: #c48312; 
+    text-shadow: 0px 2px 4px rgba(255, 255, 255, 0.9); 
+}

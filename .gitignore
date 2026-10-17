@@ -1,8 +1,26 @@
 # Windows system files
 Thumbs.db
+Thumbs.db:encryptable
 ehthumbs.db
+ehthumbs_vista.db
 Desktop.ini
+$RECYCLE.BIN/
 
-# VS Code configurations
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editor & IDE configurations
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs & temporary files
 *.log
+*.tmp
+*.temp
+*.bak
