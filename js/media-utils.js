@@ -170,6 +170,10 @@ function setupYouTubeAutoPause() {
             iframes.forEach(pauseVideo);
         });
     });
+
+    window.addEventListener('popstate', () => {
+        iframes.forEach(pauseVideo);
+    });
 }
 
 if (document.readyState === 'loading') {

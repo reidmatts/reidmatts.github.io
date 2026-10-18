@@ -31,8 +31,10 @@ function runCinematicIntro() {
     const disableIntro = localStorage.getItem('disableIntroAnimation') === 'true';
     const isFirstVisit = !hasSeenIntro;
 
-    // Run on Desktop if not disabled, and either it's a first visit (even on reload after cache clear) or a normal navigation
-    if (isDesktop && !disableIntro && (!isReload || isFirstVisit)) { 
+    const isHomeRoute = !window.initialRoute || window.initialRoute === '/';
+
+    // Run on Desktop if not disabled, on the home route, and either it's a first visit (even on reload after cache clear) or a normal navigation
+    if (isDesktop && isHomeRoute && !disableIntro && (!isReload || isFirstVisit)) { 
         const isLight = document.body.classList.contains('light-theme');
         const overlayFadeColor = isLight ? '#f5f5f7' : '#121212';
 

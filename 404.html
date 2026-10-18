@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reid Matthew - Photography</title>
+    <meta name="theme-color" content="#121212">
+    <style>
+        html, body {
+            background-color: #121212;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script>
+        // GitHub Pages SPA Redirect to index.html
+        (function() {
+            var l = window.location;
+            var path = l.pathname + l.search + l.hash;
+            try {
+                sessionStorage.setItem('spa_redirect_path', path);
+            } catch (e) {}
+            l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + '/?p=' + encodeURIComponent(l.pathname));
+        })();
+    </script>
+</head>
+<body></body>
+</html>

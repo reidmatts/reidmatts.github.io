@@ -162,115 +162,229 @@ function hideAllSections() {
 
 window.hideAllSections = hideAllSections;
 
-nav2026.onclick = function(event) {
-    event.preventDefault(); 
-    hideAllSections();
-    nav2026.classList.add("active");
-    grid2026.classList.remove("hidden-section");
-    triggerMobileGridSwitch(); 
-    setSidebarMode('irl');
+// --- 6A. HTML5 HISTORY API ROUTER (CLEAN PATHNAME URLS) ---
+const VALID_ROUTES = new Set([
+    '/',
+    '/all-time',
+    '/archives',
+    '/motion',
+    '/about',
+    '/cinematics',
+    '/minecraft-photography',
+    '/minecraft-cinematics'
+]);
+
+const HASH_TO_PATH = {
+    '#2026': '/',
+    '#home': '/',
+    '#all-time': '/all-time',
+    '#archives': '/archives',
+    '#motion': '/motion',
+    '#about': '/about',
+    '#cinematics': '/cinematics',
+    '#minecraft-photography': '/minecraft-photography',
+    '#mc-photo': '/minecraft-photography',
+    '#minecraft-cinematics': '/minecraft-cinematics',
+    '#mc-cinema': '/minecraft-cinematics'
 };
 
-navAllTime.onclick = function(event) {
-    event.preventDefault(); 
-    hideAllSections();
-    navAllTime.classList.add("active");
-    gridAllTime.classList.remove("hidden-section");
-    triggerMobileGridSwitch();
-    setSidebarMode('irl');
-};
+function normalizePath(rawPath) {
+    if (!rawPath) return '/';
+    let clean = rawPath.split('?')[0].split('#')[0].trim();
+    if (!clean.startsWith('/')) clean = '/' + clean;
+    if (clean.length > 1 && clean.endsWith('/')) {
+        clean = clean.slice(0, -1);
+    }
+    if (clean === '/index.html') return '/';
+    return VALID_ROUTES.has(clean) ? clean : '/';
+}
 
-navArchives.onclick = function(event) {
-    event.preventDefault(); 
-    hideAllSections();
-    navArchives.classList.add("active");
-    gridArchives.classList.remove("hidden-section");
-    triggerMobileGridSwitch();
-    setSidebarMode('irl');
-};
+function resolveInitialRoute() {
+    // 1. Check if redirected from 404.html via sessionStorage or ?p= query param
+    const savedRedirect = sessionStorage.getItem('spa_redirect_path');
+    if (savedRedirect) {
+        sessionStorage.removeItem('spa_redirect_path');
+        return normalizePath(savedRedirect);
+    }
 
-navAbout.onclick = function(event) {
-    event.preventDefault();
-    hideAllSections();
-    navAbout.classList.add("active");
-    aboutSection.classList.remove("hidden-section");
-    showLoading(); 
-    if (leftDrawer.classList.contains("open")) toggleDrawer();
-    setSidebarMode('irl');
-    if (window.triggerAboutReveal) window.triggerAboutReveal();
-};
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryRoute = urlParams.get('p') || urlParams.get('route');
+    if (queryRoute) {
+        return normalizePath(queryRoute);
+    }
 
-navMotion.onclick = function(event) {
-    event.preventDefault();
-    hideAllSections();
-    navMotion.classList.add("active");
-    if (sideNavMotion) sideNavMotion.classList.add("active");
-    motionSection.classList.remove("hidden-section");
-    if (leftDrawer.classList.contains("open")) toggleDrawer();
-    setSidebarMode('irl');
-};
+    // 2. Legacy hash fallback (e.g. /#motion -> /motion)
+    if (window.location.hash) {
+        const lowerHash = window.location.hash.toLowerCase();
+        if (HASH_TO_PATH[lowerHash]) {
+            return HASH_TO_PATH[lowerHash];
+        }
+        const stripped = '/' + lowerHash.replace(/^#\/?/, '');
+        if (VALID_ROUTES.has(stripped)) {
+            return stripped;
+        }
+    }
 
-if (sideNavMotion) {
-    sideNavMotion.onclick = function(event) {
-        event.preventDefault();
-        hideAllSections();
-        sideNavMotion.classList.add("active");
-        navMotion.classList.add("active");
-        motionSection.classList.remove("hidden-section");
-        setSidebarMode('irl');
+    // 3. Direct pathname
+    return normalizePath(window.location.pathname);
+}
+
+function applyRouteDOM(path, options = {}) {
+    const { isInitialLoad = false } = options;
+    const targetPath = normalizePath(path);
+
+    // Ensure drawer and fullscreen modal close gracefully on navigation / back button
+    if (leftDrawer && leftDrawer.classList.contains("open")) {
+        toggleDrawer();
+    }
+    const imageModal = document.getElementById("imageModal");
+    if (imageModal && imageModal.style.display === "flex" && typeof window.closeModal === "function") {
+        window.closeModal();
+    }
+
+    hideAllSections();
+
+    switch (targetPath) {
+        case '/all-time':
+            navAllTime.classList.add("active");
+            gridAllTime.classList.remove("hidden-section");
+            if (!isInitialLoad) triggerMobileGridSwitch();
+            setSidebarMode('irl');
+            break;
+
+        case '/archives':
+            navArchives.classList.add("active");
+            gridArchives.classList.remove("hidden-section");
+            if (!isInitialLoad) triggerMobileGridSwitch();
+            setSidebarMode('irl');
+            break;
+
+        case '/about':
+            navAbout.classList.add("active");
+            aboutSection.classList.remove("hidden-section");
+            if (!isInitialLoad) showLoading();
+            setSidebarMode('irl');
+            if (window.triggerAboutReveal) window.triggerAboutReveal();
+            break;
+
+        case '/motion':
+            navMotion.classList.add("active");
+            if (sideNavMotion) sideNavMotion.classList.add("active");
+            motionSection.classList.remove("hidden-section");
+            setSidebarMode('irl');
+            break;
+
+        case '/cinematics':
+            navCinematics.classList.add("active");
+            cinematicsSection.classList.remove("hidden-section");
+            setSidebarMode('irl');
+            break;
+
+        case '/minecraft-photography':
+            navMcPhoto.classList.add("active");
+            if (sideNavMcPhoto) sideNavMcPhoto.classList.add("active");
+            mcPhotoSection.classList.remove("hidden-section");
+            headerQuote.innerText = minecraftQuote;
+            if (!isInitialLoad) triggerMobileGridSwitch(5000);
+            setSidebarMode('mc');
+            break;
+
+        case '/minecraft-cinematics':
+            navMcCinema.classList.add("active");
+            if (sideNavMcCinema) sideNavMcCinema.classList.add("active");
+            mcCinemaSection.classList.remove("hidden-section");
+            headerQuote.innerText = minecraftQuote;
+            setSidebarMode('mc');
+            break;
+
+        case '/':
+        default:
+            nav2026.classList.add("active");
+            grid2026.classList.remove("hidden-section");
+            if (!isInitialLoad) triggerMobileGridSwitch();
+            setSidebarMode('irl');
+            break;
+    }
+
+    if (!isInitialLoad) {
+        window.scrollTo(0, 0);
+        if (window.refreshBadges) {
+            setTimeout(() => window.refreshBadges(), 50);
+        }
+    }
+}
+
+function navigateTo(path, replace = false) {
+    const targetPath = normalizePath(path);
+    const currentPath = normalizePath(window.location.pathname);
+
+    if (replace) {
+        try {
+            history.replaceState({ path: targetPath }, '', targetPath);
+        } catch (e) {}
+    } else if (currentPath !== targetPath || window.location.hash || window.location.search) {
+        try {
+            history.pushState({ path: targetPath }, '', targetPath);
+        } catch (e) {}
+    }
+
+    applyRouteDOM(targetPath, { isInitialLoad: false });
+}
+
+window.navigateTo = navigateTo;
+
+// --- BIND NAVIGATION LINKS ---
+function bindRouteLink(element, path) {
+    if (!element) return;
+    element.onclick = function(event) {
+        if (event) event.preventDefault();
+        navigateTo(path);
     };
 }
+
+bindRouteLink(nav2026, '/');
+bindRouteLink(navAllTime, '/all-time');
+bindRouteLink(navArchives, '/archives');
+bindRouteLink(navAbout, '/about');
+bindRouteLink(navMotion, '/motion');
+bindRouteLink(sideNavMotion, '/motion');
+bindRouteLink(navCinematics, '/cinematics');
+bindRouteLink(navMcPhoto, '/minecraft-photography');
+bindRouteLink(sideNavMcPhoto, '/minecraft-photography');
+bindRouteLink(navMcCinema, '/minecraft-cinematics');
+bindRouteLink(sideNavMcCinema, '/minecraft-cinematics');
 
 const gridVisitMotion = document.getElementById("grid-visit-motion");
 if (gridVisitMotion) {
     gridVisitMotion.onclick = function(event) {
         event.preventDefault();
-        navMotion.click();
+        navigateTo('/motion');
     };
 }
 
-navCinematics.onclick = function(event) {
-    event.preventDefault();
-    hideAllSections();
-    navCinematics.classList.add("active");
-    cinematicsSection.classList.remove("hidden-section");
-    if (leftDrawer.classList.contains("open")) toggleDrawer();
-    setSidebarMode('irl');
-};
-
-function activateMcPhoto(event) {
-    if (event) event.preventDefault();
-    hideAllSections();
-    navMcPhoto.classList.add("active");
-    if (sideNavMcPhoto) sideNavMcPhoto.classList.add("active");
-    
-    mcPhotoSection.classList.remove("hidden-section");
-    headerQuote.innerText = minecraftQuote;
-    
-    triggerMobileGridSwitch(5000); 
-    if (leftDrawer.classList.contains("open")) toggleDrawer();
-    setSidebarMode('mc');
-}
-navMcPhoto.onclick = activateMcPhoto;
-if (sideNavMcPhoto) sideNavMcPhoto.onclick = activateMcPhoto;
-
 loadingToast.addEventListener('click', () => {
-    navMcPhoto.click(); 
-    loadingToast.classList.remove("show", "minimized"); 
-    clearTimeout(toastTimer); 
+    navigateTo('/minecraft-photography');
+    loadingToast.classList.remove("show", "minimized");
+    clearTimeout(toastTimer);
 });
 
-function activateMcCinema(event) {
-    if (event) event.preventDefault();
-    hideAllSections();
-    navMcCinema.classList.add("active");
-    if (sideNavMcCinema) sideNavMcCinema.classList.add("active");
-    
-    mcCinemaSection.classList.remove("hidden-section");
-    headerQuote.innerText = minecraftQuote;
-    
-    if (leftDrawer.classList.contains("open")) toggleDrawer();
-    setSidebarMode('mc');
+// --- BROWSER BACK / FORWARD (POPSTATE) ---
+window.addEventListener('popstate', (event) => {
+    const targetPath = (event.state && event.state.path)
+        ? normalizePath(event.state.path)
+        : normalizePath(window.location.pathname);
+    applyRouteDOM(targetPath, { isInitialLoad: false });
+});
+
+// --- INITIALIZE ROUTE ON PAGE LOAD ---
+const initialRoute = resolveInitialRoute();
+window.initialRoute = initialRoute;
+
+try {
+    history.replaceState({ path: initialRoute }, '', initialRoute);
+} catch (e) {}
+
+if (initialRoute !== '/') {
+    applyRouteDOM(initialRoute, { isInitialLoad: true });
 }
-navMcCinema.onclick = activateMcCinema;
-if (sideNavMcCinema) sideNavMcCinema.onclick = activateMcCinema;
+

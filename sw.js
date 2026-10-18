@@ -67,6 +67,7 @@ self.addEventListener('fetch', (e) => {
             )
         );
     } else {
+        const isNavigation = e.request.mode === 'navigate';
         // Network-first with cache: 'no-cache' for HTML, CSS, JS so browser HTTP disk cache never serves stale scripts
         e.respondWith(
             fetch(e.request, { cache: 'no-cache' }).then((response) => {
@@ -75,7 +76,9 @@ self.addEventListener('fetch', (e) => {
                     caches.open(CODE_CACHE_NAME).then((cache) => cache.put(e.request, clone));
                 }
                 return response;
-            }).catch(() => caches.match(e.request))
+            }).catch(() =>
+                caches.match(e.request).then((cached) => cached || (isNavigation ? caches.match('./index.html') : undefined))
+            )
         );
     }
 });

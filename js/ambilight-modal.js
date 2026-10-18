@@ -52,6 +52,7 @@ function closeModal() {
 }
 
 document.querySelector(".close-modal").onclick = closeModal;
+window.closeModal = closeModal;
 
 modal.onclick = (event) => { 
     if (event.target === modal || event.target === modalGlow) closeModal(); 
@@ -60,3 +61,4 @@ modal.onclick = (event) => {
 document.addEventListener('keydown', (event) => { 
     if (event.key === 'Escape' && modal.style.display === "flex") closeModal(); 
 });
+
