@@ -22,17 +22,21 @@ function getAverageColor(imgElement) {
 function attachModalEvents() {
     const images = document.querySelectorAll(".image-grid .image-item > img, #about-section .image-item > img");
     images.forEach(img => {
-        img.onclick = function() {
+        const openModal = function() {
             modal.classList.remove('closing');
             modal.style.display = "flex";
-            modalImg.src = this.src;
+            modalImg.src = img.src;
             body.classList.add('modal-open');
 
-            const dominantColor = getAverageColor(this);
+            const dominantColor = getAverageColor(img);
             modalGlow.style.backgroundColor = dominantColor;
             
             setTimeout(() => modal.classList.add('open-glow'), 50);
         };
+        img.onclick = openModal;
+        if (img.parentElement && img.parentElement.classList.contains('image-item')) {
+            img.parentElement.onclick = openModal;
+        }
     });
 }
 

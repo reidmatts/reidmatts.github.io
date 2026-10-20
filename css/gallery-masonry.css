@@ -36,6 +36,16 @@
     transition: box-shadow 0.45s var(--ease-liquid);
 }
 
+/* Transparent click/drag shield over photo items */
+.image-item:has(> img)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: transparent;
+    cursor: pointer;
+}
+
 body.light-theme .image-item:not(.motion-grid-promo) {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }

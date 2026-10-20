@@ -1,0 +1,16 @@
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+/Photography/*
+  Cross-Origin-Resource-Policy: same-origin
+  X-Robots-Tag: noimageindex
+
+/PhotographyMinecraft/*
+  Cross-Origin-Resource-Policy: same-origin
+  X-Robots-Tag: noimageindex
+
+/AboutMe/*
+  Cross-Origin-Resource-Policy: same-origin
+  X-Robots-Tag: noimageindex

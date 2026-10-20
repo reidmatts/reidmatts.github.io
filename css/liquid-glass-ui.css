@@ -296,6 +296,7 @@ body.light-theme .first-visit-loader-spinner {
     position: relative;
     z-index: 100;
     isolation: isolate;
+    pointer-events: none;
     box-shadow: 0 15px 60px rgba(0, 0, 0, 0.75); 
     animation: imagePopIn 0.55s var(--ease-liquid) 0.05s forwards;
     will-change: transform, opacity;
