@@ -35,6 +35,7 @@ function runCinematicIntro() {
 
     // Run on Desktop if not disabled, on the home route, and either it's a first visit (even on reload after cache clear) or a normal navigation
     if (isDesktop && isHomeRoute && !disableIntro && (!isReload || isFirstVisit)) { 
+        document.body.classList.add('intro-running');
         const isLight = document.body.classList.contains('light-theme');
         const overlayFadeColor = isLight ? '#f5f5f7' : '#121212';
 
@@ -109,11 +110,11 @@ function runCinematicIntro() {
             lockOverlay.style.backgroundColor = 'rgba(18,18,18,0)';
 
             setTimeout(() => {
+                document.body.classList.remove('intro-running');
                 lockOverlay.remove();
                 window.removeEventListener('wheel', preventScroll);
                 window.removeEventListener('touchmove', preventScroll);
                 window.removeEventListener('keydown', preventKeys);
-                showLoading();
                 localStorage.setItem('hasSeenCinematicIntro', 'true');
                 localStorage.setItem('hasVisitedWebsite', 'true');
             }, 800);
@@ -198,7 +199,6 @@ if (!isIntroRunning) {
         const finishMobileFirstLoad = () => {
             mobileFirstLoader.dismiss();
             localStorage.setItem('hasVisitedWebsite', 'true');
-            setTimeout(showLoading, 500);
         };
 
         if (document.readyState === 'complete') {
@@ -207,8 +207,6 @@ if (!isIntroRunning) {
             window.addEventListener('load', () => setTimeout(finishMobileFirstLoad, 600), { once: true });
             setTimeout(finishMobileFirstLoad, 5000);
         }
-    } else {
-        setTimeout(showLoading, 100);
     }
 }
 

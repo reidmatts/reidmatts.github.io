@@ -20,16 +20,32 @@ window.addEventListener('scroll', () => {
             const docHeight = document.documentElement.scrollHeight;
             const winHeight = window.innerHeight;
 
+            const scrollable = Math.max(0, docHeight - winHeight);
+            const scrollFraction = scrollable > 0 ? scrollTop / scrollable : 0;
+
             if (window.innerWidth <= 768 && scrollProgress) {
-                const scrollable = docHeight - winHeight;
-                const scrolled = scrollable > 0 ? (scrollTop / scrollable) * 100 : 0;
-                scrollProgress.style.width = scrolled + '%';
+                scrollProgress.style.width = (scrollFraction * 100) + '%';
             }
 
-            if (docHeight - (scrollTop + winHeight) < 350) {
+            const isNearBottom = docHeight - (scrollTop + winHeight) < 350;
+            const isHalfway = scrollFraction >= 0.45 && scrollable > 150;
+            const grid2026El = document.getElementById('grid-2026');
+            const is2026Active = grid2026El && !grid2026El.classList.contains('hidden-section');
+
+            if (isNearBottom) {
                 scrollTopBtn.classList.add('show');
             } else {
                 scrollTopBtn.classList.remove('show');
+            }
+
+            if (is2026Active && isHalfway) {
+                if (window.loadingToast && !window.loadingToast.classList.contains('show')) {
+                    if (typeof window.showLoading === 'function') window.showLoading();
+                }
+            } else {
+                if (window.loadingToast && window.loadingToast.classList.contains('show')) {
+                    if (typeof window.hideLoadingToast === 'function') window.hideLoadingToast();
+                }
             }
 
             isScrollTicking = false;
@@ -204,6 +220,7 @@ function setupStagedPreloader() {
         preloadStarted = true;
 
         const secondarySections = [
+            document.getElementById('changelogs-section'),
             document.getElementById('grid-all-time'),
             document.getElementById('grid-archives'),
             document.getElementById('mc-photo-section'),
@@ -231,6 +248,8 @@ function setupStagedPreloader() {
 
     // Also unlock immediately if the user hovers or clicks any navigation link early
     const navMap = {
+        'nav-changelogs': 'changelogs-section',
+        'side-nav-changelogs': 'changelogs-section',
         'nav-all-time': 'grid-all-time',
         'nav-archives': 'grid-archives',
         'nav-mc-photo': 'mc-photo-section',

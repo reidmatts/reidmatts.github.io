@@ -24,7 +24,10 @@
     background-color: var(--text-primary);
     border-radius: 999px;
     transform-origin: center;
-    transition: transform 0.45s var(--ease-spring), opacity 0.25s ease, background-color 0.35s ease;
+    transition:
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+        background-color 0.35s ease;
 }
 
 body.modal-open .hamburger-btn {
@@ -42,6 +45,125 @@ body.modal-open .hamburger-btn {
 .hamburger-btn.open span:nth-child(3) {
     transform: translateY(-10.5px) rotate(-45deg);
     background-color: #e5a93d;
+}
+
+/* --- HAMBURGER TO IMAGE ICON MORPH ENGINE --- */
+.hamburger-morph-svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 26px;
+    height: 26px;
+    stroke: var(--accent-gold);
+    filter: drop-shadow(0 0 8px var(--accent-gold-glow));
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(-50%, -50%, 0) scale(0.45);
+    transition:
+        transform 0.58s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
+}
+
+/* When morphing into the Changelogs image icon, the 3 bars converge & dissolve smoothly */
+.hamburger-btn.morph-to-icon:not(.open) span:nth-child(1) {
+    transform: translateY(10.5px) scaleX(0.4);
+    opacity: 0;
+    background-color: var(--accent-gold);
+}
+.hamburger-btn.morph-to-icon:not(.open) span:nth-child(2) {
+    transform: scaleX(0.25);
+    opacity: 0;
+    background-color: var(--accent-gold);
+}
+.hamburger-btn.morph-to-icon:not(.open) span:nth-child(3) {
+    transform: translateY(-10.5px) scaleX(0.4);
+    opacity: 0;
+    background-color: var(--accent-gold);
+}
+
+.hamburger-btn.morph-to-icon:not(.open) .hamburger-morph-svg {
+    opacity: 1;
+    transform: translate3d(-50%, -50%, 0) scale(1);
+}
+
+/* --- MOBILE CHANGELOGS FLOATING TEXT (CLEAN CUBIC SLIDE-LEFT) --- */
+.changelogs-morph-pill {
+    position: absolute;
+    top: 25px;
+    right: 68px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    z-index: 1500;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(24px, 0, 0);
+    clip-path: inset(0 0 0 100%);
+    transition:
+        transform 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+        clip-path 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity, clip-path;
+}
+
+.changelogs-morph-pill.morph-out {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate3d(0, 0, 0);
+    clip-path: inset(0 0 0 0%);
+}
+
+.changelogs-morph-pill.morph-back {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(22px, 0, 0);
+    clip-path: inset(0 0 0 100%);
+    transition:
+        transform 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+        opacity 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+        clip-path 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.changelogs-morph-text {
+    background: linear-gradient(110deg, var(--text-primary) 35%, #ffe39f 50%, var(--text-primary) 65%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.55));
+    animation: changelogsLightStreak 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+body.light-theme .changelogs-morph-text {
+    background: linear-gradient(110deg, #111113 35%, #c48312 50%, #111113 65%);
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: none;
+}
+
+body.modal-open .changelogs-morph-pill {
+    display: none !important;
+}
+
+@media (min-width: 1281px) {
+    .changelogs-morph-pill,
+    .hamburger-morph-svg {
+        display: none !important;
+    }
 }
 
 /* --- LEFT SLIDING DRAWER (LIQUID GLASS) --- */
@@ -98,11 +220,40 @@ body.light-theme .left-drawer.open {
 }
 
 .left-drawer.open nav ul li:nth-child(1) { transition-delay: 0.05s; }
-.left-drawer.open nav ul li:nth-child(2) { transition-delay: 0.09s; }
-.left-drawer.open nav ul li:nth-child(3) { transition-delay: 0.13s; }
-.left-drawer.open nav ul li:nth-child(4) { transition-delay: 0.16s; }
-.left-drawer.open nav ul li:nth-child(5) { transition-delay: 0.19s; }
-.left-drawer.open nav ul li:nth-child(6) { transition-delay: 0.23s; }
+.left-drawer.open nav ul li:nth-child(2) { transition-delay: 0.08s; }
+.left-drawer.open nav ul li:nth-child(3) { transition-delay: 0.11s; }
+.left-drawer.open nav ul li:nth-child(4) { transition-delay: 0.14s; }
+.left-drawer.open nav ul li:nth-child(5) { transition-delay: 0.17s; }
+.left-drawer.open nav ul li:nth-child(6) { transition-delay: 0.20s; }
+.left-drawer.open nav ul li:nth-child(7) { transition-delay: 0.23s; }
+.left-drawer.open nav ul li:nth-child(8) { transition-delay: 0.26s; }
+.left-drawer.open nav ul li:nth-child(9) { transition-delay: 0.29s; }
+
+/* Dominant Changelogs Link in Left Drawer */
+.left-drawer nav a.nav-changelogs-dominant {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.24rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    padding-bottom: 4px;
+}
+
+.drawer-changelogs-arrow {
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    stroke: var(--accent-gold);
+    filter: drop-shadow(0 0 6px rgba(229, 169, 61, 0.35));
+    transition: transform 0.4s var(--ease-spring), stroke 0.35s var(--ease-liquid), filter 0.35s var(--ease-liquid);
+}
+
+.left-drawer nav a.nav-changelogs-dominant:hover .drawer-changelogs-arrow,
+.left-drawer nav a.nav-changelogs-dominant.active .drawer-changelogs-arrow {
+    transform: translateX(4px);
+    filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.65));
+}
 
 .left-drawer nav a {
     text-decoration: none;
@@ -321,7 +472,7 @@ body.light-theme .right-sidebar nav a {
 /* --- SIDEBAR TOGGLE & ACCORDION ANIMATIONS --- */
 #sidebar-irl-links {
     transition: max-height 0.75s var(--ease-liquid), opacity 0.5s var(--ease-liquid);
-    max-height: 280px;
+    max-height: 360px;
     opacity: 1;
     overflow: hidden;
 }
@@ -408,6 +559,113 @@ body.light-theme .sidebar-toggle {
 body.light-theme .sidebar-new-badge {
     text-shadow: none;
     font-weight: bold;
+}
+
+/* --- PREMIUM CHANGELOGS GLOW & SUBTLE LIGHT STREAK --- */
+.changelogs-streak-text {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(
+        110deg,
+        var(--text-primary) 0%,
+        var(--text-primary) 38%,
+        #fff5d6 48%,
+        #e5a93d 52%,
+        var(--text-primary) 62%,
+        var(--text-primary) 100%
+    );
+    background-size: 260% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 8px rgba(229, 169, 61, 0.28));
+    animation: changelogsLightStreak 4.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    transition: filter 0.35s var(--ease-liquid), transform 0.35s var(--ease-spring);
+}
+
+.right-sidebar nav a.side-nav-changelogs-link {
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+
+/* Fixed Bottom-Right Changelogs Dock on Desktop */
+.fixed-changelogs-dock {
+    position: fixed;
+    bottom: 36px;
+    right: 32px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+    z-index: 1200;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.55s var(--ease-liquid), transform 0.55s var(--ease-liquid);
+}
+
+body.intro-running .fixed-changelogs-dock {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(12px) !important;
+    visibility: hidden !important;
+}
+
+.fixed-changelogs-dock .sidebar-divider {
+    margin: 0;
+    width: 140px;
+}
+
+.right-sidebar nav a.side-nav-changelogs-link .changelogs-streak-text {
+    background: linear-gradient(
+        110deg,
+        #d8d8df 0%,
+        #d8d8df 38%,
+        #ffffff 48%,
+        #e5a93d 53%,
+        #d8d8df 63%,
+        #d8d8df 100%
+    );
+    background-size: 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 10px rgba(229, 169, 61, 0.25));
+}
+
+.right-sidebar nav a.side-nav-changelogs-link:hover .changelogs-streak-text,
+.right-sidebar nav a.side-nav-changelogs-link.active .changelogs-streak-text,
+.left-drawer nav a.nav-changelogs-dominant:hover .changelogs-streak-text,
+.left-drawer nav a.nav-changelogs-dominant.active .changelogs-streak-text {
+    filter: drop-shadow(0 0 12px rgba(229, 169, 61, 0.65));
+}
+
+body.light-theme .changelogs-streak-text,
+body.light-theme .right-sidebar nav a.side-nav-changelogs-link .changelogs-streak-text {
+    background: linear-gradient(
+        110deg,
+        #111113 0%,
+        #111113 38%,
+        #c48312 49%,
+        #e5a93d 53%,
+        #111113 63%,
+        #111113 100%
+    );
+    background-size: 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 6px rgba(196, 131, 18, 0.2));
+}
+
+@keyframes changelogsLightStreak {
+    0%, 15% {
+        background-position: 120% 0;
+    }
+    55%, 100% {
+        background-position: -40% 0;
+    }
 }
 
 /* --- USER SETTINGS & LIQUID TOGGLES --- */
@@ -506,8 +764,9 @@ input:checked + .slider:before { transform: translateX(18px); }
     #irl-toggle-btn,
     #sidebar-mc-links,
     .right-sidebar nav #sidebar-irl-links::after,
-    .sidebar-divider,
-    .desktop-sidebar-only {
+    .right-sidebar nav #sidebar-irl-links li.sidebar-divider,
+    .right-sidebar nav #sidebar-irl-links li.desktop-sidebar-only,
+    .fixed-changelogs-dock {
         display: none !important;
     }
 }
@@ -520,6 +779,7 @@ input:checked + .slider:before { transform: translateX(18px); }
 
 @media (max-width: 480px) {
     .hamburger-btn { top: 20px; right: 20px; }
+    .changelogs-morph-pill { top: 20px; right: 58px; }
 }
 
 /* --- ADDITIONAL LIGHT MODE NAVIGATION REFINEMENTS --- */

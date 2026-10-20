@@ -175,6 +175,9 @@ body.low-detail .toast-notification,
 body.low-detail .fav-bg-rect,
 body.low-detail .scroll-top-btn,
 body.low-detail .about-glass-showcase,
+body.low-detail .changelog-card,
+body.low-detail .changelogs-refresh-btn,
+body.low-detail .changelogs-morph-pill,
 body.low-detail .media-card-link::after { 
     -webkit-backdrop-filter: none !important; 
     backdrop-filter: none !important; 
@@ -182,7 +185,9 @@ body.low-detail .media-card-link::after {
 body.low-detail .toast-notification, 
 body.low-detail .settings-content, 
 body.low-detail .left-drawer.open,
-body.low-detail .about-glass-showcase { 
+body.low-detail .about-glass-showcase,
+body.low-detail .changelog-card,
+body.low-detail .changelogs-morph-pill { 
     box-shadow: none !important; 
 }
 body.low-detail .image-item:hover img,

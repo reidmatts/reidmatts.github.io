@@ -10,11 +10,19 @@ function showLoading() {
     
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => {
-        loadingToast.classList.add("minimized");
+        if (loadingToast.classList.contains("show")) {
+            loadingToast.classList.add("minimized");
+        }
     }, 4000); 
 }
 
+function hideLoadingToast() {
+    clearTimeout(toastTimer);
+    loadingToast.classList.remove("show", "minimized");
+}
+
 window.showLoading = showLoading;
+window.hideLoadingToast = hideLoadingToast;
 
 // --- 5. DRAWER & HAMBURGER MENU LOGIC ---
 const hamburgerBtn = document.getElementById("hamburgerBtn");
@@ -51,6 +59,7 @@ const nav2026 = document.getElementById("nav-2026");
 const navAllTime = document.getElementById("nav-all-time");
 const navArchives = document.getElementById("nav-archives"); 
 const sideNavMotion = document.getElementById("side-nav-motion");
+const sideNavChangelogs = document.getElementById("side-nav-changelogs");
 
 const sideNavMcPhoto = document.getElementById("side-nav-mc-photo");
 const sideNavMcCinema = document.getElementById("side-nav-mc-cinema");
@@ -58,11 +67,13 @@ const sidebarMcLinks = document.getElementById("sidebar-mc-links");
 const sidebarIrlLinks = document.getElementById("sidebar-irl-links");
 const irlToggleBtn = document.getElementById("irl-toggle-btn");
 
+const navChangelogs = document.getElementById("nav-changelogs");
 const navAbout = document.getElementById("nav-about");
 const navMotion = document.getElementById("nav-motion");
 const navCinematics = document.getElementById("nav-cinematics");
 const navMcPhoto = document.getElementById("nav-mc-photo");
 const navMcCinema = document.getElementById("nav-mc-cinema");
+const changelogsMorphPill = document.getElementById("changelogsMorphPill");
 
 const grid2026 = document.getElementById("grid-2026");
 const gridAllTime = document.getElementById("grid-all-time");
@@ -72,6 +83,7 @@ const motionSection = document.getElementById("motion-section");
 const cinematicsSection = document.getElementById("cinematics-section");
 const mcPhotoSection = document.getElementById("mc-photo-section");
 const mcCinemaSection = document.getElementById("mc-cinema-section");
+const changelogsSection = document.getElementById("changelogs-section");
 
 const headerQuote = document.getElementById("headerQuote");
 const defaultQuote = '"Sharing Untold Stories Through Leica, Shot With Xiaomi 15"';
@@ -143,6 +155,7 @@ function hideAllSections() {
     cinematicsSection.classList.add("hidden-section");
     mcPhotoSection.classList.add("hidden-section");
     mcCinemaSection.classList.add("hidden-section");
+    if (changelogsSection) changelogsSection.classList.add("hidden-section");
     
     nav2026.classList.remove("active");
     navAllTime.classList.remove("active");
@@ -152,10 +165,12 @@ function hideAllSections() {
     navCinematics.classList.remove("active");
     navMcPhoto.classList.remove("active");
     navMcCinema.classList.remove("active");
+    if (navChangelogs) navChangelogs.classList.remove("active");
     
     if (sideNavMcPhoto) sideNavMcPhoto.classList.remove("active");
     if (sideNavMcCinema) sideNavMcCinema.classList.remove("active");
     if (sideNavMotion) sideNavMotion.classList.remove("active"); 
+    if (sideNavChangelogs) sideNavChangelogs.classList.remove("active");
 
     headerQuote.innerText = defaultQuote;
 }
@@ -171,7 +186,8 @@ const VALID_ROUTES = new Set([
     '/about',
     '/cinematics',
     '/minecraft-photography',
-    '/minecraft-cinematics'
+    '/minecraft-cinematics',
+    '/changelogs'
 ]);
 
 const HASH_TO_PATH = {
@@ -185,7 +201,9 @@ const HASH_TO_PATH = {
     '#minecraft-photography': '/minecraft-photography',
     '#mc-photo': '/minecraft-photography',
     '#minecraft-cinematics': '/minecraft-cinematics',
-    '#mc-cinema': '/minecraft-cinematics'
+    '#mc-cinema': '/minecraft-cinematics',
+    '#changelogs': '/changelogs',
+    '#changes': '/changelogs'
 };
 
 function normalizePath(rawPath) {
@@ -243,6 +261,7 @@ function applyRouteDOM(path, options = {}) {
     }
 
     hideAllSections();
+    hideLoadingToast();
 
     switch (targetPath) {
         case '/all-time':
@@ -262,7 +281,6 @@ function applyRouteDOM(path, options = {}) {
         case '/about':
             navAbout.classList.add("active");
             aboutSection.classList.remove("hidden-section");
-            if (!isInitialLoad) showLoading();
             setSidebarMode('irl');
             if (window.triggerAboutReveal) window.triggerAboutReveal();
             break;
@@ -295,6 +313,14 @@ function applyRouteDOM(path, options = {}) {
             mcCinemaSection.classList.remove("hidden-section");
             headerQuote.innerText = minecraftQuote;
             setSidebarMode('mc');
+            break;
+
+        case '/changelogs':
+            if (navChangelogs) navChangelogs.classList.add("active");
+            if (sideNavChangelogs) sideNavChangelogs.classList.add("active");
+            if (changelogsSection) changelogsSection.classList.remove("hidden-section");
+            setSidebarMode('irl');
+            if (window.renderChangelogs) window.renderChangelogs(false);
             break;
 
         case '/':
@@ -345,6 +371,8 @@ function bindRouteLink(element, path) {
 bindRouteLink(nav2026, '/');
 bindRouteLink(navAllTime, '/all-time');
 bindRouteLink(navArchives, '/archives');
+bindRouteLink(navChangelogs, '/changelogs');
+bindRouteLink(sideNavChangelogs, '/changelogs');
 bindRouteLink(navAbout, '/about');
 bindRouteLink(navMotion, '/motion');
 bindRouteLink(sideNavMotion, '/motion');
@@ -353,6 +381,213 @@ bindRouteLink(navMcPhoto, '/minecraft-photography');
 bindRouteLink(sideNavMcPhoto, '/minecraft-photography');
 bindRouteLink(navMcCinema, '/minecraft-cinematics');
 bindRouteLink(sideNavMcCinema, '/minecraft-cinematics');
+
+if (changelogsMorphPill) {
+    changelogsMorphPill.onclick = function(event) {
+        if (event) event.preventDefault();
+        changelogsMorphPill.classList.remove("morph-out");
+        changelogsMorphPill.classList.add("morph-back");
+        hamburgerBtn.classList.remove("morph-to-icon");
+        navigateTo('/changelogs');
+    };
+}
+
+// --- MOBILE HAMBURGER MORPH-OUT CHANGELOGS HINT ANIMATION ---
+function runMobileChangelogsMorph() {
+    if (!changelogsMorphPill || window.innerWidth > 1280) return;
+
+    let morphOutTimer;
+    let morphBackTimer;
+
+    morphOutTimer = setTimeout(() => {
+        if (leftDrawer && leftDrawer.classList.contains("open")) return;
+        // 1. Cleanly morph hamburger lines into the Changelogs image SVG icon & cubic-slide text left
+        hamburgerBtn.classList.add("morph-to-icon");
+        changelogsMorphPill.classList.remove("morph-back");
+        changelogsMorphPill.classList.add("morph-out");
+
+        // 2. Smoothly slide text back & morph the image SVG icon back into the 3 hamburger lines
+        morphBackTimer = setTimeout(() => {
+            changelogsMorphPill.classList.remove("morph-out");
+            changelogsMorphPill.classList.add("morph-back");
+            hamburgerBtn.classList.remove("morph-to-icon");
+        }, 2800);
+    }, 800);
+
+    hamburgerBtn.addEventListener("click", () => {
+        clearTimeout(morphOutTimer);
+        clearTimeout(morphBackTimer);
+        changelogsMorphPill.classList.remove("morph-out");
+        changelogsMorphPill.classList.add("morph-back");
+        hamburgerBtn.classList.remove("morph-to-icon");
+    });
+}
+
+runMobileChangelogsMorph();
+
+// --- 6C. CURATED CHANGELOGS ENGINE (GITHUB COMMIT TIMESTAMPS & 31-DAY FILTER) ---
+const CHANGELOG_ITEMS_SEED = [
+    {
+        filename: "ConcertBW.avif",
+        src: "Photography/2026/ConcertBW.avif",
+        addedAtMs: 1792415846 * 1000
+    },
+    {
+        filename: "guitarkid.avif",
+        src: "Photography/2026/guitarkid.avif",
+        addedAtMs: 1791504826 * 1000
+    },
+    {
+        filename: "waterfallwide.avif",
+        src: "Photography/2026/waterfallwide.avif",
+        addedAtMs: 1791504826 * 1000
+    },
+    {
+        filename: "waterfall.avif",
+        src: "Photography/2026/waterfall.avif",
+        addedAtMs: 1787377019 * 1000
+    },
+    {
+        filename: "sharkgirl.avif",
+        src: "Photography/2026/sharkgirl.avif",
+        addedAtMs: 1785583230 * 1000
+    },
+    {
+        filename: "birdguy.avif",
+        src: "Photography/2026/birdguy.avif",
+        addedAtMs: 1785506507 * 1000
+    },
+    {
+        filename: "voque.avif",
+        src: "Photography/2026/voque.avif",
+        addedAtMs: 1785230828 * 1000
+    },
+    {
+        filename: "2024portraitgirl.avif",
+        src: "Photography/2026/2024portraitgirl.avif",
+        addedAtMs: 1785331245 * 1000
+    }
+];
+
+function getCollectionNameFromSrc(src) {
+    if (!src) return "2026";
+    if (src.includes("Photography/2026/")) return "2026";
+    if (src.includes("Photography/AllTime/")) return "All Time";
+    if (src.includes("Photography/Archives/")) return "Archives";
+    if (src.includes("PhotographyMinecraft/Photography/")) return "Minecraft Photography";
+    return "2026";
+}
+
+function formatRelativeTime(timestampMs) {
+    const diffMs = Math.max(0, Date.now() - timestampMs);
+    const minutes = Math.floor(diffMs / (1000 * 60));
+    const hours = Math.floor(diffMs / (1000 * 60 * 60));
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (minutes < 1) return "Just now";
+    if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+    if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+    return `${days} day${days === 1 ? '' : 's'} ago`;
+}
+
+let isSyncingGitHub = false;
+
+async function syncGitHubCommitTimestamps() {
+    if (isSyncingGitHub) return;
+    isSyncingGitHub = true;
+    try {
+        const res = await fetch("https://api.github.com/repos/reidmatts/reidmatts.github.io/commits?per_page=25", {
+            headers: { "Accept": "application/vnd.github.v3+json" }
+        });
+        if (!res.ok) return;
+        const commits = await res.json();
+        if (!Array.isArray(commits)) return;
+
+        // Match commit messages or fetch recent image commits if available
+        commits.forEach(c => {
+            if (!c || !c.commit || !c.commit.author || !c.commit.author.date) return;
+            const msg = (c.commit.message || "").toLowerCase();
+            const commitTime = new Date(c.commit.author.date).getTime();
+            if (!commitTime || isNaN(commitTime)) return;
+
+            CHANGELOG_ITEMS_SEED.forEach(item => {
+                const baseName = item.filename.toLowerCase();
+                if (msg.includes(baseName)) {
+                    item.addedAtMs = commitTime;
+                }
+            });
+        });
+    } catch (e) {
+        // Offline or rate-limited: fallback to exact local Git commit timestamps
+    } finally {
+        isSyncingGitHub = false;
+    }
+}
+
+function renderChangelogs(triggerNetworkSync = false) {
+    const feedEl = document.getElementById("changelogsFeed");
+    if (!feedEl) return;
+
+    const thirtyOneDaysMs = 31 * 24 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    // Filter curated additions strictly within the past 31 days
+    const recentAdditions = CHANGELOG_ITEMS_SEED
+        .filter(item => (now - item.addedAtMs) <= thirtyOneDaysMs && (now - item.addedAtMs) >= -86400000)
+        .sort((a, b) => b.addedAtMs - a.addedAtMs);
+
+    if (recentAdditions.length === 0) {
+        feedEl.innerHTML = `<div class="changelogs-empty">No new curated additions in the past 31 days.</div>`;
+        return;
+    }
+
+    feedEl.innerHTML = recentAdditions.map((item, idx) => {
+        const collectionLabel = item.collection || getCollectionNameFromSrc(item.src);
+        return `
+        <article class="changelog-card" style="animation-delay: ${idx * 0.08}s;">
+            <div class="changelog-ambient-bleed" style="background-image: url('${item.src}');" aria-hidden="true"></div>
+            <div class="changelog-card-surface">
+                <div class="changelog-card-inner">
+                    <div class="changelog-media">
+                        <img src="${item.src}" alt="${item.filename}" loading="lazy" decoding="async">
+                    </div>
+                    <div class="changelog-body">
+                        <div class="changelog-meta-row">
+                            <h3 class="changelog-item-title">New Curated Image!</h3>
+                            <span class="changelog-time">${formatRelativeTime(item.addedAtMs)}</span>
+                        </div>
+                        <p class="changelog-desc">Added <span class="changelog-filename">${item.filename}</span> to the curated collection (${collectionLabel})</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+        `;
+    }).join('');
+
+    if (typeof window.attachModalEvents === "function") {
+        window.attachModalEvents();
+    }
+
+    if (triggerNetworkSync) {
+        syncGitHubCommitTimestamps().then(() => {
+            renderChangelogs(false);
+        });
+    }
+}
+
+window.renderChangelogs = renderChangelogs;
+renderChangelogs(true);
+
+const refreshChangelogsBtn = document.getElementById("refreshChangelogsBtn");
+if (refreshChangelogsBtn) {
+    refreshChangelogsBtn.addEventListener("click", () => {
+        refreshChangelogsBtn.classList.add("spinning");
+        renderChangelogs(true);
+        setTimeout(() => {
+            refreshChangelogsBtn.classList.remove("spinning");
+        }, 650);
+    });
+}
 
 const gridVisitMotion = document.getElementById("grid-visit-motion");
 if (gridVisitMotion) {

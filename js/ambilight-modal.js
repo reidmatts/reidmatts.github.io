@@ -20,7 +20,7 @@ function getAverageColor(imgElement) {
 }
 
 function attachModalEvents() {
-    const images = document.querySelectorAll(".image-grid .image-item > img, #about-section .image-item > img");
+    const images = document.querySelectorAll(".image-grid .image-item > img, #about-section .image-item > img, #changelogs-section .changelog-media > img");
     images.forEach(img => {
         const openModal = function() {
             modal.classList.remove('closing');
@@ -34,12 +34,13 @@ function attachModalEvents() {
             setTimeout(() => modal.classList.add('open-glow'), 50);
         };
         img.onclick = openModal;
-        if (img.parentElement && img.parentElement.classList.contains('image-item')) {
+        if (img.parentElement && (img.parentElement.classList.contains('image-item') || img.parentElement.classList.contains('changelog-media'))) {
             img.parentElement.onclick = openModal;
         }
     });
 }
 
+window.attachModalEvents = attachModalEvents;
 attachModalEvents();
 
 function closeModal() {

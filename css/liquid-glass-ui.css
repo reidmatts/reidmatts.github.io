@@ -646,3 +646,333 @@ body.light-theme .scroll-top-btn:hover svg {
     stroke: url(#goldGrad); 
     filter: drop-shadow(0 0 10px rgba(196, 131, 18, 0.5)); 
 }
+
+/* =========================================================
+   CHANGELOGS SECTION (CURATED ADDITIONS - PAST 31 DAYS)
+   ========================================================= */
+.changelogs-wrapper {
+    max-width: 1120px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 28px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.changelogs-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 4px 18px;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: border-color 0.45s var(--ease-liquid);
+}
+
+.changelogs-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.changelogs-title {
+    font-size: 2.3rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+    line-height: 1.15;
+    margin: 0;
+}
+
+.changelogs-subtitle {
+    font-size: 0.98rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.3px;
+    margin: 0;
+}
+
+.changelogs-refresh-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition:
+        color 0.3s var(--ease-liquid),
+        border-color 0.35s var(--ease-liquid),
+        background-color 0.35s var(--ease-liquid),
+        transform 0.45s var(--ease-spring),
+        box-shadow 0.35s var(--ease-liquid);
+}
+
+.changelogs-refresh-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.6s var(--ease-spring);
+}
+
+.changelogs-refresh-btn:hover {
+    color: var(--accent-gold);
+    border-color: var(--glass-border-highlight);
+    background: var(--glass-bg-hover);
+    box-shadow: 0 4px 16px rgba(229, 169, 61, 0.18);
+}
+
+.changelogs-refresh-btn.spinning svg {
+    animation: firstVisitSpin 0.65s var(--ease-liquid);
+}
+
+.changelogs-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    position: relative;
+}
+
+.changelog-card {
+    position: relative;
+    border-radius: 22px;
+    overflow: visible;
+    isolation: isolate;
+    transition: transform 0.55s var(--ease-liquid);
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    animation: changelogCardReveal 0.6s var(--ease-liquid) forwards;
+}
+
+/* Subtle Outer Canvas Ambient Bleed (Softly Diffused Behind Card) */
+.changelog-ambient-bleed {
+    position: absolute;
+    inset: -65px -110px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(105px) saturate(165%) brightness(0.55);
+    opacity: 0.34;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: 50%;
+    transform: scale(1.04) translateZ(0);
+    transition:
+        opacity 0.75s var(--ease-liquid),
+        transform 0.85s var(--ease-liquid);
+}
+
+body.light-theme .changelog-ambient-bleed {
+    filter: blur(105px) saturate(140%) brightness(1.02);
+    opacity: 0.22;
+}
+
+body.low-detail .changelog-ambient-bleed {
+    display: none !important;
+}
+
+.changelog-card-surface {
+    position: relative;
+    background: rgba(24, 24, 27, 0.82);
+    -webkit-backdrop-filter: blur(22px) saturate(165%);
+    backdrop-filter: blur(22px) saturate(165%);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
+    isolation: isolate;
+    transition:
+        border-color 0.45s var(--ease-liquid),
+        background-color 0.45s var(--ease-liquid),
+        box-shadow 0.55s var(--ease-liquid);
+}
+
+.changelog-card-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+body.light-theme .changelog-card-surface {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.07), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+}
+
+.changelog-card-surface::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), rgba(229, 169, 61, 0.45), transparent);
+    pointer-events: none;
+    z-index: 3;
+}
+
+@media (hover: hover) {
+    .changelog-card:hover {
+        transform: translate3d(0, -4px, 0);
+    }
+    .changelog-card:hover .changelog-card-surface {
+        border-color: var(--glass-border-highlight);
+        background: rgba(28, 28, 32, 0.88);
+    }
+    body.light-theme .changelog-card:hover .changelog-card-surface {
+        background: rgba(255, 255, 255, 0.96);
+    }
+    .changelog-card:hover .changelog-ambient-bleed {
+        opacity: 0.46;
+        transform: scale(1.08) translateZ(0);
+    }
+    body.light-theme .changelog-card:hover .changelog-ambient-bleed {
+        opacity: 0.32;
+    }
+}
+
+@keyframes changelogCardReveal {
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.changelog-media {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    background-color: #0c0c0e;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+}
+
+body.light-theme .changelog-media {
+    background-color: #ececf0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.changelog-media img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.65s var(--ease-liquid), filter 0.5s var(--ease-liquid);
+}
+
+@media (hover: hover) {
+    .changelog-card:hover .changelog-media img {
+        transform: scale(1.025);
+    }
+}
+
+.changelog-body {
+    padding: 26px 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.changelog-meta-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.changelog-item-title {
+    font-size: 1.48rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.2px;
+    margin: 0;
+}
+
+.changelog-time {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+}
+
+.changelog-desc {
+    font-size: 1.1rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.changelog-desc .changelog-filename {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.changelogs-empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    border-radius: 16px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+}
+
+@media (max-width: 768px) {
+    .changelogs-wrapper {
+        padding: 0 2px 40px;
+        gap: 18px;
+    }
+    .changelogs-feed {
+        gap: 26px;
+    }
+    .changelogs-title {
+        font-size: 1.75rem;
+    }
+    .changelogs-subtitle {
+        font-size: 0.86rem;
+    }
+    .changelog-ambient-bleed {
+        display: none;
+    }
+    .changelog-body {
+        padding: 16px 18px 18px;
+    }
+    .changelog-item-title {
+        font-size: 1.12rem;
+    }
+    .changelog-time {
+        font-size: 0.88rem;
+    }
+    .changelog-desc {
+        font-size: 0.95rem;
+    }
+}
+
+
+/* --- DESKTOP 2-COLUMN CHANGELOGS FEED GRID --- */
+@media (min-width: 1025px) {
+    .changelogs-feed {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 36px 32px;
+        align-items: start;
+    }
+    .changelog-body { padding: 22px 26px 24px; }
+    .changelog-item-title { font-size: 1.26rem; }
+    .changelog-desc { font-size: 1rem; }
+
+    /* Single curated addition in the 31-day window: fill the full width */
+    .changelog-card:only-child { grid-column: 1 / -1; }
+    .changelog-card:only-child .changelog-body { padding: 26px 32px 28px; }
+    .changelog-card:only-child .changelog-item-title { font-size: 1.48rem; }
+    .changelog-card:only-child .changelog-desc { font-size: 1.1rem; }
+
+    .changelogs-empty { grid-column: 1 / -1; }
+}
