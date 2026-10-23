@@ -26,8 +26,8 @@
 
     /**
      * @param {'ui' | 'image' | 'egg'} type
-     * - 'ui': Menu open/close, section switch, settings toggle (triggers tactile vibration fallback)
-     * - 'image': Image click (pure Apple haptics only; NO vibration fallback)
+     * - 'ui': Menu open/close, section switch, settings toggle
+     * - 'image': Image click / modal open & close (crisp light tactile pop)
      * - 'egg': Easter egg burst
      */
     function triggerHaptic(type = 'ui') {
@@ -46,22 +46,24 @@
                 if (gamepads && gamepads[0] && gamepads[0].vibrationActuator) {
                     gamepads[0].vibrationActuator.playEffect('dual-rumble', {
                         startDelay: 0,
-                        duration: type === 'egg' ? 120 : 15,
-                        weakMagnitude: 0.6,
-                        strongMagnitude: 0.3
+                        duration: type === 'egg' ? 120 : (type === 'image' ? 10 : 15),
+                        weakMagnitude: type === 'image' ? 0.4 : 0.6,
+                        strongMagnitude: type === 'image' ? 0.2 : 0.3
                     }).catch(() => {});
                 }
             }
         } catch (e) {}
 
-        // 3. Vibration API fallback:
-        // APPLIES ONLY to opening menu, switching layout, triggering settings changes (NOT clicking images)
-        if (type !== 'image' && 'vibrate' in navigator) {
+        // 3. Vibration API fallback (Android phones / touch devices with vibration motor):
+        if ('vibrate' in navigator) {
             try {
                 if (type === 'egg') {
                     navigator.vibrate([60, 40, 70, 40, 100]);
+                } else if (type === 'image') {
+                    // Ultra-light micro-pulse for crisp image opening feel
+                    navigator.vibrate(8);
                 } else {
-                    // Fraction of a millisecond / micro-pulse (10-12ms minimum browser unit)
+                    // UI navigation / menu / settings toggle
                     navigator.vibrate(12);
                 }
             } catch (e) {}

@@ -48,6 +48,9 @@ window.attachModalEvents = attachModalEvents;
 attachModalEvents();
 
 function closeModal() {
+    if (window.triggerHaptic) {
+        window.triggerHaptic('image');
+    }
     modal.classList.add('closing');
     modal.classList.remove('open-glow');
     
