@@ -104,3 +104,113 @@ toggleExperimental.addEventListener('change', (e) => {
         }
     }
 });
+
+// --- YOUTUBE ICON 1.5-SECOND HOLD EASTER EGG ---
+(function initYouTubeEasterEgg() {
+    const ytLink = document.querySelector('.drawer-yt-link');
+    const ytIcon = document.querySelector('.drawer-yt-icon');
+    const mysteryPopup = document.getElementById('mysteryFacePopup');
+    const vineAudio = document.getElementById('vineBoomAudio');
+
+    if (!ytLink || !ytIcon || !mysteryPopup) return;
+
+    let holdTimer = null;
+    let dismissTimer = null;
+    let didTriggerEasterEgg = false;
+
+    function triggerHaptics() {
+        if ('vibrate' in navigator) {
+            try {
+                // Rapid burst pattern for tactile impact
+                navigator.vibrate([60, 40, 70, 40, 100]);
+            } catch (err) {}
+        }
+    }
+
+    function launchEasterEgg() {
+        didTriggerEasterEgg = true;
+        clearTimeout(holdTimer);
+        holdTimer = null;
+
+        // 1. Shake the YouTube logo cutely
+        ytIcon.classList.add('cute-shake');
+
+        // 2. Play vineboom sound
+        if (vineAudio) {
+            vineAudio.currentTime = 0;
+            vineAudio.play().catch(() => {});
+        }
+
+        // 3. Trigger haptic feedback / rapid vibration on mobile
+        triggerHaptics();
+
+        // 4. Slide face up at furthest bottom left
+        if (dismissTimer) clearTimeout(dismissTimer);
+        mysteryPopup.classList.remove('slide-down');
+        mysteryPopup.classList.add('slide-up');
+
+        // 5. Slide back down after 5 seconds
+        dismissTimer = setTimeout(() => {
+            mysteryPopup.classList.remove('slide-up');
+            mysteryPopup.classList.add('slide-down');
+            ytIcon.classList.remove('cute-shake');
+
+            setTimeout(() => {
+                mysteryPopup.classList.remove('slide-down');
+            }, 400);
+        }, 5000);
+    }
+
+    function startPress(e) {
+        // Prevent default context menu on long press on mobile
+        didTriggerEasterEgg = false;
+        clearTimeout(holdTimer);
+        holdTimer = setTimeout(launchEasterEgg, 1500);
+    }
+
+    function cancelPress() {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+    }
+
+    // Touch events for mobile phones
+    ytLink.addEventListener('touchstart', (e) => {
+        startPress(e);
+    }, { passive: true });
+
+    ytLink.addEventListener('touchend', (e) => {
+        cancelPress();
+        if (didTriggerEasterEgg) {
+            if (e.cancelable) e.preventDefault();
+        }
+    });
+
+    ytLink.addEventListener('touchcancel', cancelPress);
+    ytLink.addEventListener('touchmove', cancelPress);
+
+    // Mouse events for desktop
+    ytLink.addEventListener('mousedown', (e) => {
+        if (e.button === 0) { // left click only
+            startPress(e);
+        }
+    });
+
+    ytLink.addEventListener('mouseup', cancelPress);
+    ytLink.addEventListener('mouseleave', cancelPress);
+
+    // Suppress context menu on long touch on mobile so browser menu doesn't block the egg
+    ytLink.addEventListener('contextmenu', (e) => {
+        if (didTriggerEasterEgg || holdTimer) {
+            e.preventDefault();
+        }
+    });
+
+    // Prevent navigation if the long press triggered the egg
+    ytLink.addEventListener('click', (e) => {
+        if (didTriggerEasterEgg) {
+            e.preventDefault();
+            e.stopPropagation();
+            didTriggerEasterEgg = false;
+        }
+    });
+})();

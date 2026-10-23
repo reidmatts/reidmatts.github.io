@@ -314,6 +314,60 @@ body.light-theme .left-drawer.open {
     flex-shrink: 0;
     display: block;
     transition: transform 0.4s var(--ease-spring), filter 0.3s ease;
+    transform-origin: center;
+}
+
+/* Cute shake animation on 3s press-and-hold trigger */
+.drawer-yt-icon.cute-shake {
+    animation: ytCuteShake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite both;
+}
+
+@keyframes ytCuteShake {
+    0% { transform: scale(1.2) rotate(0deg); }
+    15% { transform: scale(1.25) rotate(-14deg); }
+    30% { transform: scale(1.22) rotate(12deg); }
+    45% { transform: scale(1.28) rotate(-10deg); }
+    60% { transform: scale(1.22) rotate(8deg); }
+    75% { transform: scale(1.25) rotate(-4deg); }
+    90% { transform: scale(1.2) rotate(2deg); }
+    100% { transform: scale(1.2) rotate(0deg); }
+}
+
+/* --- MYSTERY FACE POPUP (BOTTOM LEFT CORNER) --- */
+.mystery-face-popup {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100002;
+    pointer-events: none;
+    line-height: 0;
+    /* Hidden below screen initially */
+    transform: translate3d(0, 105%, 0);
+    transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: transform;
+}
+
+.mystery-face-img {
+    width: clamp(100px, 15vw, 175px);
+    height: auto;
+    max-height: 28vh;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.65));
+    border-top-right-radius: 14px;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Slide up instantly when active */
+.mystery-face-popup.slide-up {
+    transform: translate3d(0, 0, 0);
+}
+
+/* Fast slide down on exit */
+.mystery-face-popup.slide-down {
+    transform: translate3d(0, 105%, 0);
+    transition: transform 0.32s cubic-bezier(0.55, 0.055, 0.675, 0.19);
 }
 
 .drawer-yt-link:hover {
