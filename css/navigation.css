@@ -173,6 +173,7 @@ body.modal-open .changelogs-morph-pill {
     left: 0;
     width: 280px;
     height: 100vh;
+    height: 100dvh;
     background-color: rgba(14, 14, 16, 0.74);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     backdrop-filter: blur(24px) saturate(180%);
@@ -181,9 +182,10 @@ body.modal-open .changelogs-morph-pill {
     z-index: 1500;
     transform: translate3d(-102%, 0, 0);
     transition: transform 0.55s var(--ease-liquid), background-color 0.45s var(--ease-liquid), border-color 0.45s var(--ease-liquid), box-shadow 0.55s var(--ease-liquid);
-    padding: calc(env(safe-area-inset-top, 0px) + 36px) 35px 35px;
+    padding: calc(env(safe-area-inset-top, 0px) + 24px) 30px calc(env(safe-area-inset-bottom, 0px) + 20px);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     will-change: transform;
     box-sizing: border-box;
 }
@@ -206,7 +208,7 @@ body.light-theme .left-drawer.open {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 25px; 
+    gap: 18px; 
 }
 
 .left-drawer nav ul li {
@@ -278,6 +280,11 @@ body.light-theme .left-drawer.open {
     border-bottom: 2px solid var(--accent-gold); 
 }
 
+.drawer-settings-icon-wrap {
+    margin-bottom: 14px;
+    margin-left: 5px;
+}
+
 .drawer-divider {
     border: 0;
     border-top: 1px solid var(--border-divider); 
@@ -290,10 +297,10 @@ body.light-theme .left-drawer.open {
 /* --- DRAWER FOOTER & YOUTUBE LINK --- */
 .drawer-footer {
     margin-top: auto;
-    padding-top: 25px;
+    padding-top: 18px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 .drawer-yt-link {
@@ -424,11 +431,17 @@ body.light-theme .left-drawer.open {
 
 @media (max-height: 650px) {
     .left-drawer {
-        padding: calc(env(safe-area-inset-top, 0px) + 24px) 25px 25px;
+        padding: calc(env(safe-area-inset-top, 0px) + 16px) 25px calc(env(safe-area-inset-bottom, 0px) + 14px);
+    }
+    .left-drawer nav ul {
+        gap: 11px;
+    }
+    .drawer-settings-icon-wrap {
+        margin-bottom: 8px;
     }
     .drawer-footer {
-        margin-top: 20px;
-        padding-top: 12px;
+        margin-top: auto;
+        padding-top: 8px;
     }
 }
 
