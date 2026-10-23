@@ -181,10 +181,11 @@ body.modal-open .changelogs-morph-pill {
     z-index: 1500;
     transform: translate3d(-102%, 0, 0);
     transition: transform 0.55s var(--ease-liquid), background-color 0.45s var(--ease-liquid), border-color 0.45s var(--ease-liquid), box-shadow 0.55s var(--ease-liquid);
-    padding: 80px 40px;
+    padding: calc(env(safe-area-inset-top, 0px) + 36px) 35px 35px;
     display: flex;
     flex-direction: column;
     will-change: transform;
+    box-sizing: border-box;
 }
 
 body.light-theme .left-drawer {
@@ -423,11 +424,11 @@ body.light-theme .left-drawer.open {
 
 @media (max-height: 650px) {
     .left-drawer {
-        padding: 50px 30px 30px;
+        padding: calc(env(safe-area-inset-top, 0px) + 24px) 25px 25px;
     }
     .drawer-footer {
-        margin-top: 25px;
-        padding-top: 15px;
+        margin-top: 20px;
+        padding-top: 12px;
     }
 }
 
