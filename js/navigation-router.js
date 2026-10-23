@@ -29,7 +29,11 @@ const hamburgerBtn = document.getElementById("hamburgerBtn");
 const leftDrawer = document.getElementById("leftDrawer");
 const drawerOverlay = document.getElementById("drawerOverlay");
 
-function toggleDrawer() {
+function toggleDrawer(options = {}) {
+    const { silentHaptic = false } = options;
+    if (!silentHaptic && window.triggerHaptic) {
+        window.triggerHaptic('ui');
+    }
     hamburgerBtn.classList.toggle("open"); 
     leftDrawer.classList.toggle("open");   
     drawerOverlay.classList.toggle("show"); 
@@ -94,6 +98,7 @@ let expandTimer;
 let retractTimer;
 
 irlToggleBtn.onclick = function() {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     clearTimeout(retractTimer);
     sidebarIrlLinks.classList.toggle('collapsed');
     irlToggleBtn.classList.toggle('expanded');
@@ -253,7 +258,7 @@ function applyRouteDOM(path, options = {}) {
 
     // Ensure drawer and fullscreen modal close gracefully on navigation / back button
     if (leftDrawer && leftDrawer.classList.contains("open")) {
-        toggleDrawer();
+        toggleDrawer({ silentHaptic: true });
     }
     const imageModal = document.getElementById("imageModal");
     if (imageModal && imageModal.style.display === "flex" && typeof window.closeModal === "function") {
@@ -343,6 +348,10 @@ function applyRouteDOM(path, options = {}) {
 function navigateTo(path, replace = false) {
     const targetPath = normalizePath(path);
     const currentPath = normalizePath(window.location.pathname);
+
+    if (window.triggerHaptic) {
+        window.triggerHaptic('ui');
+    }
 
     if (replace) {
         try {

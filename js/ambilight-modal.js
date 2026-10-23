@@ -23,6 +23,10 @@ function attachModalEvents() {
     const images = document.querySelectorAll(".image-grid .image-item > img, #about-section .image-item > img, #changelogs-section .changelog-media > img");
     images.forEach(img => {
         const openModal = function() {
+            if (window.triggerHaptic) {
+                // Pure haptics for Apple / iOS devices without fallback vibration
+                window.triggerHaptic('image');
+            }
             modal.classList.remove('closing');
             modal.style.display = "flex";
             modalImg.src = img.src;

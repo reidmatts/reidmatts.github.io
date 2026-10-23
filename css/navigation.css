@@ -333,16 +333,17 @@ body.light-theme .left-drawer.open {
     100% { transform: scale(1.2) rotate(0deg); }
 }
 
-/* --- MYSTERY FACE POPUP (BOTTOM LEFT CORNER) --- */
+/* --- MYSTERY FACE POPUP --- */
 .mystery-face-popup {
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    right: auto;
     z-index: 100002;
     pointer-events: none;
     line-height: 0;
-    /* Hidden below screen initially */
-    transform: translate3d(0, 105%, 0);
+    /* Desktop: centered at bottom, hidden below screen */
+    transform: translate3d(-50%, 105%, 0);
     transition: transform 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     will-change: transform;
 }
@@ -354,20 +355,49 @@ body.light-theme .left-drawer.open {
     object-fit: contain;
     display: block;
     filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.65));
+    border-top-left-radius: 14px;
     border-top-right-radius: 14px;
     user-select: none;
     -webkit-user-drag: none;
 }
 
-/* Slide up instantly when active */
+/* Slide up instantly when active (Desktop Center) */
 .mystery-face-popup.slide-up {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(-50%, 0, 0);
 }
 
-/* Fast slide down on exit */
+/* Fast slide down on exit (Desktop Center) */
 .mystery-face-popup.slide-down {
-    transform: translate3d(0, 105%, 0);
+    transform: translate3d(-50%, 105%, 0);
     transition: transform 0.32s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+/* Mobile & Tablet view: appear at the bottom-right side beside the menu */
+@media (max-width: 1024px) {
+    .mystery-face-popup {
+        left: auto;
+        right: 25px;
+        transform: translate3d(0, 105%, 0);
+    }
+
+    .mystery-face-popup.slide-up {
+        transform: translate3d(0, 0, 0);
+    }
+
+    .mystery-face-popup.slide-down {
+        transform: translate3d(0, 105%, 0);
+    }
+
+    .mystery-face-img {
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mystery-face-popup {
+        right: 15px;
+    }
 }
 
 .drawer-yt-link:hover {

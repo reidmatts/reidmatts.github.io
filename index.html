@@ -127,6 +127,10 @@
                     <span>Low Detail Mode</span>
                     <label class="switch"><input type="checkbox" id="toggleLowDetail"><span class="slider"></span></label>
                 </div>
+                <div class="setting-item mobile-only" id="hapticsSettingItem">
+                    <span>Disable Haptics</span>
+                    <label class="switch"><input type="checkbox" id="toggleDisableHaptics"><span class="slider"></span></label>
+                </div>
                 <div class="setting-item">
                     <span>DO NOT CLICK!</span>
                     <label class="switch"><input type="checkbox" id="toggleExperimental"><span class="slider"></span></label>
@@ -572,12 +576,9 @@
 
     <!-- MYSTERY FACE EASTER EGG (BOTTOM LEFT) -->
     <div id="mysteryFacePopup" class="mystery-face-popup" aria-hidden="true">
-        <img src="Asset/EasterEgg/mystery.avif" alt="Easter Egg Face" class="mystery-face-img" loading="eager" decoding="async">
+        <img data-src="Asset/EasterEgg/mystery.avif" alt="Easter Egg Face" class="mystery-face-img" decoding="async">
     </div>
-    <audio id="vineBoomAudio" preload="auto">
-        <source src="Asset/EasterEgg/vineboom.mp3" type="audio/mpeg">
-        <source src="Asset/EasterEgg/vibeboom.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="vineBoomAudio" preload="none" data-src="Asset/EasterEgg/vineboom.mp3"></audio>
 
     <!-- SCROLL TO TOP BUTTON -->
     <button id="scrollTopBtn" class="scroll-top-btn" aria-label="Scroll to top">

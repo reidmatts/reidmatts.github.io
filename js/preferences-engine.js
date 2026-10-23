@@ -1,3 +1,76 @@
+// --- UNIVERSAL CROSS-DEVICE HAPTIC FEEDBACK ENGINE ---
+(function initHapticEngine() {
+    let tapticLabel = null;
+
+    // iOS Safari 18+: clicking a <label> bound to an <input type="checkbox" switch> fires the Taptic Engine.
+    // (Setting .checked directly does NOT trigger haptics, so we click the label.)
+    function triggerAppleHaptic() {
+        try {
+            if (!tapticLabel) {
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.id = 'hapticSwitchProxy';
+                input.setAttribute('switch', '');
+                tapticLabel = document.createElement('label');
+                tapticLabel.htmlFor = 'hapticSwitchProxy';
+                tapticLabel.setAttribute('aria-hidden', 'true');
+                const hide = 'position:fixed;opacity:0;pointer-events:none;top:-9999px;left:-9999px;width:1px;height:1px;';
+                input.style.cssText = hide;
+                tapticLabel.style.cssText = hide;
+                document.body.appendChild(input);
+                document.body.appendChild(tapticLabel);
+            }
+            tapticLabel.click();
+        } catch (e) {}
+    }
+
+    /**
+     * @param {'ui' | 'image' | 'egg'} type
+     * - 'ui': Menu open/close, section switch, settings toggle (triggers tactile vibration fallback)
+     * - 'image': Image click (pure Apple haptics only; NO vibration fallback)
+     * - 'egg': Easter egg burst
+     */
+    function triggerHaptic(type = 'ui') {
+        // Respect user preference to disable haptics
+        if (localStorage.getItem('disableHapticsEnabled') === 'true') {
+            return;
+        }
+
+        // 1. Apple Taptic Engine (iOS Safari / WebKit)
+        triggerAppleHaptic();
+
+        // 2. Gamepad / Chrome haptic actuator API (Android / Windows touch / gamepads)
+        try {
+            if (navigator.getGamepads) {
+                const gamepads = navigator.getGamepads();
+                if (gamepads && gamepads[0] && gamepads[0].vibrationActuator) {
+                    gamepads[0].vibrationActuator.playEffect('dual-rumble', {
+                        startDelay: 0,
+                        duration: type === 'egg' ? 120 : 15,
+                        weakMagnitude: 0.6,
+                        strongMagnitude: 0.3
+                    }).catch(() => {});
+                }
+            }
+        } catch (e) {}
+
+        // 3. Vibration API fallback:
+        // APPLIES ONLY to opening menu, switching layout, triggering settings changes (NOT clicking images)
+        if (type !== 'image' && 'vibrate' in navigator) {
+            try {
+                if (type === 'egg') {
+                    navigator.vibrate([60, 40, 70, 40, 100]);
+                } else {
+                    // Fraction of a millisecond / micro-pulse (10-12ms minimum browser unit)
+                    navigator.vibrate(12);
+                }
+            } catch (e) {}
+        }
+    }
+
+    window.triggerHaptic = triggerHaptic;
+})();
+
 // --- 10. SETTINGS & LOCAL STORAGE MEMORY ENGINE ---
 const primaryNav = document.getElementById('primaryNav');
 const settingsNav = document.getElementById('settingsNav');
@@ -10,14 +83,18 @@ const toggleAlwaysPromo = document.getElementById('toggleAlwaysPromo');
 const toggleDisableIntro = document.getElementById('toggleDisableIntro');
 const toggleLightMode = document.getElementById('toggleLightMode');
 const toggleLowDetail = document.getElementById('toggleLowDetail');
+const toggleDisableHaptics = document.getElementById('toggleDisableHaptics');
+const hapticsSettingItem = document.getElementById('hapticsSettingItem');
 const toggleExperimental = document.getElementById('toggleExperimental');
 
 openSettingsBtn.onclick = () => {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     primaryNav.style.display = "none";
     settingsNav.style.display = "block";
 };
 
 backToNavBtn.onclick = () => {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     settingsNav.style.display = "none";
     primaryNav.style.display = "flex";
 };
@@ -39,6 +116,9 @@ if (localStorage.getItem('lightModeEnabled') === 'true') {
     toggleLightMode.checked = true;
     document.body.classList.add('light-theme');
 }
+if (localStorage.getItem('disableHapticsEnabled') === 'true') {
+    if (toggleDisableHaptics) toggleDisableHaptics.checked = true;
+}
 const savedLowDetail = localStorage.getItem('lowDetailEnabled');
 if (savedLowDetail === 'true') {
     toggleLowDetail.checked = true;
@@ -56,34 +136,51 @@ if (savedLowDetail === 'true') {
 }
 
 toggleTwoGrid.addEventListener('change', (e) => {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     localStorage.setItem('twoGridEnabled', e.target.checked);
     document.body.classList.toggle('force-two-cols', e.target.checked);
 });
 
 toggleGridAnim.addEventListener('change', (e) => {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     localStorage.setItem('alwaysGridAnimEnabled', e.target.checked);
 });
 
 toggleAlwaysPromo.addEventListener('change', (e) => {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     localStorage.setItem('alwaysPromoEnabled', e.target.checked);
 });
 
 toggleDisableIntro.addEventListener('change', (e) => {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     localStorage.setItem('disableIntroAnimation', e.target.checked);
 });
 
 toggleLightMode.addEventListener('change', (e) => {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     localStorage.setItem('lightModeEnabled', e.target.checked);
     document.body.classList.toggle('light-theme', e.target.checked);
 });
 
 toggleLowDetail.addEventListener('change', (e) => {
+    if (window.triggerHaptic) window.triggerHaptic('ui');
     localStorage.setItem('lowDetailEnabled', e.target.checked);
     document.body.classList.toggle('low-detail', e.target.checked);
 });
 
+if (toggleDisableHaptics) {
+    toggleDisableHaptics.addEventListener('change', (e) => {
+        if (!e.target.checked && window.triggerHaptic) {
+            // Provide a pleasant tactile confirmation when turning back on
+            window.triggerHaptic('ui');
+        }
+        localStorage.setItem('disableHapticsEnabled', e.target.checked);
+    });
+}
+
 // --- THE EASTER EGG ---
 toggleExperimental.addEventListener('change', (e) => {
+    if (window.triggerHaptic) window.triggerHaptic('egg');
     if (e.target.checked) {
         e.target.checked = false;
         const trap = document.getElementById('trapOverlay');
@@ -142,7 +239,11 @@ toggleExperimental.addEventListener('change', (e) => {
         }
 
         // 3. Trigger haptic feedback / rapid vibration on mobile
-        triggerHaptics();
+        if (window.triggerHaptic) {
+            window.triggerHaptic('egg');
+        } else {
+            triggerHaptics();
+        }
 
         // 4. Slide face up at furthest bottom left
         if (dismissTimer) clearTimeout(dismissTimer);
@@ -156,13 +257,29 @@ toggleExperimental.addEventListener('change', (e) => {
             ytIcon.classList.remove('cute-shake');
 
             setTimeout(() => {
-                mysteryPopup.classList.remove('slide-down');
+                if (!mysteryPopup.classList.contains('slide-up')) {
+                    mysteryPopup.classList.remove('slide-down');
+                }
             }, 400);
         }, 5000);
     }
 
+    // Lazy-load egg assets only when someone actually starts holding (zero bytes for normal visitors)
+    let eggAssetsLoaded = false;
+    function warmEggAssets() {
+        if (eggAssetsLoaded) return;
+        eggAssetsLoaded = true;
+        const img = mysteryPopup.querySelector('img[data-src]');
+        if (img) img.src = img.dataset.src;
+        if (vineAudio && vineAudio.dataset.src) {
+            vineAudio.src = vineAudio.dataset.src;
+            vineAudio.preload = 'auto';
+            vineAudio.load();
+        }
+    }
+
     function startPress(e) {
-        // Prevent default context menu on long press on mobile
+        warmEggAssets();
         didTriggerEasterEgg = false;
         clearTimeout(holdTimer);
         holdTimer = setTimeout(launchEasterEgg, 1500);
